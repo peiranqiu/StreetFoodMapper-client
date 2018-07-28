@@ -3,7 +3,7 @@ import TopicContent from './TopicContent';
 import React from "react";
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import '../Style.css';
+import '../styles/home.css';
 import TopicService from '../services/TopicService';
 import {BrowserRouter as Router, Route}
     from 'react-router-dom'

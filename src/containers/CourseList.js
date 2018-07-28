@@ -1,7 +1,7 @@
 import React from 'react';
 import CourseRow from '../components/CourseRow';
 import CourseService from '../services/CourseService';
-import '../Style.css';
+import '../styles/home.css';
 
 class CourseList extends React.Component {
     constructor() {

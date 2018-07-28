@@ -3,7 +3,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import {Link} from
         'react-router-dom'
-import '../Style.css';
+import '../styles/home.css';
 
 export default class LessonTabItem
     extends React.Component {

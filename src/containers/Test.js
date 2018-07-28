@@ -1,6 +1,5 @@
 import React from 'react';
-import '../Style.css';
-import coverpage from "../resources/coverpage.jpg";
+import '../styles/home.css';
 
 
 export default class Test
@@ -39,8 +38,7 @@ export default class Test
     render() {
         return (
             <div>
-                <img className="background" src={coverpage} alt="coverpage"/>
-                <div className="center" id="outer">
+                <div className="center">
                     <div id="inner">See Y'All In</div>
                     <p id="demo"></p>
                 </div>

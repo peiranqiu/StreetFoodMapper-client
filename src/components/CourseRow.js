@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import '../Style.css';
+import '../styles/home.css';
 class CourseRow extends React.Component {
     constructor(props) { super(props); }
 

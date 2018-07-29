@@ -6,7 +6,47 @@ body {
     font-family: "Avenir";
 }
 
-
+.navbar {
+    width: 100vw;
+    height: 48px;
+    border-bottom: 3px solid black;
+    background-color: #FFF866;
+    position:absolute;
+    vertical-align: middle;
+}
+.navbar-brand {
+    margin-left:100px;
+    font-size: 16px !important;
+}
+.navbar img {
+    transform: translate(0,-6px);
+}
+.nav-item {
+    cursor: pointer;
+    color: black;
+}
+#nav-item-1 {
+    right:400px;
+    position:absolute;
+}
+#nav-item-2 {
+    right:250px;
+    position:absolute;
+}
+#nav-item-3 {
+    right:100px;
+    position:absolute;
+}
+#user-icon {
+    margin-right:100px;
+}
+.dropdown-menu {
+    transform: translate(-50px, 0px);
+}
+.navbar.sticky-bottom {
+    border-bottom: none;
+    border-top: 3px solid black;
+}
 
 .test.background {
     background-image: url("../resources/background/coverpage.jpg");

@@ -4,11 +4,21 @@ import Home from "./Home";
 import Test from "./Test";
 
 export default class App extends Component {
+    componentDidMount() {
+        const script = document.createElement("script");
+
+        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD8Gpn93BQCNz2U-hi_6XYGY8gAbcHkSaU&callback=initMap";
+        script.async = true;
+        script.defer = true;
+
+        document.body.appendChild(script);
+    }
+
     render = () => (
         <Router>
             <Switch className="container-fluid">
                 <Route exact path="/" component={Test}/>
-                <Route exact path="/home" component={Home}/>
+                <Route path="/home" component={Home}/>
                 {/*
                 <Route path="/login/user" component={UserLogin}/>
                 <Route path="/login/vendor" component={VendorLogin}/>

@@ -3,9 +3,11 @@ import '../../node_modules/bootstrap/js/dist/dropdown.js';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../styles/home.css';
+import '../styles/test.css';
 import logo from '../resources/background/logo.jpg'
 import user from '../resources/icons/user.png'
 
+import MapContainer from './MapContainer';
 
 export default class Home
     extends React.Component {
@@ -33,13 +35,15 @@ export default class Home
                         </div>
                     </span>
                 </nav>
+                <MapContainer/>
                 <nav className="navbar navbar-light sticky-bottom">
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
-                    <a className="nav-item" id="nav-item-2">Contacts</a>
+                    <a className="nav-item" id="nav-item-2">Contact Us</a>
                     <a className="nav-item" id="nav-item-3">Vendor?</a>
                 </nav>
+
 
 
             </div>

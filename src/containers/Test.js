@@ -1,5 +1,6 @@
+
 import React from 'react';
-import '../styles/home.css';
+import '../styles/test.css';
 
 
 export default class Test
@@ -38,6 +39,7 @@ export default class Test
     render() {
         return (
             <div>
+                <div className="background test"></div>
                 <div className="center">
                     <div id="inner">See Y'All In</div>
                     <p id="demo"></p>

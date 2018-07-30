@@ -11,12 +11,12 @@
 }
 
 #map-container {
-    height: 574px;
+    height: calc(100vh - 100px);
     width: 100%;
 }
 
 #map {
-    height: 574px;
+    height: calc(100vh - 100px);
     width: 100%;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .list-group {
-    max-height: 510px;
+    max-height: calc(100vh - 164px);
     overflow: auto;
     border: none;
 }

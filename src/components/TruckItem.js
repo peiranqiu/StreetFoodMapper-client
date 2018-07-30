@@ -4,17 +4,13 @@ import unfavorite from '../resources/icons/unfavorite.png'
 
 export default class TruckItem extends React.Component {
     constructor(props) { super(props); }
-    componentDidMount() {
-        console.log(this.props.truck.photos[0].href);
-
-    }
 
 
     render() {
         return (
             <a className="list-group-item list-group-item-action flex-column align-items-start">
 
-                <div className="row justify-content-between">
+                <div className="row justify-content-between" id="truck-item">
                     <img className="truck-item-img"
                          src={this.props.truck.photos[0].href}/>
                     <div className="truck-item-title">{this.props.truck.name}</div>

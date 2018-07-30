@@ -46,6 +46,11 @@
     height: 125px;
 }
 
+.truck-item {
+    min-width: 400px !important;
+
+}
+
 .truck-item-img {
     width: 90px;
     height: 90px;
@@ -62,7 +67,7 @@
 
 .truck-item-category {
     left: 110px;
-    top: 80px;
+    bottom: 10px;
     text-align: left;
     position: absolute;
     font-size: 12px;

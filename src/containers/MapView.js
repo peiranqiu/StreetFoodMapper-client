@@ -5,8 +5,26 @@ import mapIcon from '../resources/icons/map.png'
 
 export default class MapView
     extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            trucks: [],
+            schedules: []
+        };
+        this.initMap = this.initMap.bind(this);
+        this.setSchedules = this.setSchedules.bind(this);
+    }
+
+    setSchedules(schedules) {
+        this.setState({schedules: schedules});
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setSchedules(newProps.schedules);
+    }
 
     componentDidMount() {
+        this.setSchedules(this.props.schedules);
         window.initMap = this.initMap;
         var ref = window.document.getElementsByTagName("script")[0];
         var script = window.document.createElement("script");
@@ -17,38 +35,38 @@ export default class MapView
 
     initMap() {
         const google = window.google;
-        var map = new google.maps.Map(document.getElementById("map"), {
+        const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 13,
-            center: new google.maps.LatLng(42.355,-71.09),
+            center: new google.maps.LatLng(42.355, -71.09),
             mapTypeId: 'roadmap',
             streetViewControl: false,
             mapTypeControl: false,
             styles: constants.MAP_STYLE
         });
 
+        this.state.schedules.map((schedule) => {
+            var lat = Number(schedule.latitude);
+            var lng = Number(schedule.longitude);
+            var myLatLng = {lat: lat, lng: lng};
 
-        var myLatLng = {lat: 42.355, lng: -71.09};
-        var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: map,
-            icon: mapIcon
-        });
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice"></div>'+
-            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-            'Northern Territory, central Australia. It lies Heritage Site.</p> '+
-            '</div></div>';
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                icon: mapIcon
+            });
 
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString,
-            maxWidth: 200
-        });
-        marker.addListener('click', function() {
-            infowindow.open(map, marker);
+            var infoWindow = new google.maps.InfoWindow({
+                position: myLatLng,
+                content: document.getElementById("truck-item"),
+
+                maxWidth: 400
+            });
+            marker.addListener('click', function () {
+                infoWindow.open(map, marker);
+            });
         });
     }
+
 
     loadJS(src) {
         var ref = window.document.getElementsByTagName("script")[0];

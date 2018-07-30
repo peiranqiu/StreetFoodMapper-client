@@ -5,21 +5,29 @@ import '../styles/home.css';
 
 import TruckItem from '../components/TruckItem'
 import TruckServiceClient from '../services/TruckServiceClient'
+import ScheduleServiceClient from '../services/ScheduleServiceClient'
 
 export default class ListView
     extends React.Component {
     constructor() {
         super();
         this.state = {
-            trucks: []
+            trucks: [],
+            schedules: []
         };
-        this.truckService = TruckServiceClient.instance();
+        this.setTrucks = this.setTrucks.bind(this);
+    }
+
+    setTrucks(trucks) {
+        this.setState({trucks: trucks});
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setTrucks(newProps.trucks);
     }
 
     componentDidMount() {
-        this.truckService.findAllTrucks()
-            .then(trucks => this.setState({trucks: trucks}));
-
+        this.setTrucks(this.props.trucks);
     }
 
     renderListOfTrucks() {

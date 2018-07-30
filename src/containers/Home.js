@@ -8,6 +8,7 @@ import logo from '../resources/background/logo.jpg'
 import user from '../resources/icons/user.png'
 
 import MapContainer from './MapContainer';
+import TrendingContainer from './TrendingContainer';
 
 export default class Home
     extends React.Component {
@@ -36,6 +37,7 @@ export default class Home
                     </span>
                 </nav>
                 <MapContainer/>
+                <TrendingContainer/>
                 <nav className="navbar navbar-light sticky-bottom">
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.

@@ -28,17 +28,24 @@ export default class MapContainer
     }
 
     render() {
-        if(this.state.trucks.length<1 || this.state.schedules.length<1) {
-            return null;
+
+        if (this.state.trucks.length < 1 || this.state.schedules.length < 1) {
+            return (
+                <div className="container-fluid" id="map-container">
+                    <div className="map-loader">Loading ...</div>
+                </div>
+            );
         }
         return (
             <div className="container-fluid" id="map-container">
-            <div className="row ">
-                <div className="col-sm-4"><ListView trucks={this.state.trucks}/></div>
-                <div className="col-sm-8"><MapView schedules={this.state.schedules}/></div>
-            </div>
+                <div className="row ">
+                    <div className="col-sm-4"><ListView trucks={this.state.trucks}/></div>
+                    <div className="col-sm-8"><MapView schedules={this.state.schedules}/></div>
+                </div>
             </div>
         );
+
     }
+
 
 }

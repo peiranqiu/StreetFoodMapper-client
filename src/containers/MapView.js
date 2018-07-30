@@ -57,7 +57,7 @@ export default class MapView
 
             var infoWindow = new google.maps.InfoWindow({
                 position: myLatLng,
-                content: document.getElementById("truck-item"),
+                content: "Joann",
 
                 maxWidth: 400
             });

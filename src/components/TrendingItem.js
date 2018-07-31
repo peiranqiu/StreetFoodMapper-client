@@ -13,18 +13,21 @@ export default class TrendingItem extends React.Component {
     render() {
         var rating = null;
         switch(this.props.truck.reviews[0].rating) {
-            case '2':
+            case 2:
                 rating = rating2;
-            case '3':
+                break;
+            case 3:
                 rating = rating3;
-            case '4':
+                break;
+            case 4:
                 rating = rating4;
-            case '5':
+                break;
+            case 5:
                 rating = rating5;
+                break;
             default:
                 rating = rating1;
         }
-        console.log(rating);
         return (
             <div>
                 <div className="card">

@@ -163,7 +163,9 @@ input {
     max-height:calc(100vh - 100px);
 }
 .card {
-    margin-bottom:30px;
+    margin-left:25px;
+    margin-right:25px;
+    margin-bottom: 30px;
     text-align:left;
     font-size:14px;
     max-width:400px;

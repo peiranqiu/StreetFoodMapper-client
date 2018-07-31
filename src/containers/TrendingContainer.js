@@ -33,9 +33,9 @@ export default class TrendingContainer
         return (
             <div className="container-fluid" id="trending-container">
                 <div className="row">
-                    <div className="col-lg-4"><TrendingItem truck={this.state.trucks[0]}/></div>
-                    <div className="col-lg-4"><TrendingItem truck={this.state.trucks[1]}/></div>
-                    <div className="col-lg-4"><TrendingItem truck={this.state.trucks[0]}/></div>
+                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
+                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[1]}/></div>
+                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
                 </div>
             </div>
         );

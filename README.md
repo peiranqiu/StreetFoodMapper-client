@@ -1,5 +1,8 @@
-# CS5610-summer-2018-project-client-peiranqiu
+# Food Truck Mapper
 This repository is used for the CS5610 summer 2018 final project by Peiran Qiu.
+
+Website is at:
+https://foodtruckmapper.herokuapp.com/
 
 Related Repositories: 
 https://github.com/peiranqiu/CS5610-summer-2018-project-peiranqiu

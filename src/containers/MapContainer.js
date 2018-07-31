@@ -6,7 +6,6 @@ import '../styles/home.css';
 import MapView from './MapView';
 import ListView from './ListView';
 import TruckServiceClient from "../services/TruckServiceClient";
-import ScheduleServiceClient from "../services/ScheduleServiceClient";
 
 export default class MapContainer
     extends React.Component {
@@ -14,22 +13,29 @@ export default class MapContainer
         super();
         this.state = {
             trucks: [],
-            schedules: []
+            user: {}
         };
         this.truckService = TruckServiceClient.instance();
-        this.scheduleService = ScheduleServiceClient.instance();
+        this.setUser = this.setUser.bind(this);
+    }
+
+    setUser(user) {
+        this.setState({user: user});
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setUser(newProps.user);
     }
 
     componentDidMount() {
+        this.setUser(this.props.user);
         this.truckService.findAllTrucks()
             .then(trucks => this.setState({trucks: trucks}));
-        this.scheduleService.findAllSchedules()
-            .then(schedules => this.setState({schedules: schedules}));
     }
 
     render() {
 
-        if (this.state.trucks.length < 1 || this.state.schedules.length < 1) {
+        if (this.state.trucks.length < 1) {
             return (
                 <div className="container-fluid" id="map-container">
                     <div className="map-loader">Loading ...</div>
@@ -48,8 +54,8 @@ export default class MapContainer
                     <button type="button" className="btn shadow" id="btn-open">Open Now</button>
                     <button type="button" className="btn shadow" id="btn-later">Open Later</button>
                     <button type="button" className="btn shadow" id="btn-favorite">Favorites</button>
-                    <div className="col-sm-4"><ListView trucks={this.state.trucks}/></div>
-                    <div className="col-sm-8"><MapView trucks={this.state.trucks}/></div>
+                    <div className="col-sm-4"><ListView trucks={this.state.trucks} user={this.state.user}/></div>
+                    <div className="col-sm-8"><MapView trucks={this.state.trucks} user={this.state.user}/></div>
                 </div>
             </div>
         );

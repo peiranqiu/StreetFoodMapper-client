@@ -38,6 +38,7 @@ body {
     position:absolute;
 }
 #user-icon {
+    margin-top:8px;
     margin-right:100px;
 }
 .dropdown-menu {
@@ -46,6 +47,11 @@ body {
 .navbar.sticky-bottom {
     border-bottom: none;
     border-top: 3px solid black;
+}
+
+a:hover {
+    text-decoration: none;
+    color:#F4511E;
 }
 
 .test.background {

@@ -11,9 +11,13 @@ export default class ListView
         super();
         this.state = {
             trucks: [],
-            schedules: []
+            user: {}
         };
         this.setTrucks = this.setTrucks.bind(this);
+        this.setUser = this.setUser.bind(this);
+    }
+    setUser(user) {
+        this.setState({user: user});
     }
 
     setTrucks(trucks) {
@@ -21,10 +25,12 @@ export default class ListView
     }
 
     componentWillReceiveProps(newProps) {
+        this.setUser(newProps.user);
         this.setTrucks(newProps.trucks);
     }
 
     componentDidMount() {
+        this.setUser(this.props.user);
         this.setTrucks(this.props.trucks);
     }
 
@@ -32,7 +38,8 @@ export default class ListView
         let trucks = this.state.trucks.map((truck) => {
 
             return (<TruckItem key={truck.id}
-                                    truck={truck}/>)
+                               user={this.state.user}
+                               truck={truck}/>)
         });
         return trucks;
 

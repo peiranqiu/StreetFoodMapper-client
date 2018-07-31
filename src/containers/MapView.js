@@ -11,10 +11,16 @@ export default class MapView
     constructor() {
         super();
         this.state = {
-            trucks: []
+            trucks: [],
+            user: {}
         };
         this.initMap = this.initMap.bind(this);
         this.setTrucks = this.setTrucks.bind(this);
+        this.setUser = this.setUser.bind(this);
+    }
+
+    setUser(user) {
+        this.setState({user: user});
     }
 
     setTrucks(trucks) {
@@ -22,10 +28,12 @@ export default class MapView
     }
 
     componentWillReceiveProps(newProps) {
+        this.setUser(newProps.user);
         this.setTrucks(newProps.trucks);
     }
 
     componentDidMount() {
+        this.setUser(this.props.user);
         this.setTrucks(this.props.trucks);
         window.initMap = this.initMap;
         var ref = window.document.getElementsByTagName("script")[0];

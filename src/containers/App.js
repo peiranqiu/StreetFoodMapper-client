@@ -1,29 +1,26 @@
-import React, {Component} from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import Home from "./Home";
-import Test from "./Test";
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Home from './Home';
+import Test from './Test';
+import UserLogin from './UserLogin';
+import UserRegister from './UserRegister'
+import OwnerRegister from './OwnerRegister'
+import OwnerLogin from './OwnerLogin'
 
 export default class App extends Component {
-    componentDidMount() {
-        const script = document.createElement("script");
-
-        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD8Gpn93BQCNz2U-hi_6XYGY8gAbcHkSaU&callback=initMap";
-        script.async = true;
-        script.defer = true;
-
-        document.body.appendChild(script);
-    }
 
     render = () => (
         <Router>
             <Switch className="container-fluid">
                 <Route exact path="/" component={Test}/>
                 <Route path="/home" component={Home}/>
-                {/*
                 <Route path="/login/user" component={UserLogin}/>
-                <Route path="/login/vendor" component={VendorLogin}/>
                 <Route path="/register/user" component={UserRegister}/>
                 <Route path="/register/owner" component={OwnerRegister}/>
+                <Route path="/login/owner" component={OwnerLogin}/>
+                {/*
+
+
                 <Route path="/profile/user/:userId" component={UserProfile}/>
                 <Route path="/profile/owner/:userId" component={OwnerProfile}/>
                 <Route exact path="/admin" component={AdminPage}/>

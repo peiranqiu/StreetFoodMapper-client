@@ -46,6 +46,7 @@ export default class MapView
             styles: constants.MAP_STYLE
         });
 
+        var prevInfoWindow = false;
         this.state.trucks.map((truck) => {
             var name = truck.name;
             var photo = truck.photos[0].href;
@@ -78,11 +79,22 @@ export default class MapView
                     '</div>'
                 });
                 marker.addListener('click', function () {
-                    infoWindow.open(map, marker);
+                    console.log(prevInfoWindow);
+                    if( prevInfoWindow ) {
+                        prevInfoWindow.close();
+                    }
+                    if(infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                        infoWindow.close();
+                    }
+                    else {
+                        prevInfoWindow = infoWindow;
+                        infoWindow.open(map, marker);
+                    }
                 });
                 map.addListener('click', function () {
                     infoWindow.close();
                 });
+
 
                 google.maps.event.addListener(infoWindow, 'domready', function () {
 

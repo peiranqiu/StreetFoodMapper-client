@@ -95,3 +95,46 @@
     top: 40px;
     position: absolute;
 }
+
+#home-search {
+    position:absolute;
+    right: 500px;
+    top:calc(100vh + 15px);
+    z-index: 99;
+    width:270px;
+}
+#search-icon {
+    transform: translate(230px, -25px);
+    color:white;
+}
+#search-input {
+    background-color:#F4511E;
+    border: none;
+    height:32px;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    white !important;
+}
+input {
+    color: white !important;
+}
+.btn {
+    position:absolute;
+    top:calc(100vh + 15px);
+    z-index: 99;
+    width:126px;
+    height:32px;
+    font-size: 13.5px;
+}
+#btn-open {
+    right:364px;
+    background-color:#f4511e;
+}
+#btn-later {
+    right:212px;
+    background-color:#B91400;
+}
+#btn-favorite {
+    right:60px;
+    background-color:#f4511e;
+}

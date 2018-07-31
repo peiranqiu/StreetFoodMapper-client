@@ -40,7 +40,7 @@ export default class MapContainer
             <div className="container-fluid" id="map-container">
                 <div className="row ">
                     <div className="col-sm-4"><ListView trucks={this.state.trucks}/></div>
-                    <div className="col-sm-8"><MapView schedules={this.state.schedules}/></div>
+                    <div className="col-sm-8"><MapView trucks={this.state.trucks}/></div>
                 </div>
             </div>
         );

@@ -5,6 +5,10 @@ html {
 body {
     font-family: "Avenir";
 }
+@font-face {
+    font-family: Avenir;
+    src: url('../resources/font/avenir-light-webfont.woff');
+}
 
 .navbar {
     width: 100vw;

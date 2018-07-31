@@ -45,14 +45,15 @@
 
 .list-group {
     max-height: calc(100vh - 164px);
-    overflow: auto;
+    overflow: auto !important;
     border: none;
 }
 
 .list-group-item {
     padding-left: 20px;
     padding-right: 20px;
-    height: 125px;
+    min-height: 125px !important;
+    height: 125px !important;
     border-radius: 0px !important;
 }
 
@@ -61,6 +62,9 @@
 }
 
 .truck-item-img {
+    position:absolute;
+    top:15px;
+    left: 10px;
     width: 90px;
     height: 90px;
     max-height: 100px;
@@ -76,7 +80,7 @@
 
 .truck-item-category {
     left: 110px;
-    bottom: 10px;
+    bottom: 15px;
     text-align: left;
     position: absolute;
     font-size: 12px;

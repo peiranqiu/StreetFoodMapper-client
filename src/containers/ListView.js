@@ -45,6 +45,7 @@ export default class ListView
                         {this.renderListOfTrucks()}
                         {this.renderListOfTrucks()}
                         {this.renderListOfTrucks()}
+                        {this.renderListOfTrucks()}
 
                 </div>
             </div>

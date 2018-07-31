@@ -1,7 +1,9 @@
 import React from 'react';
 import '../styles/home.css';
+import '../styles/map.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
+import $ from 'jquery'
 
 export default class MapView
     extends React.Component {
@@ -57,13 +59,53 @@ export default class MapView
 
             var infoWindow = new google.maps.InfoWindow({
                 position: myLatLng,
-                content: "Joann",
-
-                maxWidth: 400
+                content: '<div id="iw-container">' +
+                '<div class="iw-title"></div>' +
+                '<div class="iw-content">' +
+                '<div class="iw-subTitle">History</div>' +
+                '<img class="iw-img" src="replace" alt="" height="90" width="90">' +
+                '</div>' +
+                '</div>'
             });
             marker.addListener('click', function () {
                 infoWindow.open(map, marker);
             });
+            map.addListener('click', function () {
+                infoWindow.close();
+            });
+
+
+            google.maps.event.addListener(infoWindow, 'domready', function() {
+                var newSrc = "http://maps.marnoto.com/en/5wayscustomizeinfowindow/images/vistalegre.jpg";
+                $('img[src="replace"]').attr('src', newSrc);
+
+                $('.iw-title').html(schedule.address);
+
+                // Reference to the DIV that wraps the bottom of infowindow
+               var iwOuter = $('.gm-style-iw');
+
+                /* Since this div is in a position prior to .gm-div style-iw.
+                 * We use jQuery and create a iwBackground variable,
+                 * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+                */
+               var iwBackground = iwOuter.prev();
+
+                // Removes background shadow DIV
+               iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+
+                // Removes white background DIV
+               iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+                var iwCloseBtn = iwOuter.next();
+
+                // Apply the desired effect to the close button
+                iwCloseBtn.css({transform: 'translate(-40px,10px)'});
+
+            });
+
+
+
+
+
         });
     }
 

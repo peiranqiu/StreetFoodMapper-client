@@ -58,11 +58,11 @@
     padding-left: 20px;
     padding-right: 20px;
     height: 125px;
+    border-radius: 0px !important;
 }
 
 .truck-item {
     min-width: 400px !important;
-
 }
 
 .truck-item-img {

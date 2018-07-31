@@ -4,8 +4,6 @@ import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../styles/home.css';
 
 import TruckItem from '../components/TruckItem'
-import TruckServiceClient from '../services/TruckServiceClient'
-import ScheduleServiceClient from '../services/ScheduleServiceClient'
 
 export default class ListView
     extends React.Component {

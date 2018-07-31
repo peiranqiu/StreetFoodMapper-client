@@ -149,12 +149,9 @@ input {
     font-weight: bolder;
     letter-spacing: 3px;
     font-size: 28px;
-    margin: 0;
-    position:absolute;
-    top:calc(250vh - 150px);
-    left: 0;
     display: inline-block;
     color:#F4511E;
+    transform:translate(0,30vh);
 }
 #trending-container .row {
     transform: translate(-20px, 0);

@@ -23,7 +23,6 @@ export default class TrendingContainer
 
     render() {
 
-
         if (this.state.trucks.length < 1) {
             return (
                 <div className="container-fluid" id="trending-container">

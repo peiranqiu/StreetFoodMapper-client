@@ -29,12 +29,7 @@
     color:#F4511E;
 }
 
-#map {
-    height: calc(100vh - 100px);
-    width: 100%;
-}
-
-.row * {
+#map-container .row * {
     padding-left: 0;
     padding-right: 0;
 }
@@ -137,4 +132,65 @@ input {
 #btn-favorite {
     right:60px;
     background-color:#f4511e;
+}
+#trending-container {
+    margin: 0;
+    height: calc(100vh - 100px);
+    width: 100%;
+    background-color: #FFF866;
+    padding:100px 50px 50px 100px;
+    text-align: center;
+    min-width:1000px;
+}
+.trending-loader {
+    width: 100%;
+    text-align: center;
+    font-family: "DINPRO";
+    font-weight: bolder;
+    letter-spacing: 3px;
+    font-size: 28px;
+    margin: 0;
+    position:absolute;
+    top:calc(250vh - 150px);
+    left: 0;
+    display: inline-block;
+    color:#F4511E;
+}
+#trending-container .row {
+    transform: translate(-20px, 0);
+    min-width:1000px;
+    max-height:calc(100vh - 100px);
+}
+.card {
+    margin-bottom:30px;
+    text-align:left;
+    font-size:14px;
+    max-width:400px;
+    max-height:calc(100vh - 200px);
+}
+.card-img-top {
+    border-radius: 0;
+    margin:0;
+    padding:0;
+    max-width:100%;
+    max-height: 200px;
+}
+.card-user {
+    padding-top:0px;
+    padding-left:20px;
+    padding-bottom:0;
+    color:#1271B9;
+    font-weight: bolder;
+    transform: translate(0px,15px);
+}
+.card-time {
+    padding-left:20px;
+}
+.card-title {
+    color:#1271B9;
+    font-weight: bolder;
+    font-size:18px;
+}
+.card-rating {
+    padding-bottom:5px;
 }

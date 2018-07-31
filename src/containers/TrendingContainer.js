@@ -22,12 +22,21 @@ export default class TrendingContainer
     }
 
     render() {
+
+
+        if (this.state.trucks.length < 1) {
+            return (
+                <div className="container-fluid" id="trending-container">
+                    <div className="trending-loader">Loading ...</div>
+                </div>
+            );
+        }
         return (
             <div className="container-fluid" id="trending-container">
                 <div className="row">
-                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
-                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[1]}/></div>
-                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
+                    <div className="col-lg-4"><TrendingItem truck={this.state.trucks[0]}/></div>
+                    <div className="col-lg-4"><TrendingItem truck={this.state.trucks[1]}/></div>
+                    <div className="col-lg-4"><TrendingItem truck={this.state.trucks[0]}/></div>
                 </div>
             </div>
         );

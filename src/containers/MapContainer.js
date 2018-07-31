@@ -48,7 +48,7 @@ export default class MapContainer
                     <form className="form-inline active-purple-4" id="home-search">
                         <input className="form-control form-control-sm mr-3 w-100 shadow" type="text"
                                placeholder="  Search for trucks, categories, etc."
-                               aria-label="Search" id="search-input"/>
+                               aria-label="Search" id="search-input"  size="14"/>
                             <i className="fa fa-search" id="search-icon" aria-hidden="true"></i>
                     </form>
                     <button type="button" className="btn shadow" id="btn-open">Open Now</button>

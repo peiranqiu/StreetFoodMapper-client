@@ -4,11 +4,12 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../../node_modules/font-awesome/css/font-awesome.css'
 import '../styles/test.css'
 import '../styles/user.css'
+import '../styles/truck.css'
 import logo from '../resources/background/logo-red.png'
 import user from '../resources/icons/user-white.png'
 import OwnerServiceClient from "../services/OwnerServiceClient";
 
-export default class OwnerProfile
+export default class Dashboard
     extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +31,7 @@ export default class OwnerProfile
 
     render() {
         if (this.state.owner === undefined || this.state.owner === {}) {
-            window.location.href = "/home";
+            //window.location.href = "/home";
         }
         return (
             <div id="profile-page" className="user-page vendor-page">
@@ -49,22 +50,28 @@ export default class OwnerProfile
                         && <a className="nav-item current-user">{this.state.owner.email}</a>}
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {this.state.owner !== undefined
+                            && <a className="dropdown-item" href="/profile/owner">Profile</a>}
+                            {this.state.owner !== undefined
                             && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
-
-
                         </div>
                     </span>
                 </nav>
-                <div className="container-fluid" id="profile-container">
-                    <div id="profile" className="user-page-card">
-                        <h1 className="display1">User Profile</h1>
-                        <div className="tab-row row">
-                            <span className="profile-tab1 profile-tab">Info and Setting</span>
-                            <span className="profile-tab2 profile-tab"><a href="/profile/owner/edit">Manage Password</a></span>
+                <div className="container-fluid" id="dashboard-container">
+                    <div id="dashboard" className="user-page-card">
+                        <h1 className="display1">Vendor Dashboard</h1>
+                        <div className="list-group">
+                            <a className="list-group-item list-group-item-action flex-column align-items-start" id="new-truck">
+                                <div className="row justify-content-between">
+                                    <div>You don’t have any truck profiles set up yet.</div>
+                                    <button className="btn btn-block ripple-effect"alt="">Add Your First Truck</button>
+                                </div>
+                            </a>
+
+
                         </div>
-                        <p className="profile-title">Email</p>
-                        {this.state.owner !== undefined && <p className="profile-content">{this.state.owner.email}</p>}
+
                     </div>
+
                 </div>
                 <nav className="navbar navbar-light sticky-bottom">
                     <a className="navbar-brand">©2018 All Rights Reserved.</a>

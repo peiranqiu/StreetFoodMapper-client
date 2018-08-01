@@ -1,0 +1,28 @@
+#dashboard-container {
+    height: calc(100vh - 68px);
+}
+#dashboard-container .user-page-card{
+    max-width: 500px;
+    padding-top:10vh;
+    margin: 20px auto;
+}
+#new-truck {
+    border: dashed 1px #999999;
+    margin-top:30px;
+}
+#new-truck .btn {
+    margin-left:auto;
+    margin-right:auto;
+    width:50%;
+    transform: translate(0,5px);
+    font-size:14px;
+}
+
+#new-truck div {
+    font-size:14px;
+    color: #808080;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    transform: translate(0,8px);
+}

@@ -10,6 +10,7 @@ import UserProfile from './UserProfile'
 import UserProfileEdit from './UserProfileEdit'
 import OwnerProfile from './OwnerProfile'
 import OwnerProfileEdit from './OwnerProfileEdit'
+import Dashboard from './Dashboard'
 
 export default class App extends Component {
 
@@ -26,10 +27,10 @@ export default class App extends Component {
                 <Route path="/profile/user/edit" component={UserProfileEdit}/>
                 <Route exact path="/profile/owner" component={OwnerProfile}/>
                 <Route path="/profile/owner/edit" component={OwnerProfileEdit}/>
+                <Route exact path="/dashboard" component={Dashboard}/>
                 {/*
 
                 <Route exact path="/admin" component={AdminPage}/>
-                <Route exact path="/dashboard" component={Dashboard}/>
                 <Route path="/truck/:truckId/edit" component={TruckEditor}/>
                 <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
                 <Route path="/truck/:truckId" component={TruckPage}/>

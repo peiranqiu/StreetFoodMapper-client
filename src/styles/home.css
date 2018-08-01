@@ -162,7 +162,6 @@
     background-color: #FFF866;
     padding:100px 50px 50px 100px;
     text-align: center;
-    min-width:1000px;
 }
 .trending-loader {
     width: 100%;
@@ -173,7 +172,8 @@
     font-size: 28px;
     display: inline-block;
     color:#F4511E;
-    transform:translate(0,30vh);
+    margin-top:30vh;
+    left:50vw;
 }
 #trending-container .row {
     min-width:1000px;

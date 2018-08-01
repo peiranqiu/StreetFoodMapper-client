@@ -30,17 +30,25 @@ body {
     color: black;
 }
 #nav-item-1 {
-    right:400px;
+    right:500px;
     position:absolute;
 }
 #nav-item-2 {
-    right:250px;
+    right:350px;
     position:absolute;
 }
 #nav-item-3 {
     right:100px;
     position:absolute;
 }
+
+.current-user {
+    right:35px;
+    position:absolute;
+    font-size: 12px;
+    cursor:default;
+}
+
 #user-icon {
     margin-top:8px;
     margin-right:100px;

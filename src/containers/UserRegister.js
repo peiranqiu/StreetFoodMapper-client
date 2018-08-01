@@ -9,19 +9,20 @@ import user from '../resources/icons/user.png'
 import userregister from '../resources/account/userregister.png'
 
 import UserServiceClient from "../services/UserServiceClient";
+import { isEmail, isEmpty, isLength, isContainWhiteSpace } from '../constants/validator'
 
 export default class UserRegister
     extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            user: {}
-        };
-
+            formData: {}, // Contains login form data
+            errors: {}, // Contains login field errors
+            formSubmitted: false, // Indicates submit status of login form
+            loading: false, // Indicates in progress state of login form
+            user:{}
+        }
         this.userService = UserServiceClient.instance();
-
-        this.termChanged = this.termChanged.bind(this);
     }
 
     componentDidMount() {
@@ -30,23 +31,75 @@ export default class UserRegister
                 this.setState({user: user});
             });
     }
-
-    componentWillReceiveProps(newProps) {
+    componentWillReceiveProps() {
         this.userService.findCurrentUser()
             .then(user => {
                 this.setState({user: user});
             });
     }
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
 
-    termChanged(event) {
-        this.setState({term: event.target.value});
+        let { formData } = this.state;
+        formData[name] = value;
+
+        this.setState({
+            formData: formData
+        });
     }
 
-    logout() {
-        this.userService.logout();
+    validateLoginForm = (e) => {
+
+        let errors = {};
+        const { formData } = this.state;
+
+        if (isEmpty(formData.email)) {
+            errors.email = "Email can't be blank";
+        } else if (!isEmail(formData.email)) {
+            errors.email = "Please enter a valid email";
+        }
+
+        if (isEmpty(formData.password)) {
+            errors.password = "Password can't be blank";
+        }  else if (isContainWhiteSpace(formData.password)) {
+            errors.password = "Password should not contain white spaces";
+        } else if (!isLength(formData.password, { gte: 6, lte: 16, trim: true })) {
+            errors.password = "Password's length must between 6 to 16";
+        }
+        if(formData.password !== formData.passwordRetype) {
+            errors.password = "Password does not match"
+        }
+
+        if (isEmpty(errors)) {
+            return true;
+        } else {
+            return errors;
+        }
+    }
+
+    register = (e) => {
+
+        e.preventDefault();
+
+        let errors = this.validateLoginForm();
+
+        if(errors === true){
+            this.userService.register({email: this.state.formData.email, password: this.state.formData.password});
+        } else {
+            alert(errors.email || errors.password);
+            this.setState({
+                errors: errors,
+                formSubmitted: true
+            });
+        }
     }
 
     render() {
+        if (this.state.user !== undefined && this.state.user.email !== undefined) {
+            window.location.href = "/home";
+        }
         return (
             <div id="register-page" className="user-page">
                 <nav className="navbar navbar-light sticky-top">
@@ -60,44 +113,32 @@ export default class UserRegister
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
                         </a>
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            {this.props.user === undefined
-                            && <a className="dropdown-item" href="/login/user">Log In</a>}
-                            {this.props.user === undefined
-                            && <a className="dropdown-item" href="/register/user">Register</a>}
-                            {this.props.user !== undefined
-                            && <a className="dropdown-item" href="/profile/user/${this.props.user.id}">Profile</a>}
-                            {this.props.user !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={() => this.logout()}>Log Out</a>}
-
-
-                        </div>
                     </span>
                 </nav>
                 <div className="container-fluid" id="register-container">
                     <div className="row">
-                        <div class="col-sm-6 container user-register-form">
-                            <div id="register" class="user-page-card">
-                                <h1 class="display1">Sign Up</h1>
-                                <p class="subtitle">Connect with great local food trucks and access your favorite food truck list, on-the-go.</p>
+                        <div className="col-sm-6 container user-register-form">
+                            <div id="register" className="user-page-card">
+                                <h1 className="display1">Sign Up</h1>
+                                <p className="subtitle">Connect with great local food trucks and access your favorite food truck list, on-the-go.</p>
                                 <p className="subhead">Already on Food Truck Mapper?
                                     <a href="/login/user"> Sign in</a></p>
-                                <form action="" method="" class="" role="form">
-                                    <div id="form-register-username" class="form-group">
-                                        <input id="register-email" class="form-control" name="email" type="text" size="14"
-                                               alt="EMAIL" placeholder="Eamil" required/>
+                                <form action="" method="" className="" role="form" onSubmit={this.register}>
+                                    <div id="form-register-username" className="form-group">
+                                        <input id="register-email" className="form-control" name="email" type="text" size="14"
+                                               alt="EMAIL" placeholder="Eamil" onChange={this.handleInputChange} required/>
                                     </div>
-                                    <div id="form-register-password" class="form-group">
-                                        <input id="register-passwd" class="form-control" name="password" type="password"
-                                               size="14" alt="password" placeholder="Password" required/>
+                                    <div id="form-register-password" className="form-group">
+                                        <input id="register-passwd" className="form-control" name="password" type="password"
+                                               size="14" alt="password" placeholder="Password" onChange={this.handleInputChange} required/>
                                     </div>
                                     <div id="form-register-password-retype" className="form-group">
-                                        <input id="register-passwd" className="form-control" name="password"
+                                        <input id="register-passwd-retype" className="form-control" name="passwordRetype"
                                                type="password"
-                                               size="14" alt="password" placeholder="Re-type Password" required/>
+                                               size="14" alt="password" placeholder="Re-type Password" onChange={this.handleInputChange} required/>
                                     </div>
                                     <div>
-                                        <button class="btn btn-block ripple-effect" type="submit" name="Submit"
+                                        <button className="btn btn-block ripple-effect" type="submit" name="Submit"
                                                 alt="sign in">Log In
                                         </button>
                                     </div>

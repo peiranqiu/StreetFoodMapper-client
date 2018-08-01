@@ -28,10 +28,12 @@ export default class UserServiceClient {
         })
             .then(response => {
                 if (response.status === 404) {
+                    alert("Email or Password is Incorrect");
                     return null;
                 }
                 else {
-                    alert("Successfully logged in!");
+                    alert("Successfully Logged In");
+                    window.location.reload();
                     return response.json();
                 }
             })
@@ -48,11 +50,12 @@ export default class UserServiceClient {
         })
             .then(response => {
                 if (response.status === 409) {
-                    alert("Username already exists!");
+                    alert("User Already Exist");
                     return null;
                 }
                 else {
-                    alert("Successfully registered!");
+                    alert("Successfully Registered");
+                    window.location.reload();
                     return response.json();
                 }
             });
@@ -90,7 +93,16 @@ export default class UserServiceClient {
             headers: {
                 'content-type': 'application/json'
             }
-        }).then(response => response.json());
+        }).then(response => {
+            if (response.status === 409) {
+                alert("Something Went Wrong");
+                return null;
+            }
+            else {
+                alert("Password Changed");
+                return response.json();
+            }
+        });
     }
 
     findAllUsers() {

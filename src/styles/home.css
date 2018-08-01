@@ -10,6 +10,22 @@
     background-color: #FFF866;
 }
 
+#arrow-text {
+    position:absolute;
+    top: 90vh;
+    left:50%;
+    font-weight: bolder;
+    font-size:20px;
+    transform: translate(-50%, -50%);
+}
+
+#arrow-up {
+    position:absolute;
+    top: 95vh;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
 #map-container {
     height: calc(100vh - 100px);
     width: 100%;
@@ -160,7 +176,6 @@
     transform:translate(0,30vh);
 }
 #trending-container .row {
-    transform: translate(-20px, 0);
     min-width:1000px;
     max-height:calc(100vh - 100px);
 }

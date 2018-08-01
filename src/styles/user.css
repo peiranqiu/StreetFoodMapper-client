@@ -4,6 +4,9 @@
 #register-container {
     height: calc(100vh - 48px);
 }
+#profile-container {
+    height: calc(100vh - 68px);
+}
 .user-page .navbar {
      border-bottom: none;
  }
@@ -50,7 +53,6 @@
 }
 .user-page-card {
     max-width: 350px;
-    border-radius: 2px;
     margin: 20px auto;
     padding: 20px;
 }
@@ -109,4 +111,50 @@
     text-align:center;
     font-size: 12px;
     color:#808080;
+}
+
+#profile-container .user-page-card{
+    max-width: 500px;
+    padding-top:20vh;
+    margin: 20px auto;
+}
+
+.profile-tab {
+    margin-top:20px;
+    font-size: 16px;
+    margin-left:50px;
+    margin-right: 40px;
+    text-align: center;
+    margin-bottom:50px;
+}
+.profile-tab a{
+    color: black;
+}
+.profile-tab2 {
+    margin-left:80px;
+}
+
+#profile-container .user-page-card p{
+    margin-left:34px;
+}
+
+#profile .profile-tab1 {
+    border-bottom: solid 3px black;
+    font-weight: 900;
+}
+#profile-edit .profile-tab2 {
+    border-bottom: solid 3px black;
+    font-weight: 900;
+}
+#profile-edit .profile-title {
+    margin-left:12px !important;
+}
+
+.profile-title {
+    font-weight:900;
+}
+.profile-content {
+    color: #848484;
+    font-size:14px;
+    font-weight:lighter;
 }

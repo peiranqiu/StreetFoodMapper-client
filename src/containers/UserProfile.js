@@ -1,29 +1,24 @@
-import React from 'react';
-import '../../node_modules/bootstrap/js/dist/dropdown.js';
-import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-import '../../node_modules/font-awesome/css/font-awesome.css';
-import '../styles/home.css';
-import '../styles/test.css';
+import React from 'react'
+import '../../node_modules/bootstrap/js/dist/dropdown.js'
+import '../../node_modules/bootstrap/dist/css/bootstrap.css'
+import '../../node_modules/font-awesome/css/font-awesome.css'
+import '../styles/test.css'
+import '../styles/user.css'
 import logo from '../resources/background/logo.jpg'
 import user from '../resources/icons/user.png'
-import arrow from '../resources/icons/arrow-up.png'
+import userlogin from '../resources/account/userlogin.png'
 
-import MapContainer from './MapContainer';
-import TrendingContainer from './TrendingContainer';
 import UserServiceClient from "../services/UserServiceClient";
+import {isEmpty, isLength, isContainWhiteSpace, isEmail} from '../constants/validator'
 
-export default class Home
+export default class UserProfile
     extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             user: {}
-        };
-
+        }
         this.userService = UserServiceClient.instance();
-
-        this.termChanged = this.termChanged.bind(this);
     }
 
     componentDidMount() {
@@ -33,36 +28,22 @@ export default class Home
             });
     }
 
-    componentWillReceiveProps(newProps) {
-        this.userService.findCurrentUser()
-            .then(user => {
-                this.setState({user: user});
-            });
-    }
-
-    termChanged(event) {
-        this.setState({term: event.target.value});
-    }
-
     logout = (e) => {
-
         this.userService.logout();
     }
 
     render() {
+        if (this.state.user === undefined || this.state.user === {}) {
+            window.location.href = "/home";
+        }
         return (
-            <div>
-                <div className="background home"></div>
-                <div id="arrow-text">What Are You Hungry For?</div>
-                <a href="#map-container"><img id="arrow-up" src={arrow} alt=""/></a>
+            <div id="profile-page" className="user-page">
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/home">
                         <img src={logo} width="47" height="35"
                              className="mr-3 d-inline-block align-top" alt=""/>
                         FOOD TRUCK MAPPER
                     </a>
-                    <a className="nav-item" id="nav-item-1" href="#map-container">Find Trucks</a>
-                    <a className="nav-item" id="nav-item-2" href="#trending-container">Trending</a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,12 +52,6 @@ export default class Home
                         {this.state.user !== undefined
                         && <a className="nav-item current-user">{this.state.user.email}</a>}
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            {this.state.user === undefined
-                            && <a className="dropdown-item" href="/login/user">Log In</a>}
-                            {this.state.user === undefined
-                            && <a className="dropdown-item" href="/register/user">Register</a>}
-                            {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/profile/user">Profile</a>}
                             {this.state.user !== undefined
                             && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
 
@@ -84,18 +59,23 @@ export default class Home
                         </div>
                     </span>
                 </nav>
-                <MapContainer user={this.state.user}/>
-                <TrendingContainer/>
+                <div className="container-fluid" id="profile-container">
+                        <div id="profile" className="user-page-card">
+                            <h1 className="display1">User Profile</h1>
+                            <div className="tab-row row">
+                                <span className="profile-tab1 profile-tab">Info and Setting</span>
+                                <span className="profile-tab2 profile-tab"><a href="/profile/user/edit">Manage Password</a></span>
+                            </div>
+                            <p className="profile-title">Email</p>
+                            {this.state.user !== undefined && <p className="profile-content">{this.state.user.email}</p>}
+                        </div>
+                </div>
                 <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand">
-                        ©2018 All Rights Reserved.
-                    </a>
+                    <a className="navbar-brand">©2018 All Rights Reserved.</a>
                     <a className="nav-item" id="nav-item-2" href="mailto:joannfeng89@gmail.com?Subject=Hello">Contact
                         Us</a>
                     <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
                 </nav>
-
-
             </div>
         );
     }

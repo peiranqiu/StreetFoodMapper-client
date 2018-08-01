@@ -6,6 +6,10 @@ import UserLogin from './UserLogin';
 import UserRegister from './UserRegister'
 import OwnerRegister from './OwnerRegister'
 import OwnerLogin from './OwnerLogin'
+import UserProfile from './UserProfile'
+import UserProfileEdit from './UserProfileEdit'
+import OwnerProfile from './OwnerProfile'
+import OwnerProfileEdit from './OwnerProfileEdit'
 
 export default class App extends Component {
 
@@ -18,18 +22,19 @@ export default class App extends Component {
                 <Route path="/register/user" component={UserRegister}/>
                 <Route path="/register/owner" component={OwnerRegister}/>
                 <Route path="/login/owner" component={OwnerLogin}/>
+                <Route exact path="/profile/user" component={UserProfile}/>
+                <Route path="/profile/user/edit" component={UserProfileEdit}/>
+                <Route exact path="/profile/owner" component={OwnerProfile}/>
+                <Route path="/profile/owner/edit" component={OwnerProfileEdit}/>
                 {/*
 
-
-                <Route path="/profile/user/:userId" component={UserProfile}/>
-                <Route path="/profile/owner/:userId" component={OwnerProfile}/>
                 <Route exact path="/admin" component={AdminPage}/>
-                <Route exact path="/:userId" component={Dashboard}/>
-                <Route path="/:userId/truck/:truckId/edit" component={TruckEditor}/>
-                <Route exact path="/:userId/truck/:truckId" component={TruckPreview}/>
+                <Route exact path="/dashboard" component={Dashboard}/>
+                <Route path="/truck/:truckId/edit" component={TruckEditor}/>
+                <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
                 <Route path="/truck/:truckId" component={TruckPage}/>
                 <Route path="/admin/profile/user/:userId" component={UserProfile}/>
-                <Route path="/admin/profile/owner/:userId" component={OwnerProfile}/>
+                <Route path="/admin/profile/owner/:ownerId" component={OwnerProfile}/>
                 <Route path="/admin/truck/:truckId" component={TruckEditor}/>
                 */}
             </Switch>

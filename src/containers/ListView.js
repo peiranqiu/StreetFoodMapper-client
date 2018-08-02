@@ -36,10 +36,12 @@ export default class ListView
 
     renderListOfTrucks() {
         let trucks = this.state.trucks.map((truck) => {
-
-            return (<TruckItem key={truck.id}
+            return (
+            truck.schedules.map((schedule) => {
+            return (<TruckItem key={schedule.id}
                                user={this.state.user}
-                               truck={truck}/>)
+                               schedule={schedule}
+                               truck={truck}/>)}))
         });
         return trucks;
 
@@ -49,9 +51,6 @@ export default class ListView
             <div className="list-view">
                 <div className="list-header">Find Trucks</div>
                     <div className="list-group">
-                        {this.renderListOfTrucks()}
-                        {this.renderListOfTrucks()}
-                        {this.renderListOfTrucks()}
                         {this.renderListOfTrucks()}
 
                 </div>

@@ -1,13 +1,13 @@
 .home.background {
-    background-image: url("../resources/background/coverpage.jpg");
+    background-image: url("../resources/background/coverpage.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
     height: 100vh;
     overflow: hidden;
-    transform: translate(0, 20px);
     background-color: #FFF866;
+    z-index:0;
 }
 
 #arrow-text {
@@ -29,6 +29,7 @@
 #map-container {
     height: calc(100vh - 100px);
     width: 100%;
+    z-index:10;
 }
 
 .map-loader {
@@ -45,11 +46,6 @@
     color:#F4511E;
 }
 
-#map-container .row * {
-    padding-left: 0;
-    padding-right: 0;
-}
-
 #map-container .list-header {
     height: 64px;
     width: 100%;
@@ -57,6 +53,7 @@
     text-align: center;
     font-size: 28px;
     padding-top: 10px;
+    margin-top: 0;
 }
 
 #map-container .list-group {
@@ -71,6 +68,14 @@
     min-height: 125px !important;
     height: 125px !important;
     border-radius: 0px !important;
+}
+
+.col-left {
+    width:400px !important;
+    height: calc(100vh - 100px);
+}
+.col-right {
+    width: calc(100vw - 400px) !important;
 }
 
 .truck-item {
@@ -96,17 +101,31 @@
 
 .truck-item-category {
     left: 110px;
-    bottom: 15px;
     text-align: left;
     position: absolute;
     font-size: 12px;
     color: #0336FF;
+    margin-top:31px;
+}
+.truck-item-open {
+    left: 110px;
+    text-align: left;
+    position: absolute;
+    font-size: 14px;
+    margin-top:53px;
+}
+.truck-item-address {
+    left: 110px;
+    text-align: left;
+    position: absolute;
+    font-size: 14px;
+    margin-top:75px;
 }
 
 .truck-item-icon {
     width: 40px;
     height: 40px;
-    right: 10px;
+    right: 15px;
     top: 40px;
     position: absolute;
 }
@@ -157,11 +176,20 @@
 }
 #trending-container {
     margin: 0;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 96px);
     width: 100%;
     background-color: #FFF866;
-    padding:100px 50px 50px 100px;
+    padding:60px 50px 50px 60px;
     text-align: center;
+}
+
+#trending-container .display1 {
+    font-size: 32px;
+    line-height: 1.2;
+    padding-bottom:40px;
+    color: black;
+    font-weight: 900;
+    text-align:center;
 }
 .trending-loader {
     width: 100%;

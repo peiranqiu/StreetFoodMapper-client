@@ -43,8 +43,8 @@ export default class MapContainer
             );
         }
         return (
-            <div className="container-fluid" id="map-container">
-                <div className="row ">
+            <div className="table m-0 p-0" id="map-container">
+                <div className="row m-0 p-0">
                     <form className="form-inline active-purple-4" id="home-search">
                         <input className="form-control form-control-sm mr-3 w-100 shadow" type="text"
                                placeholder="  Search for trucks, categories, etc."
@@ -54,8 +54,8 @@ export default class MapContainer
                     <button type="button" className="btn shadow" id="btn-open">Open Now</button>
                     <button type="button" className="btn shadow" id="btn-later">Open Later</button>
                     <button type="button" className="btn shadow" id="btn-favorite">Favorites</button>
-                    <div className="col-sm-4"><ListView trucks={this.state.trucks} user={this.state.user}/></div>
-                    <div className="col-sm-8"><MapView trucks={this.state.trucks} user={this.state.user}/></div>
+                    <div className="table-cell m-0 p-0 col-left"><ListView trucks={this.state.trucks} user={this.state.user}/></div>
+                    <div className="table-cell m-0 p-0 col-right"><MapView trucks={this.state.trucks} user={this.state.user}/></div>
                 </div>
             </div>
         );

@@ -114,11 +114,6 @@ export default class MapView
 
                     // Reference to the DIV that wraps the bottom of infowindow
                     var iwOuter = $('.gm-style-iw');
-
-                    /* Since this div is in a position prior to .gm-div style-iw.
-                     * We use jQuery and create a iwBackground variable,
-                     * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
-                    */
                     var iwBackground = iwOuter.prev();
 
                     // Removes background shadow DIV
@@ -127,8 +122,9 @@ export default class MapView
                     // Removes white background DIV
                     iwBackground.children(':nth-child(4)').css({'display': 'none'});
                     var iwCloseBtn = iwOuter.next();
-
                     iwCloseBtn.css({transform: 'translate(330px,15px)'});
+                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'display: none !important;'});
+                    $("div:eq(0)", iwBackground).hide();
                 });
             })
         });

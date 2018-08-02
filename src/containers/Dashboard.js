@@ -37,9 +37,8 @@ export default class Dashboard
             <div id="profile-page" className="user-page vendor-page">
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/dashboard">
-                        <img src={logo} width="47" height="35"
+                        <img src={logo} width="100" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
-                        FOOD TRUCK MAPPER
                     </a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"

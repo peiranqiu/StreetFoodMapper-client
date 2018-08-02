@@ -4,7 +4,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../styles/home.css';
 import '../styles/test.css';
-import logo from '../resources/background/logo.jpg'
+import logo from '../resources/background/logo.png'
 import user from '../resources/icons/user.png'
 import arrow from '../resources/icons/arrow-up.png'
 
@@ -57,9 +57,8 @@ export default class Home
                 <a href="#map-container"><img id="arrow-up" src={arrow} alt=""/></a>
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/home">
-                        <img src={logo} width="47" height="35"
+                        <img src={logo} width="106.4" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
-                        FOOD TRUCK MAPPER
                     </a>
                     <a className="nav-item" id="nav-item-1" href="#map-container">Find Trucks</a>
                     <a className="nav-item" id="nav-item-2" href="#trending-container">Trending</a>

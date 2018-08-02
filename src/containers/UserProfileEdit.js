@@ -4,7 +4,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../../node_modules/font-awesome/css/font-awesome.css'
 import '../styles/test.css'
 import '../styles/user.css'
-import logo from '../resources/background/logo.jpg'
+import logo from '../resources/background/logo.png'
 import user from '../resources/icons/user.png'
 import userlogin from '../resources/account/userlogin.png'
 
@@ -104,9 +104,8 @@ export default class UserProfileEdit
             <div id="profile-page" className="user-page">
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/home">
-                        <img src={logo} width="47" height="35"
+                        <img src={logo} width="106.4" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
-                        FOOD TRUCK MAPPER
                     </a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"

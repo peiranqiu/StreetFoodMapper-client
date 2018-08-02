@@ -31,6 +31,7 @@ export default class TrendingContainer
         }
         return (
             <div className="container-fluid" id="trending-container">
+                <h1 className="display1">Trending</h1>
                 <div className="row">
                     <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
                     <div className="col-sm-4"><TrendingItem truck={this.state.trucks[1]}/></div>

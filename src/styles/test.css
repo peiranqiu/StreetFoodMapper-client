@@ -18,6 +18,9 @@ body {
     position:absolute;
     vertical-align: middle;
 }
+.navbar.sticky-top {
+    position:fixed;
+}
 .navbar-brand {
     margin-left:100px;
     font-size: 16px !important;
@@ -67,7 +70,7 @@ a:hover {
 }
 
 .test.background {
-    background-image: url("../resources/background/coverpage.jpg");
+    background-image: url("../resources/background/coverpage.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

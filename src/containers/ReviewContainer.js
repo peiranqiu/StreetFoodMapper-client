@@ -25,9 +25,7 @@ export default class ReviewContainer
             <div className="container-fluid" id="review-container">
                 <h1 className="display1">Reviews</h1>
                 <div className="row">
-                    <div className="col-sm-4"><ReviewItem review={this.props.truck.reviews[0]}/></div>
-                    <div className="col-sm-4"><ReviewItem review={this.props.truck.reviews[1]}/></div>
-                    <div className="col-sm-4"><ReviewItem review={this.props.truck.reviews[2]}/></div>
+                    <div className="col-sm-4"></div>
                 </div>
             </div>
         );

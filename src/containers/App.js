@@ -12,8 +12,13 @@ import OwnerProfile from './OwnerProfile'
 import OwnerProfileEdit from './OwnerProfileEdit'
 import Dashboard from './Dashboard'
 import Policy from '../constants/Policy'
+import TruckPage from './TruckPage'
 
 export default class App extends Component {
+
+    componentDidMount(){
+        document.title = "StreetFoodMapper"
+    }
 
     render = () => (
         <Router>
@@ -30,15 +35,11 @@ export default class App extends Component {
                 <Route path="/profile/owner/edit" component={OwnerProfileEdit}/>
                 <Route exact path="/dashboard" component={Dashboard}/>
                 <Route exact path="/policy" component={Policy}/>
+                <Route exact path="/truck/:truckId" component={TruckPage}/>
                 {/*
-
                 <Route exact path="/admin" component={AdminPage}/>
                 <Route path="/truck/:truckId/edit" component={TruckEditor}/>
                 <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
-                <Route path="/truck/:truckId" component={TruckPage}/>
-                <Route path="/admin/profile/user/:userId" component={UserProfile}/>
-                <Route path="/admin/profile/owner/:ownerId" component={OwnerProfile}/>
-                <Route path="/admin/truck/:truckId" component={TruckEditor}/>
                 */}
             </Switch>
         </Router>

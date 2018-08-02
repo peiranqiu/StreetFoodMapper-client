@@ -141,7 +141,7 @@ export default class UserRegister
                                                 alt="sign in">Log In
                                         </button>
                                     </div>
-                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's Terms of Service and <a href="/policy">Privacy Policy</a>.</p>
+                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's <a href="/policy">Privacy Policy</a>.</p>
                                 </form>
                             </div>
                         </div>

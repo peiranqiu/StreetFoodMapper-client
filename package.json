@@ -3,29 +3,41 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ajv": "^6.5.2",
+    "ajv-keywords": "^3.2.0",
     "bootstrap": "^4.1.3",
     "font-awesome": "^4.7.0",
     "fontawesome": "^4.7.2",
     "google-map-react": "^1.0.5",
     "jquery": "^3.3.1",
-    "mdbreact": "^4.6.0",
+    "mdbreact": "^4.6.1",
     "popper.js": "^1.14.3",
-    "react": "^16.4.1",
+    "react": "^16.4.2",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-dropdown": "^0.3.0",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.4.2",
     "react-fontawesome": "^1.6.1",
     "react-google-maps": "^9.4.5",
     "react-html-parser": "^2.0.2",
     "react-load-script": "0.0.6",
+    "react-motion-ui-pack": "^0.10.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
-    "react-svg": "^5.0.12"
+    "react-svg": "^5.0.12",
+    "svg-to-react-cli": "^1.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint": "^5.2.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0"
   }
 }

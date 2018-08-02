@@ -66,6 +66,11 @@ export default class MapContainer
     }
 
     render() {
+        return (
+            <div className="container-fluid" id="map-container">
+                <div className="map-loader"><ReactSVG path={loader}/></div>
+            </div>
+        );
         if (this.state.trucks.length < 1) {
             return (
                 <div className="container-fluid" id="map-container">

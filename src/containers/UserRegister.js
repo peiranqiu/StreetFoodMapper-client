@@ -141,7 +141,7 @@ export default class UserRegister
                                                 alt="sign in">Log In
                                         </button>
                                     </div>
-                                    <p className="bottom-text">By signing up you agree to Food Truck Mapper's Terms of Service and Privacy Policy.</p>
+                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's Terms of Service and <a href="/policy">Privacy Policy</a>.</p>
                                 </form>
                             </div>
                         </div>
@@ -150,7 +150,7 @@ export default class UserRegister
                     </div>
                 </div>
                 <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand" href="/policy">
+                    <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
                     <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact

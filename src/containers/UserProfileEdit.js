@@ -153,7 +153,7 @@ export default class UserProfileEdit
                     </div>
                 </div>
                 <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand" href="/policy">
+                    <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
                     <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact

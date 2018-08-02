@@ -27,23 +27,16 @@
 }
 
 #map-container {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 48px);
     width: 100%;
     z-index:10;
 }
 
 .map-loader {
-    width: 100%;
-    text-align: center;
-    font-family: "DINPRO";
-    font-weight: bolder;
-    letter-spacing: 3px;
-    font-size: 28px;
-    margin: 0;
-    position:absolute;
-    top:calc(150vh - 50px);
-    display: inline-block;
-    color:#F4511E;
+    width: 50%;
+    padding-top:10%;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 #map-container .list-header {
@@ -57,7 +50,7 @@
 }
 
 #map-container .list-group {
-    max-height: calc(100vh - 164px);
+    max-height: calc(100vh - 112px);
     overflow: auto !important;
     border: none;
 }
@@ -69,10 +62,20 @@
     height: 125px !important;
     border-radius: 0px !important;
 }
+#map-container .list-group-item.active {
+    background-color: #f7f7f7;
+    border:#eeeeee 1px solid;
+}
+#map-container .list-group-item.active .truck-item-open {
+    color: #333333;
+}
+#map-container .list-group-item.active .truck-item-address {
+    color: #333333;
+}
 
 .col-left {
     width:400px !important;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 48px);
 }
 .col-right {
     width: calc(100vw - 400px) !important;
@@ -97,6 +100,7 @@
     left: 110px;
     text-align: left;
     font-size: 20px;
+    color:black !important;
 }
 
 .truck-item-category {
@@ -168,7 +172,7 @@
 }
 #btn-later {
     right:212px;
-    background-color:#B91400;
+    background-color:#f4511e;
 }
 #btn-favorite {
     right:60px;
@@ -191,21 +195,22 @@
     font-weight: 900;
     text-align:center;
 }
-.trending-loader {
+#trending-container-loader {
+    margin: 0;
+    height: calc(100vh - 96px);
     width: 100%;
+    padding:60px 50px 50px 60px;
     text-align: center;
-    font-family: "DINPRO";
-    font-weight: bolder;
-    letter-spacing: 3px;
-    font-size: 28px;
-    display: inline-block;
-    color:#F4511E;
-    margin-top:30vh;
-    left:50vw;
+}
+.trending-loader {
+    width: 50%;
+    top: 10%;
+    margin-left:auto;
+    margin-right:auto;
 }
 #trending-container .row {
     min-width:1000px;
-    max-height:calc(100vh - 100px);
+    max-height:calc(100vh - 96px);
 }
 #trending-container .card {
     margin-left:25px;
@@ -241,4 +246,11 @@
 }
 #trending-container .card-rating {
     padding-bottom:5px;
+}
+
+a.anchor {
+    display: block;
+    position: relative;
+    top: -48px;
+    visibility: hidden;
 }

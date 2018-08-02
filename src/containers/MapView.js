@@ -4,12 +4,17 @@ import '../styles/map.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
+import unfavorite from '../resources/icons/unfavorite.png'
 import $ from 'jquery'
+const allMarkers = [];
+const allWindows = [];
+var prevInfoWindow = false;
+var map = null;
 
 export default class MapView
     extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             trucks: [],
             user: {}
@@ -17,7 +22,14 @@ export default class MapView
         this.initMap = this.initMap.bind(this);
         this.setTrucks = this.setTrucks.bind(this);
         this.setUser = this.setUser.bind(this);
+        this.initMap = this.initMap.bind(this);
     }
+
+    selectingTruck = (schedule, truck) => {
+        this.props.scheduleCallbackFromParent(schedule);
+        this.props.truckCallbackFromParent(truck);
+    }
+
 
     setUser(user) {
         this.setState({user: user});
@@ -30,6 +42,7 @@ export default class MapView
     componentWillReceiveProps(newProps) {
         this.setUser(newProps.user);
         this.setTrucks(newProps.trucks);
+
     }
 
     componentDidMount() {
@@ -45,7 +58,7 @@ export default class MapView
 
     initMap() {
         const google = window.google;
-        const map = new google.maps.Map(document.getElementById("map"), {
+        map = new google.maps.Map(document.getElementById("map"), {
             zoom: 13,
             center: new google.maps.LatLng(42.355, -71.09),
             mapTypeId: 'roadmap',
@@ -54,7 +67,7 @@ export default class MapView
             styles: constants.MAP_STYLE
         });
 
-        var prevInfoWindow = false;
+
         this.state.trucks.map((truck) => {
             var name = truck.name;
             var photo = truck.photos[0].href;
@@ -75,6 +88,7 @@ export default class MapView
                     map: map,
                     icon: mapIcon
                 });
+                marker.id = schedule.id;
 
                 var infoWindow = new google.maps.InfoWindow({
                     position: myLatLng,
@@ -84,10 +98,11 @@ export default class MapView
                     '<div class="iw-subTitle"></div>' +
                     '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
                     '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
+                    '<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
                     '</div>'
                 });
-                marker.addListener('click', function () {
-                    console.log(prevInfoWindow);
+
+                marker.addListener('click', () => {
                     if( prevInfoWindow ) {
                         prevInfoWindow.close();
                     }
@@ -97,16 +112,18 @@ export default class MapView
                     else {
                         prevInfoWindow = infoWindow;
                         infoWindow.open(map, marker);
+                        this.selectingTruck(schedule, truck);
                     }
                 });
                 map.addListener('click', function () {
                     infoWindow.close();
                 });
-
+                allMarkers.push(marker);
+                allWindows.push(infoWindow);
 
                 google.maps.event.addListener(infoWindow, 'domready', function () {
-
                     $('img[src="replace"]').attr('src', photo);
+                    $('img[src="replace-fav"]').attr('src', unfavorite);
                     $('.iw-title').html(name);
                     $('.iw-subTitle').html(category);
                     $('.iw-open-inner').html(open);
@@ -122,8 +139,10 @@ export default class MapView
                     // Removes white background DIV
                     iwBackground.children(':nth-child(4)').css({'display': 'none'});
                     var iwCloseBtn = iwOuter.next();
-                    iwCloseBtn.css({transform: 'translate(330px,15px)'});
-                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'display: none !important;'});
+                    iwCloseBtn.css({display: 'none'});
+                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){
+                        return s + 'display: none !important;'
+                    });
                     $("div:eq(0)", iwBackground).hide();
                 });
             })
@@ -139,6 +158,18 @@ export default class MapView
     }
 
     render() {
+        if(this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
+            for(var i=0; i< allMarkers.length; i++) {
+                if(allMarkers[i].id === this.props.selectedSchedule.id) {
+                    console.log(allWindows[i]);
+                    if( prevInfoWindow ) {
+                        prevInfoWindow.close();
+                    }
+                    allWindows[i].open(map, allMarkers[i]);
+                    prevInfoWindow = allWindows[i];
+                }
+            }
+        }
         return (
             <div id="map"></div>
         );

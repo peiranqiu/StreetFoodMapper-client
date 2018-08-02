@@ -54,13 +54,13 @@ export default class Home
             <div>
                 <div className="background home"></div>
                 <div id="arrow-text">What Are You Hungry For?</div>
-                <a href="#map-container"><img id="arrow-up" src={arrow} alt=""/></a>
+                <a href="#map-anchor"><img id="arrow-up" src={arrow} alt=""/></a>
                 <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="/home">
+                    <a className="navbar-brand mt-2" href="#">
                         <img src={logo} width="106.4" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>
-                    <a className="nav-item" id="nav-item-1" href="#map-container">Find Trucks</a>
+                    <a className="nav-item" id="nav-item-1" href="#map-anchor">Find Trucks</a>
                     <a className="nav-item" id="nav-item-2" href="#trending-container">Trending</a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
@@ -83,13 +83,14 @@ export default class Home
                         </div>
                     </span>
                 </nav>
+                <a className="anchor" id="map-anchor"></a>
                 <MapContainer user={this.state.user}/>
                 <TrendingContainer/>
                 <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand">
+                    <a className="navbar-brand" href="/policy">
                         ©2018 All Rights Reserved.
                     </a>
-                    <a className="nav-item" id="nav-item-2" href="mailto:joannfeng89@gmail.com?Subject=Hello">Contact
+                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
                         Us</a>
                     <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
                 </nav>

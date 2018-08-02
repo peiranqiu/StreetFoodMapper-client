@@ -24,15 +24,58 @@ export default class Dashboard
             .then(owner => {
                 this.setState({owner: owner});
             });
+
+
     }
+
     logout = (e) => {
         this.ownerService.logout();
     }
 
     render() {
+        console.log(this.state.owner.trucks);
         if (this.state.owner === undefined || this.state.owner === {}) {
-            //window.location.href = "/home";
+            window.location.href = "/register/vendor";
         }
+
+        var content = (
+            <div id="dashboard" className="user-page-card">
+                <div className="list-group">
+                    <a className="list-group-item list-group-item-action flex-column align-items-start" id="new-truck">
+                        <div className="row justify-content-between">
+                            <div>You don’t have any truck profiles set up yet.</div>
+                            <button className="btn btn-block ripple-effect" alt="">Add Your First Truck</button>
+                        </div>
+                    </a>
+                </div>
+            </div>);
+
+        if (this.state.owner.trucks !== undefined && this.state.owner.trucks.length > 0) {
+            content = (
+                <div id="dashboard" className="card-group">
+                    <a className="create-truck">Add New Truck</a>
+                    <div className="row">
+                        {this.state.owner.trucks.map((truck) => {
+                            return (
+                                <div className="col-6" key={truck.id}>
+                                    <div className="truck-card card border-0">
+                                        <img className="truck-item-img"
+                                             src={truck.photos[0].href}/>
+                                        <div className="truck-item-title">{truck.name}</div>
+                                        <button className="btn btn-block ripple-effect" alt="">Edit
+                                        </button>
+                                        <a className="delete-truck">Delete</a>
+                                    </div>
+                                </div>
+
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        }
+
+
         return (
             <div id="profile-page" className="user-page vendor-page">
                 <nav className="navbar navbar-light sticky-top">
@@ -56,25 +99,14 @@ export default class Dashboard
                     </span>
                 </nav>
                 <div className="container-fluid" id="dashboard-container">
-                    <div id="dashboard" className="user-page-card">
-                        <h1 className="display1">Vendor Dashboard</h1>
-                        <div className="list-group">
-                            <a className="list-group-item list-group-item-action flex-column align-items-start" id="new-truck">
-                                <div className="row justify-content-between">
-                                    <div>You don’t have any truck profiles set up yet.</div>
-                                    <button className="btn btn-block ripple-effect"alt="">Add Your First Truck</button>
-                                </div>
-                            </a>
-
-
-                        </div>
-
-                    </div>
-
+                    <h1 className="display1">Vendor Dashboard</h1>
+                    {content}
                 </div>
                 <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand">©2018 All Rights Reserved.</a>
-                    <a className="nav-item" id="nav-item-2" href="mailto:joannfeng89@gmail.com?Subject=Hello">Contact
+                    <a className="navbar-brand" href="/policy">
+                        ©2018 All Rights Reserved.
+                    </a>
+                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
                         Us</a>
                     <a className="nav-item" id="nav-item-3" href="/register/user">Foodie?</a>
                 </nav>

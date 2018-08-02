@@ -11,6 +11,7 @@ import UserProfileEdit from './UserProfileEdit'
 import OwnerProfile from './OwnerProfile'
 import OwnerProfileEdit from './OwnerProfileEdit'
 import Dashboard from './Dashboard'
+import Policy from '../constants/Policy'
 
 export default class App extends Component {
 
@@ -28,6 +29,7 @@ export default class App extends Component {
                 <Route exact path="/profile/owner" component={OwnerProfile}/>
                 <Route path="/profile/owner/edit" component={OwnerProfileEdit}/>
                 <Route exact path="/dashboard" component={Dashboard}/>
+                <Route exact path="/policy" component={Policy}/>
                 {/*
 
                 <Route exact path="/admin" component={AdminPage}/>

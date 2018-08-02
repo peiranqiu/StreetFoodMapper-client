@@ -150,8 +150,10 @@ export default class UserRegister
                     </div>
                 </div>
                 <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand">©2018 All Rights Reserved.</a>
-                    <a className="nav-item" id="nav-item-2" href="mailto:joannfeng89@gmail.com?Subject=Hello">Contact
+                    <a className="navbar-brand" href="/policy">
+                        ©2018 All Rights Reserved.
+                    </a>
+                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
                         Us</a>
                     <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
                 </nav>

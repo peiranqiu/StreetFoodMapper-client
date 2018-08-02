@@ -5,9 +5,11 @@
     left: 0px !important;
     background-color: #fff;
     box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+    transform: translate(-155px, 10px);
+    border-radius: 6px;
 }
 #map {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 48px);
     width: 100%;
 }
 #iw-container {
@@ -19,7 +21,7 @@
     top:15px;
     position: absolute;
     text-align: left;
-    font-size: 18px;
+    font-size: 20px;
     display: inline-block;
     font-family: "Avenir";
 }
@@ -31,7 +33,7 @@
     position:absolute;
 }
 .iw-subTitle {
-    top:42px;
+    top:46px;
     position: absolute;
     left: 110px;
     text-align: left;
@@ -57,4 +59,9 @@
     font-size: 14px;
     display: inline-block;
     font-family: "Avenir";
+}
+.iw-fav {
+    right: 10px;
+    top: 40px;
+    position: absolute;
 }

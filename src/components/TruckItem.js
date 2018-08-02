@@ -7,15 +7,25 @@ export default class TruckItem extends React.Component {
         super(props);
     }
 
+    selectingTruck = () => {
+        this.props.scheduleCallbackFromParent(this.props.schedule);
+        this.props.truckCallbackFromParent(this.props.truck);
+    }
+
     render() {
+        var newClass = "list-group-item list-group-item-action flex-column align-items-start";
+        if(this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
+            if (this.props.selectedSchedule.id === this.props.schedule.id) {
+                newClass = newClass + " active";
+            }
+        }
         var open = " Closed";
         if(this.props.schedule.open == true) {
             open = " Open";
         }
         var address = " " + this.props.schedule.address.substring( 0, this.props.schedule.address.indexOf(","));
         return (
-            <div className="list-group-item list-group-item-action flex-column align-items-start">
-
+            <div className={newClass} onClick={this.selectingTruck}>
                 <div className="row justify-content-between" id="truck-item">
                     <img className="truck-item-img"
                          src={this.props.truck.photos[this.props.schedule.id%3].href}/>

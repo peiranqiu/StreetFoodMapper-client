@@ -1,10 +1,23 @@
 #dashboard-container {
-    height: calc(100vh - 68px);
+    height: calc(100vh - 48px);
 }
 #dashboard-container .user-page-card{
     max-width: 500px;
-    padding-top:10vh;
+    padding-top:20vh;
     margin: 20px auto;
+}
+#dashboard-container .display1 {
+    font-size: 32px;
+    line-height: 1.2;
+    color: black;
+    font-weight: bolder;
+    left:50%;
+    transform: translateX(-50%);
+    top:15vh;
+    position:absolute;
+    min-width:500px;
+    text-align: center;
+    width:50%;
 }
 #new-truck {
     border: dashed 1px #999999;
@@ -25,4 +38,51 @@
     margin-left:auto;
     margin-right:auto;
     transform: translate(0,8px);
+}
+
+#dashboard-container .card-group {
+    padding-top:200px;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
+}
+#dashboard-container .card-group .row {
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;
+}
+.truck-card {
+    padding:10px;
+    max-width: 400px;
+    min-width:350px;
+    margin-left:auto;
+    margin-right:auto;
+    height: 120px;
+    margin-bottom:40px;
+    box-shadow: 0 4px 8px 3px rgba(198, 198, 198, 0.19), 0 6px 20px 3px rgba(198, 198, 198, 0.19);
+}
+.truck-card .delete-truck {
+    position:absolute;
+    right:20px;
+    bottom:15px;
+    font-size:14px;
+    color: #0336FF !important;
+}
+.truck-card .btn {
+    position:absolute;
+    left:110px;
+    top:35px;
+    width:30%;
+    transform: translate(0,5px);
+    font-size:14px;
+}
+#dashboard-container .create-truck {
+    text-align: right !important;
+    padding-right:3px;
+    margin-left:auto;
+    margin-right:auto;
+    width:100%;
+    font-size:14px;
+    transform: translate(0px,-10px);
+    color: #0336FF;
 }

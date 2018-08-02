@@ -33,7 +33,6 @@ export default class Dashboard
     }
 
     render() {
-        console.log(this.state.owner.trucks);
         if (this.state.owner === undefined || this.state.owner === {}) {
             window.location.href = "/register/vendor";
         }

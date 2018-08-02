@@ -17,8 +17,8 @@ export default class FavoriteServiceClient {
     }
 
 
-    userLikesTruck(truckId) {
-        return fetch(constants.FAVORITE_API_URL + '/' + truckId, {
+    userLikesSchedule(scheduleId) {
+        return fetch(constants.FAVORITE_API_URL + '/' + scheduleId, {
             method: 'post',
             credentials: 'include'
         })
@@ -37,8 +37,8 @@ export default class FavoriteServiceClient {
             })
     }
 
-    findFavorite(truckId) {
-        return fetch(constants.FAVORITE_API_URL + '/' + truckId, {
+    findFavorite(scheduleId) {
+        return fetch(constants.FAVORITE_API_URL + '/' + scheduleId, {
             method: 'get',
             credentials: 'include'
         })
@@ -50,8 +50,8 @@ export default class FavoriteServiceClient {
             })
     }
 
-    userUnlikesTruck(truckId) {
-        return fetch(constants.FAVORITE_API_URL + '/' + truckId, {
+    userUnlikesSchedule(scheduleId) {
+        return fetch(constants.FAVORITE_API_URL + '/' + scheduleId, {
             method: 'delete',
             credentials: 'include'
         })
@@ -75,8 +75,8 @@ export default class FavoriteServiceClient {
             .then(response => response.json());
     }
 
-    findFollowersForTruck(truckId) {
-        return fetch(constants.FAVORITE_API_URL + '/truck/' + truckId)
+    findFollowersForSchedule(scheduleId) {
+        return fetch(constants.FAVORITE_API_URL + '/schedule/' + scheduleId)
             .then(response => response.json());
     }
 }

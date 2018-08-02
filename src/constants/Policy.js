@@ -4,21 +4,21 @@ export default class Policy extends Component {
 
     render() {
         return (
-            <div>
+            <div className="p-4">
                 <h1>Privacy Policy</h1>
                 <p>Effective date: August 01, 2018</p>
-                <p>Food Truck Mapper ("us", "we", or "our") operates the https://foodtruckmapper.herokuapp.com/ website (the
+                <p>Street Food Mapper ("us", "we", or "our") operates the https://streetfoodmapper.herokuapp.com/ website (the
                     "Service").</p>
                 <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you
                     use
-                    our Service and the choices you have associated with that data. This Privacy Policy for Food Truck Mapper is
+                    our Service and the choices you have associated with that data. This Privacy Policy for Street Food Mapper is
                     powered by <a href="https://privacypolicies.com/free-privacy-policy-generator/">PrivacyPolicies.com</a>.</p>
                 <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and
                     use of
                     information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in
                     this
                     Privacy Policy have the same meanings as in our Terms and Conditions, accessible from
-                    https://foodtruckmapper.herokuapp.com/</p>
+                    https://streetfoodmapper.herokuapp.com/</p>
                 <h2>Information Collection And Use</h2>
                 <p>We collect several different types of information for various purposes to provide and improve our Service to
                     you.</p>
@@ -61,7 +61,7 @@ export default class Policy extends Component {
                     <li><strong>Security Cookies.</strong> We use Security Cookies for security purposes.</li>
                 </ul>
                 <h2>Use of Data</h2>
-                <p>Food Truck Mapper uses the collected data for various purposes:</p>
+                <p>Street Food Mapper uses the collected data for various purposes:</p>
                 <ul>
                     <li>To provide and maintain the Service</li>
                     <li>To notify you about changes to our Service</li>
@@ -83,7 +83,7 @@ export default class Policy extends Component {
                 <p>Your consent to this Privacy Policy followed by your submission of such information represents your agreement
                     to
                     that transfer.</p>
-                <p>Food Truck Mapper will take all steps reasonably necessary to ensure that your data is treated securely and
+                <p>Street Food Mapper will take all steps reasonably necessary to ensure that your data is treated securely and
                     in
                     accordance with this Privacy Policy and no transfer of your Personal Data will take place to an organization
                     or
@@ -91,11 +91,11 @@ export default class Policy extends Component {
                     information.</p>
                 <h2>Disclosure Of Data</h2>
                 <h3>Legal Requirements</h3>
-                <p>Food Truck Mapper may disclose your Personal Data in the good faith belief that such action is necessary
+                <p>Street Food Mapper may disclose your Personal Data in the good faith belief that such action is necessary
                     to:</p>
                 <ul>
                     <li>To comply with a legal obligation</li>
-                    <li>To protect and defend the rights or property of Food Truck Mapper</li>
+                    <li>To protect and defend the rights or property of Street Food Mapper</li>
                     <li>To prevent or investigate possible wrongdoing in connection with the Service</li>
                     <li>To protect the personal safety of users of the Service or the public</li>
                     <li>To protect against legal liability</li>

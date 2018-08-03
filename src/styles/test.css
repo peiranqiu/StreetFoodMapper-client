@@ -9,6 +9,28 @@ body {
     font-family: Avenir;
     src: url('../resources/font/avenir-next-regular.woff');
 }
+#homepage-mobile {
+    display:none;
+}
+@media only screen
+    and(max-device-width: 480px)
+    and(orientation: portrait)
+    and(-webkit-min-device-pixel-ratio: 2) {
+    #homepage-mobile {
+        display:block;
+        position: absolute;
+        top:40vh;
+        text-align:center;
+        font-size:24px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    #homepage {
+        display:none;
+    }
+}
+
+
 
 .navbar {
     width: 100vw;
@@ -31,6 +53,10 @@ body {
 .nav-item {
     cursor: pointer;
     color: black;
+}
+#nav-item-0 {
+    right:650px;
+    position:absolute;
 }
 #nav-item-1 {
     right:500px;

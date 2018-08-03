@@ -4,10 +4,23 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../styles/home.css';
 import '../styles/test.css';
+import '../styles/truck.css';
 import logo from '../resources/background/logo.png'
 import user from '../resources/icons/user.png'
-import ReviewContainer from './ReviewContainer'
+import TruckServiceClient from '../services/TruckServiceClient'
 import UserServiceClient from "../services/UserServiceClient";
+import loader from "../resources/background/loader.gif"
+import rating1 from '../resources/icons/rating1.png'
+import rating2 from '../resources/icons/rating2.png'
+import rating3 from '../resources/icons/rating3.png'
+import rating4 from '../resources/icons/rating4.png'
+import rating5 from '../resources/icons/rating5.png'
+import website from '../resources/icons/website.png'
+import menu from '../resources/icons/menu.png'
+import phone from '../resources/icons/phone.png'
+
+import TruckMap from './TruckMap'
+import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
 
 export default class Home
     extends React.Component {
@@ -15,15 +28,20 @@ export default class Home
         super(props);
 
         this.state = {
-            user: {}
+            user: {},
+            truck: {}
         };
 
+        this.truckService = TruckServiceClient.instance();
         this.userService = UserServiceClient.instance();
-
-        this.termChanged = this.termChanged.bind(this);
     }
 
     componentDidMount() {
+        let truckId = this.props.match.params.truckId;
+        this.truckService.findTruckById(truckId)
+            .then(truck => {
+                this.setState({truck: truck});
+            });
         this.userService.findCurrentUser()
             .then(user => {
                 this.setState({user: user});
@@ -37,25 +55,43 @@ export default class Home
             });
     }
 
-    termChanged(event) {
-        this.setState({term: event.target.value});
-    }
-
     logout = (e) => {
 
         this.userService.logout();
     }
 
     render() {
+        var rating = null;
+        if(this.state.truck !== {}) {
+            switch(this.state.truck.rating) {
+                case 2:
+                    rating = rating2;
+                    break;
+                case 3:
+                    rating = rating3;
+                    break;
+                case 4:
+                    rating = rating4;
+                    break;
+                case 5:
+                    rating = rating5;
+                    break;
+                default:
+                    rating = rating1;
+            }
+        };
+
         return (
+
             <div id="truck-page">
                 <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="#">
+                    <a className="navbar-brand mt-2" href="/home">
                         <img src={logo} width="106.4" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>
-                    <a className="nav-item" id="nav-item-1" href="#">Schedules</a>
-                    <a className="nav-item" id="nav-item-2" href="#">Reviews</a>
+                    <a className="nav-item" id="nav-item-0" href="#">About</a>
+                    <a className="nav-item" id="nav-item-1" href="#truck-schedule-container">Schedules</a>
+                    <a className="nav-item" id="nav-item-2" href="#truck-feed-container">Reviews</a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,7 +111,84 @@ export default class Home
                         </div>
                     </span>
                 </nav>
-                <ReviewContainer/>
+                {this.state.truck === {}
+                && <div className="container-fluid truck-info-container">
+                    <div className="truck-loader"><img alt="" src={loader}/></div>
+                </div>}
+                {this.state.truck !== {} && this.state.truck.photos !== undefined && this.state.truck.schedules !== undefined &&
+                <div>
+                    <div className="container truck-info-container">
+                        <div className="row">
+                            <div className="col col-1"></div>
+                            <div className="col">
+                                <h1 className="truck-page-title">{this.state.truck.name}</h1></div>
+                            <div className="col col-1"></div>
+                        </div>
+                        <div className="row">
+                            <div className="col col-1"></div>
+                            <div className="col col-4">
+                                <img className="truck-rating" src={rating} alt=""/>
+                                <a className="onYelp">(On Yelp)</a>
+                                <div className="truck-page-category">
+                                    {this.state.truck.category1}, {this.state.truck.category2}, {this.state.truck.category3}</div>
+                                <div className="truck-page-open">Open Now At</div>
+
+                            </div>
+                            <div className="col col-2">
+                                <img className="truck-page-img"
+                                     src={this.state.truck.photos[0].href}/>
+                            </div>
+                            <div className="col col-2">
+                                <img className="truck-page-img"
+                                     src={this.state.truck.photos[1].href}/></div>
+                            <div className="col col-2">
+                                <img className="truck-page-img"
+                                     src={this.state.truck.photos[2].href}/></div>
+                            <div className="col col-1"></div>
+                        </div>
+                        <div className="row map-row">
+                            <div className="col col-1"></div>
+                            <div className="col col-6">
+                                <button type="button" className="btn shadow" id="btn-open">Open Now</button>
+                                <button type="button" className="btn shadow" id="btn-later">Open Later</button>
+                                <TruckMap schedules = {this.state.truck.schedules}/>
+                            </div>
+                            <div className="col col-4 right-info">
+                                <div className="truck-website mb-1">
+                                    <img className="truck-website-icon" width='16px' src={website} alt=""/>
+                                    <a href={this.state.truck.website}>{this.state.truck.website}</a>
+                                </div>
+                                <div className="truck-menu mb-1">
+                                    <img className="truck-menu-icon" width='16px' src={menu} alt=""/>
+                                    <a href={this.state.truck.menu}>{this.state.truck.menu}</a>
+                                </div>
+                                <div className="truck-yelp mb-1">
+                                    <i className="fa fa-yelp"></i>
+                                    <a href={this.state.truck.url}>{this.state.truck.url.split('?', 1)}</a>
+                                </div>
+                                <div className="truck-phone mb-1">
+                                    <img className="truck-phone-icon" width='16px' src={phone} alt=""/>
+                                    <a>{this.state.truck.phone}</a>
+                                </div>
+
+                                <TwitterTimelineEmbed
+                                    sourceType="profile"
+                                    screenName={this.state.truck.twitter.split('com/').pop()}
+                                    options={{height: 240}}
+                                />
+
+
+
+
+
+                            </div>
+                            <div className="col col-1"></div>
+                        </div>
+                    </div>
+
+                </div>
+                }
+
                 <nav className="navbar navbar-light sticky-bottom">
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.

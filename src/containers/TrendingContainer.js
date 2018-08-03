@@ -5,8 +5,7 @@ import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../styles/home.css';
 import TrendingItem from "../components/TrendingItem"
 import TruckServiceClient from "../services/TruckServiceClient";
-import loader from "../resources/background/loader.svg"
-import ReactSVG from 'react-svg'
+import loader from "../resources/background/loader.gif"
 
 
 export default class TrendingContainer
@@ -28,12 +27,12 @@ export default class TrendingContainer
         if (this.state.trucks.length < 1) {
             return (
                 <div className="container-fluid" id="trending-container">
-                    <div className="trending-loader"><ReactSVG path={loader}/></div>
+                    <div className="trending-loader"><img alt="" src={loader}/></div>
                 </div>
             );
         }
         return (
-            <div className="container-fluid" id="trending-container">
+            <div className="container" id="trending-container">
                 <h1 className="display1">Trending</h1>
                 <div className="row">
                     <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>

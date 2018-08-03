@@ -6,7 +6,7 @@ import '../styles/home.css';
 import MapView from './MapView';
 import TruckItem from '../components/TruckItem';
 import TruckServiceClient from "../services/TruckServiceClient";
-import loader from "../resources/background/loader.svg"
+import loader from "../resources/background/loader.gif"
 import ReactSVG from 'react-svg'
 
 export default class MapContainer
@@ -66,15 +66,12 @@ export default class MapContainer
     }
 
     render() {
-        return (
-            <div className="container-fluid" id="map-container">
-                <div className="map-loader"><ReactSVG path={loader}/></div>
-            </div>
-        );
+
         if (this.state.trucks.length < 1) {
+
             return (
                 <div className="container-fluid" id="map-container">
-                    <div className="map-loader"><ReactSVG path={loader}/></div>
+                    <div className="map-loader"><img alt="" src={loader}/></div>
                 </div>
             );
         }

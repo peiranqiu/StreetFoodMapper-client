@@ -9,7 +9,10 @@
     background-color: #FFF866;
     z-index:0;
 }
+#homepage {
 
+    background-color: #FFF866;
+}
 #arrow-text {
     position:absolute;
     top: 90vh;
@@ -33,10 +36,15 @@
 }
 
 .map-loader {
-    width: 50%;
-    padding-top:10%;
     margin-left:auto;
     margin-right:auto;
+    text-align:center;
+}
+.map-loader img {
+    width:300px;
+    height:auto;
+    margin-left:auto;
+    margin-top:35vh;
 }
 
 #map-container .list-header {
@@ -179,12 +187,12 @@
     background-color:#f4511e;
 }
 #trending-container {
-    margin: 0;
     height: calc(100vh - 96px);
     width: 100%;
-    background-color: #FFF866;
-    padding:60px 50px 50px 60px;
     text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    padding-top:50px;
 }
 
 #trending-container .display1 {
@@ -195,21 +203,19 @@
     font-weight: 900;
     text-align:center;
 }
-#trending-container-loader {
-    margin: 0;
-    height: calc(100vh - 96px);
-    width: 100%;
-    padding:60px 50px 50px 60px;
-    text-align: center;
-}
 .trending-loader {
-    width: 50%;
-    top: 10%;
     margin-left:auto;
     margin-right:auto;
+    text-align:center;
+}
+.trending-loader img {
+    width:300px;
+    height:auto;
+    margin-left:auto;
+    margin-top:25vh;
 }
 #trending-container .row {
-    min-width:1000px;
+    min-width:800px;
     max-height:calc(100vh - 96px);
 }
 #trending-container .card {

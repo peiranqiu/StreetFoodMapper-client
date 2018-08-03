@@ -52,50 +52,52 @@ export default class Home
     render() {
         return (
             <div>
-                <div className="background home"></div>
-                <div id="arrow-text">What Are You Hungry For?</div>
-                <a href="#map-anchor"><img id="arrow-up" src={arrow} alt=""/></a>
-                <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="#">
-                        <img src={logo} width="106.4" height="38"
-                             className="mr-3 d-inline-block align-top" alt=""/>
-                    </a>
-                    <a className="nav-item" id="nav-item-1" href="#map-anchor">Find Trucks</a>
-                    <a className="nav-item" id="nav-item-2" href="#trending-container">Trending</a>
-                    <span className="nav-item dropdown" id="user-icon">
+                <div id="homepage-mobile" className="p-4">Mobile Version is Currently Unavailable</div>
+                <div id="homepage">
+                    <div className="background home"></div>
+                    <div id="arrow-text">What Are You Hungry For?</div>
+                    <a href="#map-anchor"><img id="arrow-up" src={arrow} alt=""/></a>
+                    <nav className="navbar navbar-light sticky-top">
+                        <a className="navbar-brand mt-2" href="#">
+                            <img src={logo} width="106.4" height="38"
+                                 className="mr-3 d-inline-block align-top" alt=""/>
+                        </a>
+                        <a className="nav-item" id="nav-item-1" href="#map-anchor">Find Trucks</a>
+                        <a className="nav-item" id="nav-item-2" href="#trending-container">Trending</a>
+                        <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
                         </a>
-                        {this.state.user !== undefined
-                        && <a className="nav-item current-user">{this.state.user.email}</a>}
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {this.state.user !== undefined
+                            && <a className="nav-item current-user">{this.state.user.email}</a>}
+                            <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {this.state.user === undefined
                             && <a className="dropdown-item" href="/login/user">Log In</a>}
-                            {this.state.user === undefined
-                            && <a className="dropdown-item" href="/register/user">Register</a>}
-                            {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/profile/user">Profile</a>}
-                            {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                                {this.state.user === undefined
+                                && <a className="dropdown-item" href="/register/user">Register</a>}
+                                {this.state.user !== undefined
+                                && <a className="dropdown-item" href="/profile/user">Profile</a>}
+                                {this.state.user !== undefined
+                                && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
 
 
                         </div>
                     </span>
-                </nav>
-                <a className="anchor" id="map-anchor"></a>
-                <MapContainer user={this.state.user}/>
-                <TrendingContainer/>
-                <nav className="navbar navbar-light sticky-bottom">
-                    <a className="navbar-brand">
-                        ©2018 All Rights Reserved.
-                    </a>
-                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
-                        Us</a>
-                    <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
-                </nav>
+                    </nav>
+                    <a className="anchor" id="map-anchor"></a>
+                    <MapContainer user={this.state.user}/>
+                    <TrendingContainer/>
+                    <nav className="navbar navbar-light sticky-bottom">
+                        <a className="navbar-brand">
+                            ©2018 All Rights Reserved.
+                        </a>
+                        <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
+                            Us</a>
+                        <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
+                    </nav>
 
-
+                </div>
             </div>
         );
     }

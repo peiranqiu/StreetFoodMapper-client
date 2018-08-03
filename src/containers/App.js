@@ -24,7 +24,7 @@ export default class App extends Component {
         <Router>
             <Switch className="container-fluid">
                 <Route exact path="/" component={Test}/>
-                <Route path="/home" component={Home}/>
+                <Route exact path="/home" component={Home}/>
                 <Route path="/login/user" component={UserLogin}/>
                 <Route path="/register/user" component={UserRegister}/>
                 <Route path="/register/owner" component={OwnerRegister}/>

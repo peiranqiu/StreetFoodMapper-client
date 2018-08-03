@@ -25,11 +25,7 @@ export default class TrendingContainer
 
     render() {
         if (this.state.trucks.length < 1) {
-            return (
-                <div className="container-fluid" id="trending-container">
-                    <div className="trending-loader"><img alt="" src={loader}/></div>
-                </div>
-            );
+            return null;
         }
         return (
             <div className="container" id="trending-container">

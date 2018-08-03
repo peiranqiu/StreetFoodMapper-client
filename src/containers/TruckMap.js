@@ -27,7 +27,7 @@ export default class TruckMap
 
     initMap() {
         const google = window.google;
-        map = new google.maps.Map(document.getElementById("map"), {
+        map = new google.maps.Map(document.getElementById("truckmap"), {
             zoom: 13,
             center: new google.maps.LatLng(42.355, -71.09),
             mapTypeId: 'roadmap',
@@ -114,7 +114,7 @@ export default class TruckMap
 
     render() {
         return (
-               <div id="map"></div>
+               <div id="truckmap"></div>
         );
     }
 

@@ -18,9 +18,21 @@ import rating5 from '../resources/icons/rating5.png'
 import website from '../resources/icons/website.png'
 import menu from '../resources/icons/menu.png'
 import phone from '../resources/icons/phone.png'
+import emptyTwitter from '../resources/background/twitter-background.jpg'
 
 import TruckMap from './TruckMap'
-import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
+import {
+    TwitterTimelineEmbed,
+    TwitterShareButton,
+    TwitterFollowButton,
+    TwitterHashtagButton,
+    TwitterMentionButton,
+    TwitterTweetEmbed,
+    TwitterMomentShare,
+    TwitterDMButton,
+    TwitterVideoEmbed,
+    TwitterOnAirButton
+} from 'react-twitter-embed';
 
 export default class Home
     extends React.Component {
@@ -60,10 +72,21 @@ export default class Home
         this.userService.logout();
     }
 
+    format(time) {
+        if(time.startTime === 0) {
+            return("Closed");
+        }
+
+        return (parseInt(time.startTime/100) + ":"
+            + (time.startTime%100<10? "0"+time.startTime%100 : time.startTime%100) + " - "
+            + parseInt(time.endTime/100) + ":"
+            + (time.endTime%100<10? "0"+time.endTime%100 : time.endTime%100));
+    }
+
     render() {
         var rating = null;
-        if(this.state.truck !== {}) {
-            switch(this.state.truck.rating) {
+        if (this.state.truck !== {}) {
+            switch (this.state.truck.rating) {
                 case 2:
                     rating = rating2;
                     break;
@@ -79,10 +102,9 @@ export default class Home
                 default:
                     rating = rating1;
             }
-        };
+        }
 
         return (
-
             <div id="truck-page">
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/home">
@@ -90,7 +112,7 @@ export default class Home
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>
                     <a className="nav-item" id="nav-item-0" href="#">About</a>
-                    <a className="nav-item" id="nav-item-1" href="#truck-schedule-container">Schedules</a>
+                    <a className="nav-item" id="nav-item-1" href="#schedule-anchor">Schedules</a>
                     <a className="nav-item" id="nav-item-2" href="#truck-feed-container">Reviews</a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
@@ -111,6 +133,8 @@ export default class Home
                         </div>
                     </span>
                 </nav>
+
+
                 {this.state.truck === {}
                 && <div className="container-fluid truck-info-container">
                     <div className="truck-loader"><img alt="" src={loader}/></div>
@@ -132,7 +156,6 @@ export default class Home
                                 <div className="truck-page-category">
                                     {this.state.truck.category1}, {this.state.truck.category2}, {this.state.truck.category3}</div>
                                 <div className="truck-page-open">Open Now At</div>
-
                             </div>
                             <div className="col col-2">
                                 <img className="truck-page-img"
@@ -151,7 +174,7 @@ export default class Home
                             <div className="col col-6">
                                 <button type="button" className="btn shadow" id="btn-open">Open Now</button>
                                 <button type="button" className="btn shadow" id="btn-later">Open Later</button>
-                                <TruckMap schedules = {this.state.truck.schedules}/>
+                                <TruckMap schedules={this.state.truck.schedules}/>
                             </div>
                             <div className="col col-4 right-info">
                                 <div className="truck-website mb-1">
@@ -171,22 +194,76 @@ export default class Home
                                     <a>{this.state.truck.phone}</a>
                                 </div>
 
+                                {this.state.truck.twitter !== undefined && this.state.truck.twitter.length > 0 &&
                                 <TwitterTimelineEmbed
                                     sourceType="profile"
                                     screenName={this.state.truck.twitter.split('com/').pop()}
                                     options={{height: 240}}
-                                />
+                                />}
+                                {(this.state.truck.twitter === null || this.state.truck.twitter.length === 0) &&
+                                <img className="emptyTwitter" src={emptyTwitter} height='240px' alt=''/>
+                                }
+                            </div>
+                            <div className="col col-1"></div>
+                        </div>
+                    </div>
+                    <a className="anchor" id="schedule-anchor"></a>
+                    <div className="container-fluid schedule-container">
+                        <h1>Regular Schedule</h1>
+                        <div className="row">
+                            <div className="col col-1"></div>
+                            <div className="col col">
+                                <div className="row justify-content-center">
+                                    {this.state.truck.schedules.map((schedule) => {
+                                        return (
+                                            <div className="col-4" key={schedule.id}>
+                                                <div className="schedule-card row justify-content-center">
+                                                    <h4>{schedule.address.substring( 0, schedule.address.indexOf(","))}</h4>
+                                                    <div className="schedule-date">Mon
+                                                        <a className="schedule-time">
+                                                            {this.format(schedule.openTimes[0])}
+                                                            </a></div>
+                                                    <div className="schedule-date">Tue
+                                                        <a className="schedule-time">
+                                                            {this.format(schedule.openTimes[1])}
+                                                        </a></div>
+                                                    <div className="schedule-date">Wed
+                                                    <a className="schedule-time">
+                                                        {this.format(schedule.openTimes[2])}
+                                                    </a></div>
+                                                    <div className="schedule-date">Thu
+                                                    <a className="schedule-time">
+                                                        {this.format(schedule.openTimes[3])}
+                                                    </a></div>
+                                                    <div className="schedule-date">Fri
+                                                    <a className="schedule-time">
+                                                        {this.format(schedule.openTimes[4])}
+                                                    </a></div>
+                                                    <div className="schedule-date">Sat
+                                                    <a className="schedule-time">
+                                                        {this.format(schedule.openTimes[5])}
+                                                    </a></div>
+                                                    <div className="schedule-date">Sun
+                                                        <a className="schedule-time">
+                                                            {this.format(schedule.openTimes[6])}
+                                                        </a></div>
+                                                </div>
+                                            </div>
 
-
-
-
-
+                                        );
+                                    })}
+                                </div>
                             </div>
                             <div className="col col-1"></div>
                         </div>
                     </div>
 
+
+
+
                 </div>
+
+
                 }
 
                 <nav className="navbar navbar-light sticky-bottom">

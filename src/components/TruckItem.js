@@ -24,12 +24,13 @@ export default class TruckItem extends React.Component {
             open = " Open";
         }
         var address = " " + this.props.schedule.address.substring( 0, this.props.schedule.address.indexOf(","));
+        var href = "/truck/" + this.props.truck.id.toString();
         return (
             <div className={newClass} onClick={this.selectingTruck}>
                 <div className="row justify-content-between" id="truck-item">
                     <img className="truck-item-img"
                          src={this.props.truck.photos[this.props.schedule.id%3].href}/>
-                    <div className="truck-item-title">{this.props.truck.name}</div>
+                    <a className="truck-item-title" href={href}>{this.props.truck.name}</a>
                     <div className="truck-item-category">
                         {this.props.truck.category1}, {this.props.truck.category2}, {this.props.truck.category3}</div>
                     <div className="truck-item-open"><i className="fa fa-clock-o"></i>

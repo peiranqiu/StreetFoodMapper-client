@@ -89,7 +89,7 @@
 
 .truck-info-container {
     margin-top:48px;
-    height: calc(100vh - 96px);
+    height: calc(100vh - 48px);
     width: 100%;
 }
 
@@ -109,7 +109,7 @@
 }
 .truck-page-title {
     font-weight: bolder;
-    margin-top:45px;
+    margin-top:50px;
     margin-bottom:10px;
 }
 
@@ -131,13 +131,13 @@
 }
 .truck-page-img {
     width: 100%;
-    height: 100%;
+    height: 150px;
 }
 .truck-info-container .row .col {
     padding-left:5px;
     padding-right:5px;
 }
-#map {
+#truckmap {
     height: 350px;
     width: 100%;
 }
@@ -164,8 +164,12 @@
     margin-left:4px;
     font-size: 14px;
 }
+.right-info div {
+    overflow: hidden;
+    white-space: nowrap;
+}
 
-.gm-style-iw {
+#truck-page .gm-style-iw {
     width: 180px !important;
     height: 40px !important;
     top: 15px !important;
@@ -175,11 +179,52 @@
     transform: translate(-40px, 15px) !important;
     border-radius: 6px;
 }
-.iw-address {
+#truck-page .iw-address {
     top:12px;
     left: 5px;
     text-align: center;
     font-size: 14px;
     display: inline-block;
     font-family: "Avenir";
+}
+
+.emptyTwitter {
+    width:100%;
+}
+
+.schedule-container {
+    background-color:#FF844C;
+    min-height: 600px;
+    text-align:center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.schedule-container h1{
+    font-weight: bolder;
+    padding-bottom:30px;
+}
+
+.schedule-card {
+    width:80%;
+    padding:20px;
+    margin-bottom:20px;
+}
+.schedule-card h4{
+    font-weight: 500;
+    font-size:24px;
+    margin-bottom:25px;
+}
+.schedule-date {
+    text-align:left;
+    margin-left:auto;
+    margin-right:auto;
+    font-weight: bold;
+margin-bottom:5px;
+}
+
+.schedule-time {
+    margin-left:50px;
+    text-align:left;
+    font-weight: normal !important;
 }

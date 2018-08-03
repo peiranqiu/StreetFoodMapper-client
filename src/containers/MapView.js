@@ -93,13 +93,19 @@ export default class MapView
                     position: myLatLng,
                     content: '<div id="iw-container row">' +
                     '<img class="iw-img" src="replace" alt="" height="90" width="90">' +
-                    '<div class="iw-title"></div>' +
+                    '<a class="iw-title" href=""></a>' +
                     '<div class="iw-subTitle"></div>' +
                     '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
                     '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
                     '<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
                     '</div>'
                 });
+
+                infoWindow.addListener('click', () => {
+                    this.openWindow(truck.id);
+                });
+
+
 
                 marker.addListener('click', () => {
                     if( prevInfoWindow ) {
@@ -119,10 +125,12 @@ export default class MapView
                 });
                 allMarkers.push(marker);
                 allWindows.push(infoWindow);
+                var href = "/truck/" + truck.id;
 
                 google.maps.event.addListener(infoWindow, 'domready', function () {
                     $('img[src="replace"]').attr('src', photo);
                     $('img[src="replace-fav"]').attr('src', unfavorite);
+                    $('.iw-title').attr('href', href);
                     $('.iw-title').html(name);
                     $('.iw-subTitle').html(category);
                     $('.iw-open-inner').html(open);

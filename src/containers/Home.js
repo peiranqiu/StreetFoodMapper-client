@@ -7,10 +7,13 @@ import '../styles/test.css';
 import logo from '../resources/background/logo.png'
 import user from '../resources/icons/user.png'
 import arrow from '../resources/icons/arrow-up.png'
+import icon from '../resources/icons/icon.png'
 
 import MapContainer from './MapContainer';
 import TrendingContainer from './TrendingContainer';
 import UserServiceClient from "../services/UserServiceClient";
+import {Helmet} from "react-helmet";
+
 
 export default class Home
     extends React.Component {
@@ -52,6 +55,12 @@ export default class Home
     render() {
         return (
             <div>
+                <Helmet>
+                    <meta charSet="utf-8"/>
+                    <title>StreetFoodMapper</title>
+                    <link rel="icon" type="image/png" href={icon}/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                </Helmet>
                 <div id="homepage-mobile" className="p-4">Mobile Version is Currently Unavailable</div>
                 <div id="homepage">
                     <div className="background home"></div>

@@ -13,7 +13,8 @@ body {
     display:none;
 }
 @media only screen
-    and(max-width: 480px){
+    and(max-width: 480px)
+    and(orientation: portrait){
     #homepage-mobile {
         display:block;
         position: absolute;

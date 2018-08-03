@@ -13,15 +13,14 @@ import OwnerProfileEdit from './OwnerProfileEdit'
 import Dashboard from './Dashboard'
 import Policy from '../constants/Policy'
 import TruckPage from './TruckPage'
+import {Helmet} from "react-helmet";
 
 export default class App extends Component {
 
-    componentDidMount(){
-        document.title = "StreetFoodMapper"
-    }
-
     render = () => (
+
         <Router>
+
             <Switch className="container-fluid">
                 <Route exact path="/" component={Test}/>
                 <Route exact path="/home" component={Home}/>

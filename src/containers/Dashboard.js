@@ -34,7 +34,7 @@ export default class Dashboard
 
     render() {
         if (this.state.owner === undefined || this.state.owner === {}) {
-            window.location.href = "/register/vendor";
+            window.location.href = "/register/owner";
         }
 
         var content = (

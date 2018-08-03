@@ -16,6 +16,10 @@ import TruckPage from './TruckPage'
 import {Helmet} from "react-helmet";
 
 export default class App extends Component {
+    componentDidMount() {
+        document.title = "StreetFoodMapper";
+    }
+
 
     render = () => (
 

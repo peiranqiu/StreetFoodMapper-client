@@ -82,6 +82,47 @@ export default class Home
             + parseInt(time.endTime/100) + ":"
             + (time.endTime%100<10? "0"+time.endTime%100 : time.endTime%100));
     }
+    convert(date) {
+        var result = "January";
+        switch (parseInt(date/100)) {
+            case 2:
+                result = "February";
+                break;
+            case 3:
+                result = "March";
+                break;
+            case 4:
+                result = "April";
+                break;
+            case 5:
+                result = "May";
+                break;
+            case 6:
+                result = "June";
+                break;
+            case 7:
+                result = "July";
+                break;
+            case 8:
+                result = "August";
+                break;
+            case 9:
+                result = "September";
+                break;
+            case 10:
+                result = "October";
+                break;
+            case 11:
+                result = "November";
+                break;
+            case 12:
+                result = "December";
+                break;
+            default:
+                result = "January";
+        }
+        return (result + date%100);
+    }
 
     render() {
         var rating = null;
@@ -139,7 +180,8 @@ export default class Home
                 && <div className="container-fluid truck-info-container">
                     <div className="truck-loader"><img alt="" src={loader}/></div>
                 </div>}
-                {this.state.truck !== {} && this.state.truck.photos !== undefined && this.state.truck.schedules !== undefined &&
+                {this.state.truck !== {} && this.state.truck.photos !== undefined
+                && this.state.truck.schedules !== undefined && this.state.truck.holidays !== undefined &&
                 <div>
                     <div className="container truck-info-container">
                         <div className="row">
@@ -216,7 +258,7 @@ export default class Home
                                 <div className="row justify-content-center">
                                     {this.state.truck.schedules.map((schedule) => {
                                         return (
-                                            <div className="col-4" key={schedule.id}>
+                                            <div className="col-4 justify-content-center" key={schedule.id}>
                                                 <div className="schedule-card row justify-content-center">
                                                     <h4>{schedule.address.substring( 0, schedule.address.indexOf(","))}</h4>
                                                     <div className="schedule-date">Mon
@@ -252,6 +294,13 @@ export default class Home
 
                                         );
                                     })}
+                                </div>
+                                <div className="card mt-4 mb-4 holiday-card justify-content-center">
+                                    <h4 className="card-title mb-4">Closed Days(2018)</h4>
+                                    {this.state.truck.holidays.map((holiday) => {
+                                        return (
+                                            <div className="holiday">{this.convert(holiday.date)}</div>
+                                        )})}
                                 </div>
                             </div>
                             <div className="col col-1"></div>

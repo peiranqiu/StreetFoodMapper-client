@@ -196,7 +196,7 @@
     background-color:#FF844C;
     min-height: 600px;
     text-align:center;
-    padding-top: 50px;
+    padding-top: 70px;
     padding-bottom: 50px;
 }
 
@@ -206,9 +206,11 @@
 }
 
 .schedule-card {
-    width:80%;
+
     padding:20px;
     margin-bottom:20px;
+    margin-left:auto;
+    margin-right:auto;
 }
 .schedule-card h4{
     font-weight: 500;
@@ -216,10 +218,10 @@
     margin-bottom:25px;
 }
 .schedule-date {
-    text-align:left;
+    width:240px;
     margin-left:auto;
     margin-right:auto;
-    font-weight: bold;
+    font-weight: bolder;
 margin-bottom:5px;
 }
 
@@ -227,4 +229,17 @@ margin-bottom:5px;
     margin-left:50px;
     text-align:left;
     font-weight: normal !important;
+}
+.holiday-card {
+width:300px;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:#FF844C;
+    border:none;
+}
+.holiday {
+
+    margin-left:auto;
+    margin-right:auto;
+    width:140px;
 }

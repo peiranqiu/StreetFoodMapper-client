@@ -19,6 +19,7 @@ import website from '../resources/icons/website.png'
 import menu from '../resources/icons/menu.png'
 import phone from '../resources/icons/phone.png'
 import emptyTwitter from '../resources/background/twitter-background.jpg'
+import FeedItem from '../components/FeedItem'
 
 import TruckMap from './TruckMap'
 import {
@@ -154,7 +155,7 @@ export default class Home
                     </a>
                     <a className="nav-item" id="nav-item-0" href="#">About</a>
                     <a className="nav-item" id="nav-item-1" href="#schedule-anchor">Schedules</a>
-                    <a className="nav-item" id="nav-item-2" href="#truck-feed-container">Reviews</a>
+                    <a className="nav-item" id="nav-item-2" href="#feed-container">Feeds</a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -180,7 +181,7 @@ export default class Home
                 && <div className="container-fluid truck-info-container">
                     <div className="truck-loader"><img alt="" src={loader}/></div>
                 </div>}
-                {this.state.truck !== {} && this.state.truck.photos !== undefined
+                {this.state.truck !== {} && this.state.truck.photos !== undefined && this.state.truck.reviews !== undefined
                 && this.state.truck.schedules !== undefined && this.state.truck.holidays !== undefined &&
                 <div>
                     <div className="container truck-info-container">
@@ -240,7 +241,7 @@ export default class Home
                                 <TwitterTimelineEmbed
                                     sourceType="profile"
                                     screenName={this.state.truck.twitter.split('com/').pop()}
-                                    options={{height: 240}}
+                                    options={{height: 260}}
                                 />}
                                 {(this.state.truck.twitter === null || this.state.truck.twitter.length === 0) &&
                                 <img className="emptyTwitter" src={emptyTwitter} height='240px' alt=''/>
@@ -306,7 +307,14 @@ export default class Home
                             <div className="col col-1"></div>
                         </div>
                     </div>
-
+                    <div className="container" id="feed-container">
+                        <h1 className="display1">Recent Feeds<span> (On Yelp)</span></h1>
+                        <div className="row">
+                            <div className="col-sm-4"><FeedItem truck={this.state.truck} index="1"/></div>
+                            <div className="col-sm-4"><FeedItem truck={this.state.truck} index="2"/></div>
+                            <div className="col-sm-4"><FeedItem truck={this.state.truck} index="0"/></div>
+                        </div>
+                    </div>
 
 
 

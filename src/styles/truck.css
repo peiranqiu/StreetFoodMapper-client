@@ -138,7 +138,7 @@
     padding-right:5px;
 }
 #truckmap {
-    height: 350px;
+    height: 370px;
     width: 100%;
 }
 #truck-page #btn-open {
@@ -194,7 +194,7 @@
 
 .schedule-container {
     background-color:#FF844C;
-    min-height: 600px;
+    min-height: calc(100vh - 48px);
     text-align:center;
     padding-top: 70px;
     padding-bottom: 50px;
@@ -203,6 +203,7 @@
 .schedule-container h1{
     font-weight: bolder;
     padding-bottom:30px;
+    font-size:32px;
 }
 
 .schedule-card {
@@ -242,4 +243,65 @@ width:300px;
     margin-left:auto;
     margin-right:auto;
     width:140px;
+}
+#feed-container {
+    height: calc(100vh - 96px);
+    width: 100%;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    padding-top:50px;
+}
+
+#feed-container .display1 {
+     font-size: 32px;
+     line-height: 1.2;
+     padding-bottom:40px;
+     color: black;
+     font-weight: 900;
+     text-align:center;
+ }
+#feed-container .display1 span {
+    font-size: 14px;
+    color: #9B9B9B;
+    font-weight:normal;
+}
+#feed-container .row {
+    min-width:800px;
+    max-height:calc(100vh - 96px);
+}
+#feed-container .card {
+    margin-left:25px;
+    margin-right:25px;
+    margin-bottom: 30px;
+    text-align:left;
+    font-size:14px;
+    max-width:400px;
+    max-height:calc(100vh - 200px);
+}
+#feed-container .card-img-top {
+    border-radius: 0;
+    margin:0;
+    padding:0;
+    max-width:100%;
+    max-height: 200px;
+}
+#feed-container .card-user {
+    padding-top:0px;
+    padding-left:20px;
+    padding-bottom:0;
+    color:#1271B9;
+    font-weight: bolder;
+    transform: translate(0px,15px);
+}
+#feed-container .card-time {
+    padding-left:20px;
+}
+#feed-container .card-title {
+    color:#1271B9;
+    font-weight: bolder;
+    font-size:18px;
+}
+#feed-container .card-rating {
+    padding-bottom:5px;
 }

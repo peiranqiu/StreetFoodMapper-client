@@ -28,6 +28,7 @@ export default class TrendingItem extends React.Component {
             default:
                 rating = rating1;
         }
+        var href = "/truck/" + this.props.truck.id;
         return (
             <div>
                 <div className="card">
@@ -35,7 +36,7 @@ export default class TrendingItem extends React.Component {
                     <p className="card-time">Wrote a review at {this.props.truck.reviews[0].timeCreated}</p>
                     <img className="card-img-top" src={this.props.truck.photos[2].href} alt="Card image cap"/>
                     <div className="card-body">
-                        <h5 className="card-title">{this.props.truck.name}</h5>
+                        <a className="card-title" href={href}>{this.props.truck.name}</a>
                         <hr/>
                         <img className="card-rating" width="80px" src={rating} alt="Card image cap"/>
                         <p className="card-text">{this.props.truck.reviews[0].text}</p>

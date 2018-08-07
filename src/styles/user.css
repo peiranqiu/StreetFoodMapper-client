@@ -7,11 +7,7 @@
 #profile-container {
     height: calc(100vh - 68px);
 }
-.user-page .navbar {
-     border-bottom: none;
- }
 .vendor-page .navbar {
-    border-bottom: none;
     background-color:#B91400;
 }
 .vendor-page .navbar .navbar-brand {
@@ -21,16 +17,12 @@
     color:white;
 }
 .user-page .navbar.sticky-bottom {
-     border-bottom: none;
-     border-top: 3px solid black;
      background-color: white;
  }
 .vendor-page .navbar.sticky-bottom a {
     color: black;
 }
 .vendor-page .navbar.sticky-bottom {
-    border-bottom: none;
-    border-top: 3px solid black;
     background-color: white;
 }
 

@@ -29,11 +29,16 @@ export default class TrendingContainer
         }
         return (
             <div className="container" id="trending-container">
-                <h1 className="display1">Trending</h1>
                 <div className="row">
-                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
-                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[1]}/></div>
-                    <div className="col-sm-4"><TrendingItem truck={this.state.trucks[0]}/></div>
+                    <div className="col col-1"></div>
+                    <div className="col">
+                        <h1 className="trending-title">Trending</h1>
+                        <hr/>
+                        <div className="row">
+                            <div className="col"><TrendingItem truck={this.state.trucks[0]}/></div>
+                            <div className="col"><TrendingItem truck={this.state.trucks[1]}/></div>
+                            <div className="col"><TrendingItem truck={this.state.trucks[0]}/></div></div></div>
+                    <div className="col col-1"></div>
                 </div>
             </div>
         );

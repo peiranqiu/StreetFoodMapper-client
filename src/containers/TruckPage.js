@@ -23,16 +23,7 @@ import FeedItem from '../components/FeedItem'
 
 import TruckMap from './TruckMap'
 import {
-    TwitterTimelineEmbed,
-    TwitterShareButton,
-    TwitterFollowButton,
-    TwitterHashtagButton,
-    TwitterMentionButton,
-    TwitterTweetEmbed,
-    TwitterMomentShare,
-    TwitterDMButton,
-    TwitterVideoEmbed,
-    TwitterOnAirButton
+    TwitterTimelineEmbed
 } from 'react-twitter-embed';
 
 export default class Home
@@ -74,18 +65,19 @@ export default class Home
     }
 
     format(time) {
-        if(time.startTime === 0) {
-            return("Closed");
+        if (time.startTime === 0) {
+            return ("");
         }
 
-        return (parseInt(time.startTime/100) + ":"
-            + (time.startTime%100<10? "0"+time.startTime%100 : time.startTime%100) + " - "
-            + parseInt(time.endTime/100) + ":"
-            + (time.endTime%100<10? "0"+time.endTime%100 : time.endTime%100));
+        return (parseInt(time.startTime / 100) + ":"
+            + (time.startTime % 100 < 10 ? "0" + time.startTime % 100 : time.startTime % 100) + " - "
+            + parseInt(time.endTime / 100) + ":"
+            + (time.endTime % 100 < 10 ? "0" + time.endTime % 100 : time.endTime % 100));
     }
+
     convert(date) {
         var result = "January";
-        switch (parseInt(date/100)) {
+        switch (parseInt(date / 100)) {
             case 2:
                 result = "February";
                 break;
@@ -122,7 +114,7 @@ export default class Home
             default:
                 result = "January";
         }
-        return (result + date%100);
+        return (result + date % 100);
     }
 
     render() {
@@ -188,7 +180,7 @@ export default class Home
                         <div className="row">
                             <div className="col col-1"></div>
                             <div className="col">
-                                <h1 className="truck-page-title">{this.state.truck.name}</h1></div>
+                                <h2 className="truck-page-title">{this.state.truck.name}</h2><hr/></div>
                             <div className="col col-1"></div>
                         </div>
                         <div className="row">
@@ -251,71 +243,74 @@ export default class Home
                         </div>
                     </div>
                     <a className="anchor" id="schedule-anchor"></a>
-                    <div className="container-fluid schedule-container">
-                        <h1>Regular Schedule</h1>
+                    <div className="container schedule-container">
                         <div className="row">
                             <div className="col col-1"></div>
-                            <div className="col col">
-                                <div className="row justify-content-center">
+                            <div className="col">
+                                <h1 className="truck-page-title">Regular Schedule</h1>
+                                <hr/>
+                                <table className="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col">MON</th>
+                                        <th scope="col">TUE</th>
+                                        <th scope="col">WED</th>
+                                        <th scope="col">THU</th>
+                                        <th scope="col">FRI</th>
+                                        <th scope="col">SAT</th>
+                                        <th scope="col">SUN</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                     {this.state.truck.schedules.map((schedule) => {
                                         return (
-                                            <div className="col-4 justify-content-center" key={schedule.id}>
-                                                <div className="schedule-card row justify-content-center">
-                                                    <h4>{schedule.address.substring( 0, schedule.address.indexOf(","))}</h4>
-                                                    <div className="schedule-date">Mon
-                                                        <a className="schedule-time">
-                                                            {this.format(schedule.openTimes[0])}
-                                                            </a></div>
-                                                    <div className="schedule-date">Tue
-                                                        <a className="schedule-time">
-                                                            {this.format(schedule.openTimes[1])}
-                                                        </a></div>
-                                                    <div className="schedule-date">Wed
-                                                    <a className="schedule-time">
-                                                        {this.format(schedule.openTimes[2])}
-                                                    </a></div>
-                                                    <div className="schedule-date">Thu
-                                                    <a className="schedule-time">
-                                                        {this.format(schedule.openTimes[3])}
-                                                    </a></div>
-                                                    <div className="schedule-date">Fri
-                                                    <a className="schedule-time">
-                                                        {this.format(schedule.openTimes[4])}
-                                                    </a></div>
-                                                    <div className="schedule-date">Sat
-                                                    <a className="schedule-time">
-                                                        {this.format(schedule.openTimes[5])}
-                                                    </a></div>
-                                                    <div className="schedule-date">Sun
-                                                        <a className="schedule-time">
-                                                            {this.format(schedule.openTimes[6])}
-                                                        </a></div>
-                                                </div>
-                                            </div>
-
-                                        );
+                                            <tr>
+                                                <th scope="row">{schedule.address.substring(0, schedule.address.indexOf(","))}</th>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{this.format(schedule.openTimes[0])}</td>
+                                                <td>{this.format(schedule.openTimes[1])}</td>
+                                                <td>{this.format(schedule.openTimes[2])}</td>
+                                                <td>{this.format(schedule.openTimes[3])}</td>
+                                                <td>{this.format(schedule.openTimes[4])}</td>
+                                                <td>{this.format(schedule.openTimes[5])}</td>
+                                                <td>{this.format(schedule.openTimes[6])}</td>
+                                            </tr>
+                                        )
                                     })}
-                                </div>
-                                <div className="card mt-4 mb-4 holiday-card justify-content-center">
-                                    <h4 className="card-title mb-4">Closed Days(2018)</h4>
-                                    {this.state.truck.holidays.map((holiday) => {
-                                        return (
-                                            <div className="holiday">{this.convert(holiday.date)}</div>
-                                        )})}
-                                </div>
-                            </div>
+                                    <tr><td></td></tr>
+                                    <tr>
+                                        <th scope="row">Closed Days</th>
+                                        <td></td>
+                                        <td></td>
+                                        {this.state.truck.holidays.map((holiday) => {
+                                            return (
+                                                <td>{this.convert(holiday.date)}</td>
+                                            )})}
+                                    </tr>
+                                    </tbody>
+                                </table></div>
+                            <div className="col col-1"></div>
+                        </div>
+
+                    </div>
+
+                    <div className="container" id="feed-container">
+                        <div className="row">
+                            <div className="col col-1"></div>
+                            <div className="col">
+                                <h1 className="truck-page-title">Recent Feeds<span> (On Yelp)</span></h1>
+                                <hr/>
+                                <div className="row">
+                            <div className="col"><FeedItem truck={this.state.truck} index="1"/></div>
+                            <div className="col"><FeedItem truck={this.state.truck} index="2"/></div>
+                                    <div className="col"><FeedItem truck={this.state.truck} index="0"/></div></div></div>
                             <div className="col col-1"></div>
                         </div>
                     </div>
-                    <div className="container" id="feed-container">
-                        <h1 className="display1">Recent Feeds<span> (On Yelp)</span></h1>
-                        <div className="row">
-                            <div className="col-sm-4"><FeedItem truck={this.state.truck} index="1"/></div>
-                            <div className="col-sm-4"><FeedItem truck={this.state.truck} index="2"/></div>
-                            <div className="col-sm-4"><FeedItem truck={this.state.truck} index="0"/></div>
-                        </div>
-                    </div>
-
 
 
                 </div>

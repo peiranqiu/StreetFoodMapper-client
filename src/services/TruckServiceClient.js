@@ -18,19 +18,16 @@ export default class TruckServiceClient {
         return this[_singleton];
     }
 
-    createTruck(ownerId, phone) {
-        return this.yelpServiceClient.findTruckByPhone(phone)
-            .then(truck => {
-                return fetch(constants.ALL_OWNER_URL + '/' + ownerId + '/truck', {
-                    method: 'post',
-                    body: JSON.stringify(truck),
-                    headers: {
-                        'content-type': 'application/json'
-                    }
-                }).then(response => {
-                    return response.json()
-                });
-            });
+    createTruck(ownerId, truck) {
+        return fetch(constants.ALL_OWNER_URL + '/' + ownerId + '/truck', {
+            method: 'post',
+            body: JSON.stringify(truck),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(response => {
+            return response.json()
+        });
     }
 
     findTruckById(truckId) {

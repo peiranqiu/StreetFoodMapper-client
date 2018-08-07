@@ -1,0 +1,50 @@
+
+.modal-content {
+
+    border: none !important;
+    border-radius: 0 !important;
+    width:536px;
+    height:375px;
+}
+.modal-header, .modal-title{
+    display:block !important;
+    text-align: center;
+    font-family: DINPro-Bold;
+    font-size:32px;
+    padding-top: 20px;
+    border: none !important;
+}
+.col-form-label {
+    text-align: center;
+}
+
+#recipient-name {
+    border:solid 1px grey !important;
+    width:134px;
+    height:36px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    margin-top:20px;
+}
+.modal-body{
+    text-align: center;
+}
+.manual{
+    text-align: right !important;
+    font-size: 12px;
+    right:134px;
+    position:absolute;
+}
+.yelp-btn {
+     background-color:#B91400 !important;
+     width:264px;
+     color:white !important;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:5px !important;
+    margin-bottom:5px !important;
+ }
+.yelp-btn .fa-yelp{
+    transform: translate(-50px,0px);
+}

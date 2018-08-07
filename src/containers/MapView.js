@@ -66,7 +66,6 @@ export default class MapView
             styles: constants.MAP_STYLE
         });
 
-
         this.state.trucks.map((truck) => {
             var name = truck.name;
             var photo = truck.photos[0].href;

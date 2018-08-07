@@ -52,9 +52,15 @@
     width: 100%;
     background-color: #F4511E;
     text-align: center;
-    font-size: 28px;
-    padding-top: 10px;
+    padding-top: 7px;
     margin-top: 0;
+
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-family: "DINPro-Condensed";
+
+    letter-spacing: 3px;
+    font-size:32px;
 }
 
 #map-container .list-group {
@@ -116,7 +122,6 @@
     text-align: left;
     position: absolute;
     font-size: 12px;
-    color: #0336FF;
     margin-top:31px;
 }
 .truck-item-open {
@@ -174,6 +179,8 @@
     height:32px;
     font-size: 13.5px;
     border-radius: 0 !important;
+    text-transform: uppercase;
+    font-family: DINPro-Medium;
 }
 #btn-open {
     right:364px;
@@ -196,14 +203,8 @@
     padding-top:50px;
     margin-bottom:50px;
 }
-
-#trending-container .display1 {
-    font-size: 32px;
-    line-height: 1.2;
-    padding-bottom:40px;
-    color: black;
-    font-weight: 900;
-    text-align:center;
+.trending-row {
+    margin-top:50px;
 }
 .trending-loader {
     margin-left:auto;
@@ -261,6 +262,7 @@
     margin-bottom:10px;
     text-transform: uppercase;
     font-family: "DINPro-Condensed";
+    letter-spacing: 3px;
     font-size:32px;
     text-align:left;
 }

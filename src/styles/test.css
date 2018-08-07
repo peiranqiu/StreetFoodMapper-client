@@ -89,10 +89,12 @@ hr {
 }
 
 .current-user {
-    right:35px;
+    right:40px;
     position:absolute;
-    font-size: 12px;
+    font-size: 14px !important;
     cursor:default;
+    font-family: DINPro !important;
+    text-transform: none !important;
 }
 
 #user-icon {

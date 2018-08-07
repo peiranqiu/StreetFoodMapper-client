@@ -147,7 +147,7 @@ export default class Home
                     </a>
                     <a className="nav-item" id="nav-item-0" href="#">About</a>
                     <a className="nav-item" id="nav-item-1" href="#schedule-anchor">Schedules</a>
-                    <a className="nav-item" id="nav-item-2" href="#feed-container">Feeds</a>
+                    <a className="nav-item" id="nav-item-2" href="#feed-anchor">Feeds</a>
                     <span className="nav-item dropdown" id="user-icon">
                         <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -170,17 +170,25 @@ export default class Home
 
 
                 {this.state.truck === {}
-                && <div className="container-fluid truck-info-container">
-                    <div className="truck-loader"><img alt="" src={loader}/></div>
-                </div>}
+                &&
+                    <div className="container-fluid truck-info-container">
+                        <div className="truck-loader"><img alt="" src={loader}/></div>
+                    </div>
+                }
+
                 {this.state.truck !== {} && this.state.truck.photos !== undefined && this.state.truck.reviews !== undefined
                 && this.state.truck.schedules !== undefined && this.state.truck.holidays !== undefined &&
                 <div>
+                    <div className="container-fluid photo-container">
+                        <img className="cover-photo" src={this.state.truck.photos[0].href}/>
+                    </div>
                     <div className="container truck-info-container">
                         <div className="row">
                             <div className="col col-1"></div>
                             <div className="col">
-                                <h2 className="truck-page-title">{this.state.truck.name}</h2><hr/></div>
+                                <h2 className="truck-page-title">{this.state.truck.name}</h2>
+                                <hr/>
+                            </div>
                             <div className="col col-1"></div>
                         </div>
                         <div className="row">
@@ -281,7 +289,9 @@ export default class Home
                                             </tr>
                                         )
                                     })}
-                                    <tr><td></td></tr>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
                                     <tr>
                                         <th scope="row">Closed Days</th>
                                         <td></td>
@@ -289,25 +299,30 @@ export default class Home
                                         {this.state.truck.holidays.map((holiday) => {
                                             return (
                                                 <td>{this.convert(holiday.date)}</td>
-                                            )})}
+                                            )
+                                        })}
                                     </tr>
                                     </tbody>
-                                </table></div>
+                                </table>
+                            </div>
                             <div className="col col-1"></div>
                         </div>
 
                     </div>
 
+                    <a className="anchor" id="feed-anchor"></a>
                     <div className="container" id="feed-container">
                         <div className="row">
                             <div className="col col-1"></div>
                             <div className="col">
                                 <h1 className="truck-page-title">Recent Feeds<span> (On Yelp)</span></h1>
                                 <hr/>
-                                <div className="row">
-                            <div className="col"><FeedItem truck={this.state.truck} index="1"/></div>
-                            <div className="col"><FeedItem truck={this.state.truck} index="2"/></div>
-                                    <div className="col"><FeedItem truck={this.state.truck} index="0"/></div></div></div>
+                                <div className="row feed-row">
+                                    <div className="col"><FeedItem truck={this.state.truck} index="1"/></div>
+                                    <div className="col"><FeedItem truck={this.state.truck} index="2"/></div>
+                                    <div className="col"><FeedItem truck={this.state.truck} index="0"/></div>
+                                </div>
+                            </div>
                             <div className="col col-1"></div>
                         </div>
                     </div>

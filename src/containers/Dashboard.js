@@ -5,9 +5,11 @@ import '../../node_modules/font-awesome/css/font-awesome.css'
 import '../styles/test.css'
 import '../styles/user.css'
 import '../styles/truck.css'
+import '../styles/dashboard.css'
 import logo from '../resources/background/logo-red.png'
 import user from '../resources/icons/user-white.png'
 import OwnerServiceClient from "../services/OwnerServiceClient";
+import TruckServiceClient from "../services/TruckServiceClient"
 
 export default class Dashboard
     extends React.Component {
@@ -17,6 +19,7 @@ export default class Dashboard
             owner: {}
         }
         this.ownerService = OwnerServiceClient.instance();
+        this.truckService = TruckServiceClient.instance();
     }
 
     componentDidMount() {
@@ -24,12 +27,16 @@ export default class Dashboard
             .then(owner => {
                 this.setState({owner: owner});
             });
-
-
     }
 
     logout = (e) => {
         this.ownerService.logout();
+    }
+
+    delete(id) {
+        if (window.confirm('Delete Truck?')) {
+            this.truckService.deleteTruck(id);
+        }
     }
 
     render() {
@@ -40,30 +47,32 @@ export default class Dashboard
         var content = (
             <div id="dashboard" className="user-page-card">
                 <div className="list-group">
-                    <a className="list-group-item list-group-item-action flex-column align-items-start" id="new-truck">
+                    <div className="list-group-item list-group-item-action flex-column align-items-start" id="new-truck">
                         <div className="row justify-content-between">
                             <div>You don’t have any truck profiles set up yet.</div>
-                            <button className="btn btn-block ripple-effect" alt="">Add Your First Truck</button>
+                            <button type="button" className="btn btn-block ripple-effect">
+                                <a className="text-dark" href="/dashboard/create">Add Your First Truck</a></button>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>);
 
         if (this.state.owner.trucks !== undefined && this.state.owner.trucks.length > 0) {
             content = (
                 <div id="dashboard" className="card-group">
-                    <a className="create-truck">Add New Truck</a>
+                    <a className="create-truck" href="/dashboard/create">Add New Truck</a>
                     <div className="row">
                         {this.state.owner.trucks.map((truck) => {
+                            var href = "/truck/" + truck.id + "/edit";
                             return (
                                 <div className="col-6" key={truck.id}>
                                     <div className="truck-card card border-0">
                                         <img className="truck-item-img"
                                              src={truck.photos[0].href}/>
                                         <div className="truck-item-title">{truck.name}</div>
-                                        <button className="btn btn-block ripple-effect" alt="">Edit
+                                        <button className="btn btn-block ripple-effect" alt=""><a className="text-dark" href={href}>Edit</a>
                                         </button>
-                                        <a className="delete-truck">Delete</a>
+                                        <a className="delete-truck" onClick={() => this.delete(truck.id)}>Delete</a>
                                     </div>
                                 </div>
 
@@ -73,7 +82,6 @@ export default class Dashboard
                 </div>
             );
         }
-
 
         return (
             <div id="profile-page" className="user-page vendor-page">

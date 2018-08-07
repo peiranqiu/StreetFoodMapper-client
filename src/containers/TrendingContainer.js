@@ -34,7 +34,7 @@ export default class TrendingContainer
                     <div className="col">
                         <h1 className="trending-title">Trending</h1>
                         <hr/>
-                        <div className="row">
+                        <div className="row trending-row">
                             <div className="col"><TrendingItem truck={this.state.trucks[0]}/></div>
                             <div className="col"><TrendingItem truck={this.state.trucks[1]}/></div>
                             <div className="col"><TrendingItem truck={this.state.trucks[0]}/></div></div></div>

@@ -67,6 +67,7 @@
     bottom:15px;
     font-size:14px;
     color: #0336FF !important;
+    cursor: pointer;
 }
 .truck-card .btn {
     position:absolute;
@@ -85,10 +86,23 @@
     font-size:14px;
     transform: translate(0px,-10px);
     color: #0336FF;
+    cursor: pointer;
 }
-
-.truck-info-container {
+.photo-container {
+    height:370px;
+    width:100vw;
+    padding:0;
     margin-top:48px;
+    overflow-y: hidden;
+}
+.cover-photo {
+    width:100vw;
+    height:auto;
+    margin:0;
+    padding:0;
+}
+.truck-info-container {
+    margin-top:40px;
     height: calc(100vh - 48px);
     width: 100%;
 }
@@ -113,6 +127,8 @@
     margin-bottom:10px;
     text-transform: uppercase;
     font-family: "DINPro-Condensed";
+
+    letter-spacing: 3px;
     font-size:32px;
     text-align:left;
 }
@@ -124,9 +140,7 @@
 
 .truck-page-category {
     font-size: 12px;
-    color: #0336FF;
     margin-top:10px;
-    text-transform: capitalize !important;
 }
 
 .truck-page-open {
@@ -141,6 +155,9 @@
 .truck-info-container .row .col {
     padding-left:5px;
     padding-right:5px;
+}
+.right-info a {
+    color:#B91400;
 }
 #truckmap {
     height: 370px;
@@ -201,12 +218,12 @@
 
 .schedule-container {
     text-align:center;
-    padding-top: 70px;
     padding-bottom: 50px;
 }
 .schedule-container td {
     font-size:16px !important;
     font-family: "DINPro-Condensed";
+    letter-spacing: 1px;
 
     margin-left:0 !important;
     padding-left:0 !important;
@@ -239,18 +256,13 @@ width:300px;
     text-align: center;
     margin-left:auto;
     margin-right:auto;
-    padding-top:50px;
     margin-bottom:50px;
 }
 
-#feed-container .display1 {
-     font-size: 32px;
-     line-height: 1.2;
-     padding-bottom:40px;
-     color: black;
-     font-weight: 900;
-     text-align:center;
- }
+.feed-row {
+
+    margin-bottom:50px;
+}
 #feed-container .truck-page-title span {
     font-size: 16px;
     color: #9B9B9B;

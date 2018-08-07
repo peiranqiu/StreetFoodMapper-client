@@ -19,7 +19,8 @@ export default class YelpServiceClient {
     findTruckByPhone(phone) {
         return fetch(constants.SERVER + '/yelp/truck/phone/'+phone)
             .then(response => {
-                if (response.status === 404) {
+                if (response.status === 500) {
+                    alert("Cannot find truck with this phone number.")
                     return false;
                 } else {
                     return response.json();

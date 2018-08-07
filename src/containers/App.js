@@ -13,7 +13,7 @@ import OwnerProfileEdit from './OwnerProfileEdit'
 import Dashboard from './Dashboard'
 import Policy from '../constants/Policy'
 import TruckPage from './TruckPage'
-import {Helmet} from "react-helmet";
+import CreateTruck from './CreateTruck'
 
 export default class App extends Component {
     componentDidMount() {
@@ -39,6 +39,7 @@ export default class App extends Component {
                 <Route exact path="/dashboard" component={Dashboard}/>
                 <Route exact path="/policy" component={Policy}/>
                 <Route exact path="/truck/:truckId" component={TruckPage}/>
+                <Route exact path="/dashboard/create" component={CreateTruck}/>
                 {/*
                 <Route exact path="/admin" component={AdminPage}/>
                 <Route path="/truck/:truckId/edit" component={TruckEditor}/>

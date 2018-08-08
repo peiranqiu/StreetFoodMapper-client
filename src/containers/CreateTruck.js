@@ -15,7 +15,6 @@ import YelpServiceClient from "../services/YelpServiceClient";
 import {isEmpty, isLength, isContainWhiteSpace} from '../constants/validator'
 import DatePicker from 'react-date-picker'
 import {Tabs, TabList, Tab, PanelList, Panel, ExtraButton} from 'react-tabtab';
-import {makeData} from '../constants/makeData';
 import * as constants from "../constants/constant";
 import {geocodeByAddress, geocodeByPlaceId, getLatLng,} from 'react-places-autocomplete';
 import PlacesAutocomplete from 'react-places-autocomplete';
@@ -25,7 +24,7 @@ export default class CreateTruck
     constructor(props) {
         super(props);
         this.state = {
-            tabs: makeData(1),
+            tabs: [],
             activeIndex: 0,
             formData: {}, // Contains login form data
             errors: {}, // Contains login field errors
@@ -34,7 +33,7 @@ export default class CreateTruck
             owner: {},
             newTruck: {},
             holidays: [],
-            address: ''
+            schedules: []
         }
         this.ownerService = OwnerServiceClient.instance();
         this.yelpService = YelpServiceClient.instance();
@@ -50,6 +49,8 @@ export default class CreateTruck
                 this.setState({owner: owner});
             });
         // $('.modal').modal('show');
+
+
         window.myCallbackFunc = function () {
             window.initOne && window.initOne();
         }
@@ -60,19 +61,10 @@ export default class CreateTruck
         script.async = true;
         ref.parentNode.insertBefore(script, ref);
 
+        this.handleExtraButton();
+
 
     }
-
-    handleChange = address => {
-        this.setState({address});
-    };
-
-    handleSelect = address => {
-        geocodeByAddress(address)
-            .then(results => getLatLng(results[0]))
-            .then(latLng => console.log('Success', latLng))
-            .catch(error => console.error('Error', error));
-    };
 
     handleExtraButton() {
         const {tabs} = this.state;
@@ -206,6 +198,7 @@ export default class CreateTruck
         );
         const newTabs = [...tabs, {title: 'Location ' + (tabs.length + 1), content: content}];
         this.setState({tabs: newTabs, activeIndex: newTabs.length - 1});
+        this.createSchedule();
     }
 
     handleTabChange(index) {
@@ -289,6 +282,25 @@ export default class CreateTruck
         this.setState({holidays: holidays});
     }
 
+    createSchedule = (e) => {
+        var schedules = this.state.schedules;
+        schedules.push({
+            address: '',
+            latitude: '',
+            longitude: '',
+            openTimes: [
+                {day: 1, startTime: 0, endTime: 0},
+                {day: 2, startTime: 0, endTime: 0},
+                {day: 3, startTime: 0, endTime: 0},
+                {day: 4, startTime: 0, endTime: 0},
+                {day: 5, startTime: 0, endTime: 0},
+                {day: 6, startTime: 0, endTime: 0},
+                {day: 7, startTime: 0, endTime: 0}
+            ]
+        });
+        this.setState({schedules: schedules});
+    }
+
     render() {
 
         const {tabs, activeIndex} = this.state;
@@ -299,16 +311,32 @@ export default class CreateTruck
             tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
             panelTemplate.push(<Panel key={i}>
                 <PlacesAutocomplete
-                    value={this.state.address}
-                    onChange={this.handleChange}
-                    onSelect={this.handleSelect}
+                    value={this.state.schedules[i].address}
+                    onChange={(change) => {
+                        var schedules = this.state.schedules;
+                        schedules[i].address = change;
+                        this.setState({schedules: schedules});
+                    }}
+                    onSelect={(address) => {
+                        geocodeByAddress(address)
+                            .then(results => getLatLng(results[0]))
+                            .then(latLng => {
+                                var schedules = this.state.schedules;
+                                schedules[i].address = address;
+                                schedules[i].latitude = latLng.lat;
+                                schedules[i].longitude = latLng.lng;
+                                this.setState({schedules: schedules});
+                                console.log(schedules);
+                            })
+                            .catch(error => console.error('Error', error));
+                    }}
                     googleCallbackName="initOne"
                 >
                     {({getInputProps, suggestions, getSuggestionItemProps, loading}) => (
                         <div>
                             <input
                                 {...getInputProps({
-                                    placeholder: 'Search Places ...',
+                                    placeholder: 'Enter Location',
                                     className: 'location-search-input',
                                 })}
                             />

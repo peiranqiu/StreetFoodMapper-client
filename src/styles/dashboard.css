@@ -48,3 +48,83 @@
 .yelp-btn .fa-yelp{
     transform: translate(-50px,0px);
 }
+.yelp-yellow-btn {
+    background-color:#FFDE03 !important;
+    width:174px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.yelp-div {
+    padding-top:150px;
+}
+
+.form-label {
+    font-family: DINPro-Medium;
+}
+#create-container .display1 {
+    font-size: 32px;
+    line-height: 1.2;
+    color: black;
+    font-weight: bolder;
+    left:50%;
+    transform: translateX(-50%);
+    top:15vh;
+    position:absolute;
+    min-width:500px;
+    text-align: center;
+    width:50%;
+}
+
+.add-holiday {
+    cursor:pointer;
+    color:#1271B9;
+    transform: translateY(-30px);
+}
+
+.holiday-list {
+    transform: translateY(-25px);
+}
+
+.react-date-picker__button {
+    border:none !important;
+}
+.react-date-picker__clear-button, .react-date-picker__calendar-button {
+    display: none !important;
+}
+.react-calendar {
+    border: none !important;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+.react-calendar *{
+    font-size:12px;
+}
+.sc-bZQynM {
+    border: 1px solid #f1f1f1;
+    border-radius: 0 !important;
+}
+.sc-EHOje, .sc-gzVnrw {
+    border: 1px solid #f1f1f1;
+    border-radius: 0 !important;
+}
+.sc-EHOje {
+    width:100px;
+    font-size:16px !important;
+    padding-left:10px !important;
+    padding-right:10px !important;
+    height:35px;
+    margin:0;
+    border-bottom: none !important;
+}
+.sc-EHOje[aria-selected="true"] {
+    background-color:#f1f1f1;
+}
+.sc-EHOje svg{
+    transform: translateY(-3px);
+}
+
+.sc-gzVnrw {
+width:35px;
+    height:35px;
+    transform:translateY(-9px);
+}

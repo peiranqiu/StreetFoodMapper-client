@@ -17,6 +17,8 @@
     "react-async-script-loader": "^0.3.0",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-dropdown": "^0.3.0",
+    "react-date-picker": "^6.11.3",
+    "react-day-picker": "^7.1.10",
     "react-dom": "^16.4.2",
     "react-fontawesome": "^1.6.1",
     "react-google-maps": "^9.4.5",
@@ -27,7 +29,9 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "react-svg": "^5.0.12",
+    "react-tabtab": "^1.8.1",
     "react-twitter-embed": "^1.1.3",
+    "styled-components": "^3.4.2",
     "svg-to-react-cli": "^1.5.0"
   },
   "scripts": {

@@ -3,6 +3,7 @@ import React from 'react';
 const makeData = (number, titlePrefix = 'Location') => {
     const data = [];
     var options1 = (<select className="form-control opentime mx-3">
+        <option>0:00</option>
         <option>6:00</option>
         <option>6:30</option>
         <option>7:00</option>
@@ -30,6 +31,7 @@ const makeData = (number, titlePrefix = 'Location') => {
         <option>18:00</option>
     </select>);
     var options2 = (<select className="form-control closetime ml-3">
+        <option>0:00</option>
         <option>10:00</option>
         <option>10:30</option>
         <option>11:00</option>
@@ -65,9 +67,6 @@ const makeData = (number, titlePrefix = 'Location') => {
             content:
                 <div>
                     <div className="schedule-content">
-                        <input className="form-control" name="location" type="text" size="14"
-                               alt="LOCATION" placeholder="1 Nashua St"
-                               onChange={this.handleInputChange} required/>
                         <div className="schedule-day ml-3 mt-3">
                             <div className="form-check">
                                 <input className="form-check-input" type="checkbox" value=""/>

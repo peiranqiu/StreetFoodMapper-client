@@ -108,7 +108,7 @@
     border-radius: 0 !important;
 }
 .sc-EHOje {
-    width:100px;
+    width:110px;
     font-size:16px !important;
     padding-left:10px !important;
     padding-right:10px !important;
@@ -155,3 +155,13 @@ width:35px;
     position:absolute;
     left:215px;
 }
+#form-schedule-container {
+    min-width:380px;
+}
+.location-search-input {
+    width:100%;
+    border-top:none;
+    border-left:none;
+    border-right:none;
+}
+

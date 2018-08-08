@@ -17,6 +17,8 @@ import DatePicker from 'react-date-picker'
 import {Tabs, TabList, Tab, PanelList, Panel, ExtraButton} from 'react-tabtab';
 import {makeData} from '../constants/makeData';
 import * as constants from "../constants/constant";
+import {geocodeByAddress, geocodeByPlaceId, getLatLng,} from 'react-places-autocomplete';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
 export default class CreateTruck
     extends React.Component {
@@ -31,7 +33,8 @@ export default class CreateTruck
             loading: false, // Indicates in progress state of login form
             owner: {},
             newTruck: {},
-            holidays: []
+            holidays: [],
+            address: ''
         }
         this.ownerService = OwnerServiceClient.instance();
         this.yelpService = YelpServiceClient.instance();
@@ -47,21 +50,158 @@ export default class CreateTruck
                 this.setState({owner: owner});
             });
         // $('.modal').modal('show');
+        window.myCallbackFunc = function () {
+            window.initOne && window.initOne();
+        }
+
+        var ref = window.document.getElementsByTagName("script")[0];
+        var script = window.document.createElement("script");
+        script.src = "https://maps.googleapis.com/maps/api/js?key=" + constants.GOOGLE_MAP_KEY + "&libraries=places&callback=myCallbackFunc";
+        script.async = true;
+        ref.parentNode.insertBefore(script, ref);
+
 
     }
 
+    handleChange = address => {
+        this.setState({address});
+    };
+
+    handleSelect = address => {
+        geocodeByAddress(address)
+            .then(results => getLatLng(results[0]))
+            .then(latLng => console.log('Success', latLng))
+            .catch(error => console.error('Error', error));
+    };
 
     handleExtraButton() {
         const {tabs} = this.state;
+        var options1 = (<select className="form-control opentime mx-3">
+            <option>0:00</option>
+            <option>6:00</option>
+            <option>6:30</option>
+            <option>7:00</option>
+            <option>7:30</option>
+            <option>8:00</option>
+            <option>8:30</option>
+            <option>9:00</option>
+            <option>9:30</option>
+            <option>10:00</option>
+            <option>10:30</option>
+            <option>11:00</option>
+            <option>11:30</option>
+            <option>12:00</option>
+            <option>12:30</option>
+            <option>13:00</option>
+            <option>13:30</option>
+            <option>14:00</option>
+            <option>14:30</option>
+            <option>15:00</option>
+            <option>15:30</option>
+            <option>16:00</option>
+            <option>16:30</option>
+            <option>17:00</option>
+            <option>17:30</option>
+            <option>18:00</option>
+        </select>);
+        var options2 = (<select className="form-control closetime ml-3">
+            <option>0:00</option>
+            <option>10:00</option>
+            <option>10:30</option>
+            <option>11:00</option>
+            <option>11:30</option>
+            <option>12:00</option>
+            <option>12:30</option>
+            <option>13:00</option>
+            <option>13:30</option>
+            <option>14:00</option>
+            <option>14:30</option>
+            <option>15:00</option>
+            <option>15:30</option>
+            <option>16:00</option>
+            <option>16:30</option>
+            <option>17:00</option>
+            <option>17:30</option>
+            <option>18:00</option>
+            <option>18:30</option>
+            <option>19:00</option>
+            <option>19:30</option>
+            <option>20:00</option>
+            <option>20:30</option>
+            <option>21:00</option>
+            <option>21:30</option>
+            <option>22:00</option>
+            <option>22:30</option>
+            <option>23:00</option>
+            <option>23:30</option>
+        </select>);
         var content = (
             <div>
-                <div>MON</div>
-                <div>TUE</div>
-                <div>WED</div>
-                <div>THU</div>
-                <div>FRI</div>
-                <div>SAT</div>
-                <div>SUN</div>
+                <div className="schedule-content">
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>MON</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>TUE</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>WED</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>THU</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>FRI</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>SAT</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                    <div className="schedule-day ml-3 mt-3">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" value=""/>
+                        </div>
+                        <span>SUN</span>
+                        {options1}
+                        <span className="to">TO</span>
+                        {options2}
+                    </div>
+                </div>
             </div>
         );
         const newTabs = [...tabs, {title: 'Location ' + (tabs.length + 1), content: content}];
@@ -149,7 +289,6 @@ export default class CreateTruck
         this.setState({holidays: holidays});
     }
 
-
     render() {
 
         const {tabs, activeIndex} = this.state;
@@ -158,7 +297,47 @@ export default class CreateTruck
         tabs.forEach((tab, i) => {
             const closable = tabs.length > 1;
             tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
-            panelTemplate.push(<Panel key={i}>{tab.content}</Panel>);
+            panelTemplate.push(<Panel key={i}>
+                <PlacesAutocomplete
+                    value={this.state.address}
+                    onChange={this.handleChange}
+                    onSelect={this.handleSelect}
+                    googleCallbackName="initOne"
+                >
+                    {({getInputProps, suggestions, getSuggestionItemProps, loading}) => (
+                        <div>
+                            <input
+                                {...getInputProps({
+                                    placeholder: 'Search Places ...',
+                                    className: 'location-search-input',
+                                })}
+                            />
+                            <div className="autocomplete-dropdown-container">
+                                {loading && <div>Loading...</div>}
+                                {suggestions.map(suggestion => {
+                                    const className = suggestion.active
+                                        ? 'suggestion-item--active'
+                                        : 'suggestion-item';
+                                    // inline style for demonstration purpose
+                                    const style = suggestion.active
+                                        ? {backgroundColor: '#fafafa', cursor: 'pointer'}
+                                        : {backgroundColor: '#ffffff', cursor: 'pointer'};
+                                    return (
+                                        <div
+                                            {...getSuggestionItemProps(suggestion, {
+                                                className,
+                                                style,
+                                            })}
+                                        >
+                                            <span>{suggestion.description}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+                </PlacesAutocomplete>
+                {tab.content}</Panel>);
         })
         var formname = null;
         var formphone = null;
@@ -207,7 +386,6 @@ export default class CreateTruck
         );
 
         return (
-
             <div id="profile-page" className="user-page vendor-page">
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/dashboard">
@@ -238,10 +416,10 @@ export default class CreateTruck
                             <i className="fa fa-yelp"></i>Fill Out With Yelp
                         </button>
                     </div>
-                    <form action="" method="" className="" role="form" onSubmit={this.createTruck}>
+                    <form action="" method="" className="create-form" role="form" onSubmit={this.createTruck}>
                         <div className="row">
                             <div className="col col-2"></div>
-                            <div className="col col-4 py-3" id="form-info-container">
+                            <div className="col col-4 py-3 mr-3" id="form-info-container">
                                 <h5 className="text-center mb-5 ">Basic Information</h5>
 
                                 <div id="form-business-name" className="form-group">
@@ -281,7 +459,7 @@ export default class CreateTruck
                                 </div>
 
                             </div>
-                            <div className="col col-4 py-3" id="form-schedule-container">
+                            <div className="col col-4 ml-3 py-3" id="form-schedule-container">
                                 <h5 className="text-center mb-5">Regular Schedule</h5>
 
                                 <Tabs onTabEdit={this.handleEdit}
@@ -308,7 +486,7 @@ export default class CreateTruck
 
                         <div className="row">
                             <div className="col col-2"></div>
-                            <div className="col col-4 py-3" id="form-photo-container">
+                            <div className="col col-4 mr-3 py-3" id="form-photo-container">
                                 <h5 className="text-center mb-5 ">Photos</h5>
 
                                 <div id="form-business-photo1" className="form-group">
@@ -336,7 +514,7 @@ export default class CreateTruck
                                            onChange={this.handleInputChange} required/>
                                 </div>
                             </div>
-                            <div className="col col-4 py-3" id="form-holiday-container">
+                            <div className="col col-4 py-3 ml-3" id="form-holiday-container">
                                 <h5 className="text-center mb-5">Holiday List</h5>
                                 <div className="add-holiday text-right" onClick={this.createHoliday}>Add Holiday</div>
                                 <div className="holiday-list">

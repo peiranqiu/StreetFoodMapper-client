@@ -48,7 +48,7 @@ export default class CreateTruck
             .then(owner => {
                 this.setState({owner: owner});
             });
-        // $('.modal').modal('show');
+        $('.modal').modal('show');
 
 
         window.myCallbackFunc = function () {
@@ -65,11 +65,11 @@ export default class CreateTruck
     }
 
     renderCategories() {
-        return(
-        constants.CATEGORIES.map((category, i) => (
-            <option value={category} key={i}>{category}</option>
-        )));
-}
+        return (
+            constants.CATEGORIES.map((category, i) => (
+                <option value={category} key={i}>{category}</option>
+            )));
+    }
 
     renderContent(i) {
         return (
@@ -85,7 +85,7 @@ export default class CreateTruck
                                            defaultChecked={this.state.schedules[i].openTimes[j].checked}
                                            onChange={(e) => {
                                                var schedules = this.state.schedules;
-                                               if(e.target.checked === false) {
+                                               if (e.target.checked === false) {
                                                    schedules[i].openTimes[j].startTime = 0;
                                                    schedules[i].openTimes[j].endTime = 0;
                                                    document.getElementById(id1).value = 0;
@@ -234,6 +234,9 @@ export default class CreateTruck
         if (errors === true) {
             this.yelpService.findTruckByPhone(this.state.formData.email).then((truck) => {
                 if (truck !== false) {
+                    truck.category1 = 'AMERICAN';
+                    truck.category2 = 'ASIAN';
+                    truck.category3 = 'BREAKFAST';
                     this.setState({newTruck: truck});
                     $('.modal').modal('hide');
                 }
@@ -287,8 +290,9 @@ export default class CreateTruck
             errors.email = "Phone number should be in the format +1XXXXXXXXXX";
         }
 
-        console.log(formData);
+        console.log(this.state.newTruck);
         console.log(this.state.schedules);
+        console.log(this.state.holidays);
         if (isEmpty(errors)) {
             return true;
         } else {
@@ -303,7 +307,7 @@ export default class CreateTruck
 
         let errors = this.validateLoginForm();
 
-        if(errors === true){
+        if (errors === true) {
             console.log(1);
             //this.userService.register({email: this.state.formData.email, password: this.state.formData.password});
         } else {
@@ -321,7 +325,7 @@ export default class CreateTruck
         const panelTemplate = [];
         tabs.forEach((tab, i) => {
             const closable = tabs.length > 1;
-            tabTemplate.push(<Tab key={i} closable={closable}>Location {i+1}</Tab>);
+            tabTemplate.push(<Tab key={i} closable={closable}>Location {i + 1}</Tab>);
             panelTemplate.push(<Panel key={i}>
                 <PlacesAutocomplete
                     value={this.state.schedules[i].address}
@@ -467,7 +471,12 @@ export default class CreateTruck
                                     <div className="form-label">Business Name</div>
                                     <input id="business-name" className="form-control" name="name" type="text" size="14"
                                            alt="NAME" defaultValue={formname}
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.name = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
 
                                 <div id="form-business-phone" className="form-group">
@@ -475,24 +484,49 @@ export default class CreateTruck
                                     <input id="business-phone" className="form-control" name="phone" type="text"
                                            size="14"
                                            alt="PHONE" defaultValue={formphone} placeholder="+1"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.phone = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
                                 <div id="form-business-category" className="form-group">
                                     <div className="form-label mb-3">Categories</div>
                                     <div className="row mx-1">
-                                    <select className="col form-control category mr-2" id="category1" name="category1"
-                                            defaultValue='AMERICAN' onChange={this.handleInputChange} required>
-                                    {this.renderCategories()}
-                                    </select>
-                                    <select className="col form-control category mx-2" id="category2" name="category2"
-                                            defaultValue='ASIAN'
-                                            onChange={this.handleInputChange} required>
-                                        {this.renderCategories()}
-                                    </select>
-                                    <select className="col form-control category ml-2" id="category3" name="category3"
-                                            defaultValue='BREAKFAST' onChange={this.handleInputChange} required>
-                                        {this.renderCategories()}
-                                    </select>
+                                        <select className="col form-control category mr-2" id="category1"
+                                                name="category1"
+                                                defaultValue='AMERICAN'
+                                                onChange={(e) => {
+                                                    var truck = this.state.newTruck;
+                                                    truck.category1 = e.target.value;
+                                                    this.setState({newTruck: truck});
+                                                    this.handleInputChange(e);
+                                                }} required>
+                                            {this.renderCategories()}
+                                        </select>
+                                        <select className="col form-control category mx-2" id="category2"
+                                                name="category2"
+                                                defaultValue='ASIAN'
+                                                onChange={(e) => {
+                                                    var truck = this.state.newTruck;
+                                                    truck.category2 = e.target.value;
+                                                    this.setState({newTruck: truck});
+                                                    this.handleInputChange(e);
+                                                }} required>
+                                            {this.renderCategories()}
+                                        </select>
+                                        <select className="col form-control category ml-2" id="category3"
+                                                name="category3"
+                                                defaultValue='BREAKFAST'
+                                                onChange={(e) => {
+                                                    var truck = this.state.newTruck;
+                                                    truck.category3 = e.target.value;
+                                                    this.setState({newTruck: truck});
+                                                    this.handleInputChange(e);
+                                                }} required>
+                                            {this.renderCategories()}
+                                        </select>
                                     </div>
 
                                 </div>
@@ -501,27 +535,40 @@ export default class CreateTruck
                                     <input id="business-website" className="form-control" name="website" type="text"
                                            size="14"
                                            alt="WEBSITE" placeholder="http://"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.website = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
                                 <div id="form-business-menu" className="form-group">
                                     <div className="form-label">Menu URL</div>
                                     <input id="business-menu" className="form-control" name="menu" type="text"
                                            size="14"
                                            alt="MENU" placeholder="http://"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.menu = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
                                 <div id="form-business-twitter" className="form-group">
                                     <div className="form-label">Twitter URL</div>
                                     <input id="business-twitter" className="form-control" name="twitter" type="text"
                                            size="14"
                                            alt="TWITTER" placeholder="http://"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.twitter = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
-
                             </div>
                             <div className="col col-4 ml-3 py-3" id="form-schedule-container">
                                 <h5 className="text-center mb-5">Regular Schedule</h5>
-
                                 <Tabs onTabEdit={this.handleEdit}
                                       onTabChange={this.handleTabChange}
                                       activeIndex={activeIndex}
@@ -538,8 +585,6 @@ export default class CreateTruck
                                         {panelTemplate}
                                     </PanelList>
                                 </Tabs>
-
-
                             </div>
                             <div className="col col-2"></div>
                         </div>
@@ -555,7 +600,12 @@ export default class CreateTruck
                                            size="14"
                                            alt="PHOTO1"
                                            defaultValue={photo1} placeholder="http://"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.photos[0].href = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
                                 <div id="form-business-photo2" className="form-group">
                                     <div className="form-label">Photo 2 URL</div>
@@ -563,7 +613,12 @@ export default class CreateTruck
                                            size="14"
                                            alt="PHOTO2"
                                            defaultValue={photo2} placeholder="http://"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.photos[1].href = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
                                 <div id="form-business-photo3" className="form-group">
                                     <div className="form-label">Photo 3 URL</div>
@@ -571,7 +626,12 @@ export default class CreateTruck
                                            size="14"
                                            alt="PHOTO3"
                                            defaultValue={photo3} placeholder="http://"
-                                           onChange={this.handleInputChange} required/>
+                                           onChange={(e) => {
+                                               var truck = this.state.newTruck;
+                                               truck.photos[2].href = e.target.value;
+                                               this.setState({newTruck: truck});
+                                               this.handleInputChange(e);
+                                           }} required/>
                                 </div>
                             </div>
                             <div className="col col-4 py-3 ml-3" id="form-holiday-container">

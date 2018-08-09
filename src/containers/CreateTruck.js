@@ -62,143 +62,134 @@ export default class CreateTruck
         ref.parentNode.insertBefore(script, ref);
 
         this.handleExtraButton();
+    }
 
+    renderCategories() {
+        return(
+        constants.CATEGORIES.map((category, i) => (
+            <option value={category} key={i}>{category}</option>
+        )));
+}
 
+    renderContent(i) {
+        return (
+            <div>
+                <div className="schedule-content">
+                    {this.state.schedules[i].openTimes.map((openTime, j) => {
+                        var id1 = "open-" + i + "-" + j;
+                        var id2 = "close-" + i + "-" + j;
+                        return (
+                            <div className="schedule-day ml-3 mt-4" key={j}>
+                                <div className="form-check">
+                                    <input className="form-check-input" id={j} type="checkbox" value=""
+                                           defaultChecked={this.state.schedules[i].openTimes[j].checked}
+                                           onChange={(e) => {
+                                               var schedules = this.state.schedules;
+                                               if(e.target.checked === false) {
+                                                   schedules[i].openTimes[j].startTime = 0;
+                                                   schedules[i].openTimes[j].endTime = 0;
+                                                   document.getElementById(id1).value = 0;
+                                                   document.getElementById(id2).value = 0;
+                                               }
+                                               schedules[i].openTimes[j].checked = e.target.checked;
+                                               this.setState({schedules: schedules});
+                                           }}/>
+                                </div>
+                                {j === 0 && <span>MON</span>}
+                                {j === 1 && <span>TUE</span>}
+                                {j === 2 && <span>WED</span>}
+                                {j === 3 && <span>THU</span>}
+                                {j === 4 && <span>FRI</span>}
+                                {j === 5 && <span>SAT</span>}
+                                {j === 6 && <span>SUN</span>}
+
+                                <select className="form-control opentime mx-3" id={id1}
+                                        defaultValue={openTime.startTime}
+                                        onChange={(e) => {
+                                            var schedules = this.state.schedules;
+                                            schedules[i].openTimes[j].startTime = e.target.value;
+                                            this.setState({schedules: schedules});
+                                        }}>
+                                    <option value="0">0:00</option>
+                                    <option value="600">6:00</option>
+                                    <option value="630">6:30</option>
+                                    <option value="700">7:00</option>
+                                    <option value="730">7:30</option>
+                                    <option value="800">8:00</option>
+                                    <option value="830">8:30</option>
+                                    <option value="900">9:00</option>
+                                    <option value="930">9:30</option>
+                                    <option value="1000">10:00</option>
+                                    <option value="1030">10:30</option>
+                                    <option value="1100">11:00</option>
+                                    <option value="1130">11:30</option>
+                                    <option value="1200">12:00</option>
+                                    <option value="1230">12:30</option>
+                                    <option value="1300">13:00</option>
+                                    <option value="1330">13:30</option>
+                                    <option value="1400">14:00</option>
+                                    <option value="1430">14:30</option>
+                                    <option value="1500">15:00</option>
+                                    <option value="1530">15:30</option>
+                                    <option value="1600">16:00</option>
+                                    <option value="1630">16:30</option>
+                                    <option value="1700">17:00</option>
+                                    <option value="1730">17:30</option>
+                                    <option value="1800">18:00</option>
+                                </select>
+                                <span className="to">TO</span>
+                                <select className="form-control closetime ml-3" id={id2}
+                                        defaultValue={openTime.endTime}
+                                        onChange={(e) => {
+                                            var schedules = this.state.schedules;
+                                            schedules[i].openTimes[j].endTime = e.target.value;
+                                            this.setState({schedules: schedules});
+                                        }}>
+                                    <option value="0">0:00</option>
+                                    <option value="1000">10:00</option>
+                                    <option value="1030">10:30</option>
+                                    <option value="1100">11:00</option>
+                                    <option value="1130">11:30</option>
+                                    <option value="1200">12:00</option>
+                                    <option value="1230">12:30</option>
+                                    <option value="1300">13:00</option>
+                                    <option value="1330">13:30</option>
+                                    <option value="1400">14:00</option>
+                                    <option value="1430">14:30</option>
+                                    <option value="1500">15:00</option>
+                                    <option value="1530">15:30</option>
+                                    <option value="1600">16:00</option>
+                                    <option value="1630">16:30</option>
+                                    <option value="1700">17:00</option>
+                                    <option value="1730">17:30</option>
+                                    <option value="1800">18:00</option>
+                                    <option value="1830">18:30</option>
+                                    <option value="1900">19:00</option>
+                                    <option value="1930">19:30</option>
+                                    <option value="2000">20:00</option>
+                                    <option value="2030">20:30</option>
+                                    <option value="2100">21:00</option>
+                                    <option value="2130">21:30</option>
+                                    <option value="2200">22:00</option>
+                                    <option value="2230">22:30</option>
+                                    <option value="2300">23:00</option>
+                                    <option value="2330">23:30</option>
+                                </select>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
     }
 
     handleExtraButton() {
         const {tabs} = this.state;
-        var options1 = (<select className="form-control opentime mx-3">
-            <option>0:00</option>
-            <option>6:00</option>
-            <option>6:30</option>
-            <option>7:00</option>
-            <option>7:30</option>
-            <option>8:00</option>
-            <option>8:30</option>
-            <option>9:00</option>
-            <option>9:30</option>
-            <option>10:00</option>
-            <option>10:30</option>
-            <option>11:00</option>
-            <option>11:30</option>
-            <option>12:00</option>
-            <option>12:30</option>
-            <option>13:00</option>
-            <option>13:30</option>
-            <option>14:00</option>
-            <option>14:30</option>
-            <option>15:00</option>
-            <option>15:30</option>
-            <option>16:00</option>
-            <option>16:30</option>
-            <option>17:00</option>
-            <option>17:30</option>
-            <option>18:00</option>
-        </select>);
-        var options2 = (<select className="form-control closetime ml-3">
-            <option>0:00</option>
-            <option>10:00</option>
-            <option>10:30</option>
-            <option>11:00</option>
-            <option>11:30</option>
-            <option>12:00</option>
-            <option>12:30</option>
-            <option>13:00</option>
-            <option>13:30</option>
-            <option>14:00</option>
-            <option>14:30</option>
-            <option>15:00</option>
-            <option>15:30</option>
-            <option>16:00</option>
-            <option>16:30</option>
-            <option>17:00</option>
-            <option>17:30</option>
-            <option>18:00</option>
-            <option>18:30</option>
-            <option>19:00</option>
-            <option>19:30</option>
-            <option>20:00</option>
-            <option>20:30</option>
-            <option>21:00</option>
-            <option>21:30</option>
-            <option>22:00</option>
-            <option>22:30</option>
-            <option>23:00</option>
-            <option>23:30</option>
-        </select>);
-        var content = (
-            <div>
-                <div className="schedule-content">
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>MON</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>TUE</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>WED</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>THU</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>FRI</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>SAT</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                    <div className="schedule-day ml-3 mt-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value=""/>
-                        </div>
-                        <span>SUN</span>
-                        {options1}
-                        <span className="to">TO</span>
-                        {options2}
-                    </div>
-                </div>
-            </div>
-        );
-        const newTabs = [...tabs, {title: 'Location ' + (tabs.length + 1), content: content}];
-        this.setState({tabs: newTabs, activeIndex: newTabs.length - 1});
         this.createSchedule();
+        var i = this.state.schedules.length - 1;
+        const newTabs = [...tabs, {title: 'Location ' + (tabs.length + 1), content: this.renderContent(i)}];
+        this.setState({tabs: newTabs, activeIndex: newTabs.length - 1});
+
     }
 
     handleTabChange(index) {
@@ -209,6 +200,9 @@ export default class CreateTruck
         let {tabs, activeIndex} = this.state;
         if (type === 'delete') {
             tabs.splice(index, 1);
+            var schedules = this.state.schedules;
+            schedules.splice(index, 1);
+            this.setState({schedules: schedules});
         }
         if (index - 1 >= 0) {
             activeIndex = index - 1;
@@ -229,24 +223,6 @@ export default class CreateTruck
         this.setState({
             formData: formData
         });
-    }
-
-    validateLoginForm = (e) => {
-
-        let errors = {};
-        const {formData} = this.state;
-
-        if (isEmpty(formData.email) || isContainWhiteSpace(formData.email)
-            || !isLength(formData.email, {gte: 12, lte: 12, trim: true})) {
-            errors.email = "Phone number should be in the format +1XXXXXXXXXX";
-        }
-        ;
-
-        if (isEmpty(errors)) {
-            return true;
-        } else {
-            return errors;
-        }
     }
 
     findTruckByPhone = (e) => {
@@ -289,26 +265,63 @@ export default class CreateTruck
             latitude: '',
             longitude: '',
             openTimes: [
-                {day: 1, startTime: 0, endTime: 0},
-                {day: 2, startTime: 0, endTime: 0},
-                {day: 3, startTime: 0, endTime: 0},
-                {day: 4, startTime: 0, endTime: 0},
-                {day: 5, startTime: 0, endTime: 0},
-                {day: 6, startTime: 0, endTime: 0},
-                {day: 7, startTime: 0, endTime: 0}
+                {day: 1, startTime: 0, endTime: 0, checked: true},
+                {day: 2, startTime: 0, endTime: 0, checked: true},
+                {day: 3, startTime: 0, endTime: 0, checked: true},
+                {day: 4, startTime: 0, endTime: 0, checked: true},
+                {day: 5, startTime: 0, endTime: 0, checked: true},
+                {day: 6, startTime: 0, endTime: 0, checked: true},
+                {day: 7, startTime: 0, endTime: 0, checked: true}
             ]
         });
         this.setState({schedules: schedules});
     }
 
-    render() {
+    validateLoginForm = (e) => {
 
+        let errors = {};
+        const {formData} = this.state;
+
+        if (isEmpty(formData.email) || isContainWhiteSpace(formData.email)
+            || !isLength(formData.email, {gte: 12, lte: 12, trim: true})) {
+            errors.email = "Phone number should be in the format +1XXXXXXXXXX";
+        }
+
+        console.log(formData);
+        console.log(this.state.schedules);
+        if (isEmpty(errors)) {
+            return true;
+        } else {
+            return errors;
+        }
+
+    }
+
+    createTruck = (e) => {
+
+        e.preventDefault();
+
+        let errors = this.validateLoginForm();
+
+        if(errors === true){
+            console.log(1);
+            //this.userService.register({email: this.state.formData.email, password: this.state.formData.password});
+        } else {
+            alert(errors.email || errors.password);
+            this.setState({
+                errors: errors,
+                formSubmitted: true
+            });
+        }
+    }
+
+    render() {
         const {tabs, activeIndex} = this.state;
         const tabTemplate = [];
         const panelTemplate = [];
         tabs.forEach((tab, i) => {
             const closable = tabs.length > 1;
-            tabTemplate.push(<Tab key={i} closable={closable}>{tab.title}</Tab>);
+            tabTemplate.push(<Tab key={i} closable={closable}>Location {i+1}</Tab>);
             panelTemplate.push(<Panel key={i}>
                 <PlacesAutocomplete
                     value={this.state.schedules[i].address}
@@ -326,7 +339,6 @@ export default class CreateTruck
                                 schedules[i].latitude = latLng.lat;
                                 schedules[i].longitude = latLng.lng;
                                 this.setState({schedules: schedules});
-                                console.log(schedules);
                             })
                             .catch(error => console.error('Error', error));
                     }}
@@ -365,7 +377,8 @@ export default class CreateTruck
                         </div>
                     )}
                 </PlacesAutocomplete>
-                {tab.content}</Panel>);
+                {this.renderContent(i)}
+            </Panel>);
         })
         var formname = null;
         var formphone = null;
@@ -463,6 +476,25 @@ export default class CreateTruck
                                            size="14"
                                            alt="PHONE" defaultValue={formphone} placeholder="+1"
                                            onChange={this.handleInputChange} required/>
+                                </div>
+                                <div id="form-business-category" className="form-group">
+                                    <div className="form-label mb-3">Categories</div>
+                                    <div className="row mx-1">
+                                    <select className="col form-control category mr-2" id="category1" name="category1"
+                                            defaultValue='AMERICAN' onChange={this.handleInputChange} required>
+                                    {this.renderCategories()}
+                                    </select>
+                                    <select className="col form-control category mx-2" id="category2" name="category2"
+                                            defaultValue='ASIAN'
+                                            onChange={this.handleInputChange} required>
+                                        {this.renderCategories()}
+                                    </select>
+                                    <select className="col form-control category ml-2" id="category3" name="category3"
+                                            defaultValue='BREAKFAST' onChange={this.handleInputChange} required>
+                                        {this.renderCategories()}
+                                    </select>
+                                    </div>
+
                                 </div>
                                 <div id="form-business-website" className="form-group">
                                     <div className="form-label">Website</div>
@@ -566,6 +598,13 @@ export default class CreateTruck
                             </div>
                             <div className="col col-2"></div>
                         </div>
+                        <div className="row mb-1">
+                            <button className="btn btn-block ripple-effect create-button" type="submit" name="Submit"
+                                    alt="sign in">Save and Preview
+                            </button>
+
+                        </div>
+                        <div className="text-center pb-5"><a href='/dashboard'>Go back without saving</a></div>
                     </form>
                 </div>
 

@@ -34,7 +34,6 @@ export default class TruckEditor
             formSubmitted: false, // Indicates submit status of login form
             loading: false, // Indicates in progress state of login form
             owner: {},
-            oldTruck: {},
             newTruck: {},
             truckId: null,
             count: 0
@@ -43,7 +42,6 @@ export default class TruckEditor
         this.truckService = TruckServiceClient.instance();
         this.scheduleService = ScheduleServiceClient.instance();
         this.photoService = PhotoServiceClient.instance();
-        this.reviewService = ReviewServiceClient.instance();
         this.openTimeService = OpenTimeServiceClient.instance();
         this.holidayService = HolidayServiceClient.instance();
 
@@ -63,7 +61,6 @@ export default class TruckEditor
         this.truckService.findTruckById(truckId)
             .then(truck => {
                 this.setState({newTruck: truck});
-                this.setState({oldTruck: truck});
                 this.initTab();
             });
 
@@ -293,56 +290,85 @@ export default class TruckEditor
     updateTruck = (e) => {
         e.preventDefault();
 
-        this.truckService.updateTruck(this.state.newTruck.id, this.state.newTruck)
-            .then((truck) => {
-                this.state.oldTruck.schedules.map((schedule) => {
-                    this.scheduleService.deleteSchedule(schedule.id);
-                });
-                this.state.oldTruck.holidays.map((holiday) => {
-                    this.holidayService.deleteHoliday(holiday.id);
-                });
-                this.state.oldTruck.photos.map((photo) => {
-                    this.photoService.deletePhoto(photo.id);
-                });
-                this.state.newTruck.schedules.map((schedule, i) => {
-                    this.scheduleService.createSchedule(this.state.newTruck.id, schedule)
-                        .then((newSchedule) => {
-                            return newSchedule.id;
-                        })
-                        .then((newScheduleId) => {
-                            this.state.newTruck.schedules[i].openTimes.map((openTime) => {
-                                console.log(openTime);
-                                delete openTime.id;
-                                delete openTime.schedule;
-                                console.log(openTime);
-                                this.openTimeService.createOpenTime(this.state.newTruck.id, newScheduleId, openTime)
-                                    .then(() => {
-                                        this.setState({count: this.state.count + 1});
-                                    })
-                            })
+        let newTruck = this.state.newTruck;
+        this.truckService.findTruckById(newTruck.id)
+            .then((oldTruck) => {
+                oldTruck.schedules.map((schedule) => {
+                    this.scheduleService.deleteSchedule(schedule.id)
+                        .then((response) => {
+                            if (response) {
+                                //this.setState({count: this.state.count + 1});
+                            }
                         });
                 });
-                this.state.newTruck.photos.map((photo) => {
-                    this.photoService.createPhoto(this.state.newTruck.id, photo)
-                        .then(() => {
-                            this.setState({count: this.state.count + 1});
+               // this.setState({tabs: []});
+                oldTruck.photos.map((photo) => {
+                    this.photoService.deletePhoto(photo.id)
+                        .then((response) => {
+                            if (response) {
+                                //this.setState({count: this.state.count + 1});
+                            }
                         });
                 });
-                this.state.newTruck.holidays.map((holiday) => {
-                    this.holidayService.createHoliday(this.state.newTruck.id, holiday)
-                        .then(() => {
-                            this.setState({count: this.state.count + 1});
+                oldTruck.holidays.map((holiday) => {
+                    this.holidayService.deleteHoliday(holiday.id)
+                        .then((response) => {
+                            if (response) {
+                                //console.log(2);
+                                //this.setState({count: this.state.count + 1});
+                            }
                         });
                 });
-                this.setState({truckId: truck.id});
             });
+
+        newTruck.schedules.map((schedule, i) => {
+            delete schedule.id;
+            this.scheduleService.createSchedule(newTruck.id, schedule)
+                .then((newSchedule) => {
+                    return newSchedule.id;
+                })
+                .then((newScheduleId) => {
+                    newTruck.schedules[i].openTimes.map((openTime) => {
+                        delete openTime.id;
+                        this.openTimeService.createOpenTime(newTruck.id, newScheduleId, openTime)
+                            .then((openTime) => {
+                                if (openTime !== undefined && openTime !== {} && openTime !== null) {
+                                    this.setState({count: this.state.count + 1});
+                                }
+                            })
+                    })
+                });
+        });
+        newTruck.photos.map((photo) => {
+            delete photo.id;
+            this.photoService.createPhoto(newTruck.id, photo)
+                .then((photo) => {
+                    if (photo !== undefined && photo !== {} && photo !== null) {
+
+                        this.setState({count: this.state.count + 1});
+                    }
+                });
+        });
+
+        newTruck.holidays.map((holiday) => {
+            delete holiday.id;
+            this.holidayService.createHoliday(newTruck.id, holiday)
+                .then((holiday) => {
+                    if (holiday !== undefined && holiday !== {} && holiday !== null) {
+                        this.setState({count: this.state.count + 1});
+                    }
+                });
+        });
+        this.truckService.updateTruck(newTruck.id, newTruck).then((truck)=>{
+            console.log(truck);
+        });
     }
 
     render() {
-        if (this.state.truckId !== null && this.state.truckId !== undefined) {
+        if (this.state.newTruck !== {}
+            && this.state.newTruck.schedules !== undefined && this.state.newTruck.holidays !== undefined) {
             if (this.state.count >= this.state.newTruck.schedules.length * 7 + this.state.newTruck.holidays.length + 3) {
                 alert("Truck Updated");
-                console.log(this.state.truckId);
                 //window.location.href = "/truck/" + this.state.truckId + "/preview";
             }
         }
@@ -438,13 +464,13 @@ export default class TruckEditor
                         </div>
                     </span>
                 </nav>
-                {this.state.newTruck === {}
+                {(this.state.newTruck === {})
                 &&
                 <div className="container" id="create-container">
                     <div className="truck-loader"><img alt="" src={loader}/></div>
                 </div>
                 }
-                {this.state.newTruck !== {} && this.state.newTruck.photos !== undefined && this.state.newTruck.reviews !== undefined
+                {this.state.count === 0 && this.state.newTruck !== {} && this.state.newTruck.photos !== undefined && this.state.newTruck.reviews !== undefined
                 && this.state.newTruck.schedules !== undefined && this.state.newTruck.holidays !== undefined &&
                 <div className="container" id="create-container">
                     <h1 className="display1">Business Information</h1>

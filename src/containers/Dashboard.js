@@ -71,7 +71,7 @@ export default class Dashboard
             </div>);
 
         if (this.state.trucks !== undefined && this.state.trucks.length > 0) {
-            this.truckService.deleteTruck(this.state.trucks[0].id);
+            //this.truckService.deleteTruck(this.state.trucks[0].id);
             content = (
                 <div id="dashboard" className="card-group">
                     <a className="create-truck" href="/dashboard/create">Add New Truck</a>

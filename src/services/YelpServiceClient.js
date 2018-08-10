@@ -22,9 +22,8 @@ export default class YelpServiceClient {
                 if (response.status === 500) {
                     alert("Cannot find truck with this phone number.")
                     return false;
-                } else {
-                    return response.json();
                 }
+                return response.json();;
             })
     }
 }

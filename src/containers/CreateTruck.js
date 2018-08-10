@@ -343,6 +343,7 @@ export default class CreateTruck
                 return truck.id
             })
             .then((truckId) => {
+                console.log(truckId);
                 this.state.newTruck.schedules.map((schedule, i) => {
                     this.scheduleService.createSchedule(truckId, schedule)
                         .then((newSchedule) => {

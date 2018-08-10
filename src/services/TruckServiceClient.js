@@ -49,7 +49,7 @@ export default class TruckServiceClient {
             }
         }).then(response => {
             if (response.status === 500) {
-                alert("cannot update truck")
+                //alert("cannot update truck")
             }
             return response.json()
         });

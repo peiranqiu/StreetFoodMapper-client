@@ -66,8 +66,10 @@ export default class ScheduleServiceClient {
         })
             .then(response => {
                 if (response.status === 404) {
-                    alert("cannot find")
+                    alert("cannot find");
+                    return false;
                 }
+                return true;
             })
     }
 }

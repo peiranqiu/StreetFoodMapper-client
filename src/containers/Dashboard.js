@@ -16,7 +16,8 @@ export default class Dashboard
     constructor(props) {
         super(props);
         this.state = {
-            owner: {}
+            owner: {},
+            trucks: []
         }
         this.ownerService = OwnerServiceClient.instance();
         this.truckService = TruckServiceClient.instance();
@@ -26,7 +27,12 @@ export default class Dashboard
         this.ownerService.findCurrentOwner()
             .then(owner => {
                 this.setState({owner: owner});
+                this.truckService.findTrucksForOwner(owner.id)
+                    .then(trucks => {
+                        this.setState({trucks: trucks});
+                    });
             });
+
     }
 
     logout = (e) => {
@@ -37,32 +43,40 @@ export default class Dashboard
         if (window.confirm('Delete Truck?')) {
             this.truckService.deleteTruck(id);
         }
+        window.location.reload();
     }
 
     render() {
         if (this.state.owner === undefined || this.state.owner === {}) {
-            window.location.href = "/register/owner";
+            alert("Plase Log In");
+            window.location.href = "/login/owner";
         }
 
         var content = (
-            <div id="dashboard" className="user-page-card">
+            <div id="dashboard" className="card-group">
                 <div className="list-group">
-                    <div className="list-group-item list-group-item-action flex-column align-items-start" id="new-truck">
+                    <div className="list-group-item list-group-item-action flex-column align-items-start"
+                         id="new-truck">
                         <div className="row justify-content-between">
                             <div>You don’t have any truck profiles set up yet.</div>
-                            <button type="button" className="btn btn-block ripple-effect">
-                                <a className="text-dark" href="/dashboard/create">Add Your First Truck</a></button>
+                            <button type="button" className="btn btn-block ripple-effect"
+                                    onClick={() => {
+                                        window.location.href = "/dashboard/create"
+                                    }}>
+                                Add Your First Truck
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>);
 
-        if (this.state.owner.trucks !== undefined && this.state.owner.trucks.length > 0) {
+        if (this.state.trucks !== undefined && this.state.trucks.length > 0) {
+            this.truckService.deleteTruck(this.state.trucks[0].id);
             content = (
                 <div id="dashboard" className="card-group">
                     <a className="create-truck" href="/dashboard/create">Add New Truck</a>
                     <div className="row">
-                        {this.state.owner.trucks.map((truck) => {
+                        {this.state.trucks.map((truck) => {
                             var href = "/truck/" + truck.id + "/edit";
                             return (
                                 <div className="col-6" key={truck.id}>
@@ -70,7 +84,10 @@ export default class Dashboard
                                         <img className="truck-item-img"
                                              src={truck.photos[0].href}/>
                                         <div className="truck-item-title">{truck.name}</div>
-                                        <button className="btn btn-block ripple-effect" alt=""><a className="text-dark" href={href}>Edit</a>
+                                        <button className="btn btn-block ripple-effect" alt=""
+                                                onClick={() => {
+                                                    window.location.href = href
+                                                }}>Edit
                                         </button>
                                         <a className="delete-truck" onClick={() => this.delete(truck.id)}>Delete</a>
                                     </div>

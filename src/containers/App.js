@@ -14,6 +14,8 @@ import Dashboard from './Dashboard'
 import Policy from '../constants/Policy'
 import TruckPage from './TruckPage'
 import CreateTruck from './CreateTruck'
+import TruckPreview from './TruckPreview'
+import TruckEditor from './TruckEditor'
 
 export default class App extends Component {
     componentDidMount() {
@@ -40,10 +42,10 @@ export default class App extends Component {
                 <Route exact path="/policy" component={Policy}/>
                 <Route exact path="/truck/:truckId" component={TruckPage}/>
                 <Route exact path="/dashboard/create" component={CreateTruck}/>
+                <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
+                <Route exact path="/truck/:truckId/edit" component={TruckEditor}/>
                 {/*
                 <Route exact path="/admin" component={AdminPage}/>
-                <Route path="/truck/:truckId/edit" component={TruckEditor}/>
-                <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
                 */}
             </Switch>
         </Router>

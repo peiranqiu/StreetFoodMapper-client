@@ -66,7 +66,7 @@ export default class ScheduleServiceClient {
         })
             .then(response => {
                 if (response.status === 404) {
-                    alert("cannot find user")
+                    alert("cannot find")
                 }
             })
     }

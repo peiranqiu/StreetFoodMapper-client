@@ -37,4 +37,29 @@ export default class ReviewServiceClient {
         return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/review')
             .then(response => response.json());
     }
+
+
+
+    createReview(truckId, review) {
+        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/review', {
+            method: 'post',
+            body: JSON.stringify(review),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(response => {
+            return response.json()
+        });
+    }
+
+    deleteReview(reviewId) {
+        return fetch(constants.ALL_REVIEW_URL + '/' + reviewId, {
+            method: 'delete'
+        })
+            .then(response => {
+                if (response.status === 404) {
+                    alert("cannot find")
+                }
+            })
+    }
 }

@@ -16,8 +16,8 @@ export default class OpenTimeServiceClient {
         return this[_singleton];
     }
 
-    createOpenTime(scheduleId, openTime) {
-        return fetch(constants.ALL_SCHEDULE_URL + '/' + scheduleId + '/openTime', {
+    createOpenTime(truckId, scheduleId, openTime) {
+        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/schedule/' + scheduleId + '/openTime', {
             method: 'post',
             body: JSON.stringify(openTime),
             headers: {
@@ -26,6 +26,17 @@ export default class OpenTimeServiceClient {
         }).then(response => {
             return response.json()
         });
+    }
+
+    deleteOpenTime(openTimeId) {
+        return fetch(constants.ALL_OPENTIME_URL + '/' + openTimeId, {
+            method: 'delete'
+        })
+            .then(response => {
+                if (response.status === 404) {
+                    alert("cannot find")
+                }
+            })
     }
 
     findOpenTimeById(openTimeId) {
@@ -53,16 +64,5 @@ export default class OpenTimeServiceClient {
     findOpenTimesForSchedule(truckId, scheduleId) {
         return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/schedule/' + scheduleId + '/openTime')
             .then(response => response.json());
-    }
-
-    deleteOpenTime(openTimeId) {
-        return fetch(constants.ALL_OPENTIME_URL + '/' + openTimeId, {
-            method: 'delete'
-        })
-            .then(response => {
-                if (response.status === 404) {
-                    alert("cannot find user")
-                }
-            })
     }
 }

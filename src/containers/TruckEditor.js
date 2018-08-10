@@ -2,8 +2,6 @@ import React from 'react'
 import '../../node_modules/bootstrap/js/dist/dropdown.js'
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../../node_modules/font-awesome/css/font-awesome.css'
-import {Modal, Button} from 'bootstrap'
-import $ from 'jquery'
 import '../styles/test.css'
 import '../styles/user.css'
 import '../styles/truck.css'
@@ -11,21 +9,20 @@ import '../styles/dashboard.css'
 import logo from '../resources/background/logo-red.png'
 import user from '../resources/icons/user-white.png'
 import OwnerServiceClient from "../services/OwnerServiceClient";
-import YelpServiceClient from "../services/YelpServiceClient";
 import TruckServiceClient from "../services/TruckServiceClient";
-import ScheduleServiceClient from "../services/ScheduleServiceClient";
-import PhotoServiceClient from "../services/PhotoServiceClient";
-import ReviewServiceClient from "../services/ReviewServiceClient";
-import OpenTimeServiceClient from "../services/OpenTimeServiceClient";
 import HolidayServiceClient from "../services/HolidayServiceClient";
-import {isEmpty, isLength, isContainWhiteSpace} from '../constants/validator'
 import DatePicker from 'react-date-picker'
 import {Tabs, TabList, Tab, PanelList, Panel, ExtraButton} from 'react-tabtab';
 import * as constants from "../constants/constant";
 import {geocodeByAddress, geocodeByPlaceId, getLatLng,} from 'react-places-autocomplete';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import loader from "../resources/background/loader.gif"
+import OpenTimeServiceClient from "../services/OpenTimeServiceClient";
+import ScheduleServiceClient from "../services/ScheduleServiceClient";
+import PhotoServiceClient from "../services/PhotoServiceClient";
+import ReviewServiceClient from "../services/ReviewServiceClient";
 
-export default class CreateTruck
+export default class TruckEditor
     extends React.Component {
     constructor(props) {
         super(props);
@@ -37,24 +34,12 @@ export default class CreateTruck
             formSubmitted: false, // Indicates submit status of login form
             loading: false, // Indicates in progress state of login form
             owner: {},
+            oldTruck: {},
+            newTruck: {},
             truckId: null,
-            count: 0,
-            newTruck: {
-                url: "not provided",
-                twitter: "",
-                website: "not provided",
-                menu: "not provided",
-                rating: 1,
-                holidays: [],
-                schedules: [],
-                photos: [{href: ''}, {href: ''}, {href: ''}],
-                category1: 'AMERICAN',
-                category2: 'ASIAN',
-                category3: 'BREAKFAST'
-            }
+            count: 0
         };
         this.ownerService = OwnerServiceClient.instance();
-        this.yelpService = YelpServiceClient.instance();
         this.truckService = TruckServiceClient.instance();
         this.scheduleService = ScheduleServiceClient.instance();
         this.photoService = PhotoServiceClient.instance();
@@ -65,6 +50,7 @@ export default class CreateTruck
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleExtraButton = this.handleExtraButton.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.initTab = this.initTab.bind(this);
     }
 
     componentDidMount() {
@@ -72,8 +58,14 @@ export default class CreateTruck
             .then(owner => {
                 this.setState({owner: owner});
             });
-        $('.modal').modal('show');
 
+        let truckId = this.props.match.params.truckId;
+        this.truckService.findTruckById(truckId)
+            .then(truck => {
+                this.setState({newTruck: truck});
+                this.setState({oldTruck: truck});
+                this.initTab();
+            });
 
         window.myCallbackFunc = function () {
             window.initOne && window.initOne();
@@ -85,7 +77,7 @@ export default class CreateTruck
         script.async = true;
         ref.parentNode.insertBefore(script, ref);
 
-        this.handleExtraButton();
+
     }
 
     renderCategories() {
@@ -106,7 +98,7 @@ export default class CreateTruck
                             <div className="schedule-day ml-3 mt-4" key={j}>
                                 <div className="form-check">
                                     <input className="form-check-input" id={j} type="checkbox" value=""
-                                           defaultChecked={this.state.newTruck.schedules[i].openTimes[j].checked}
+                                           defaultChecked={this.state.newTruck.schedules[i].openTimes[j].startTime !== 0}
                                            onChange={(e) => {
                                                var newTruck = this.state.newTruck;
                                                if (e.target.checked === false) {
@@ -208,6 +200,16 @@ export default class CreateTruck
     }
 
 
+    initTab() {
+        const {tabs} = this.state;
+        var len = this.state.newTruck.schedules.length;
+        var newTabs = [...tabs];
+        for (var i = 0; i < len; i++) {
+            newTabs.push({title: 'Location ' + (i + 1), content: this.renderContent(i)});
+        }
+        this.setState({tabs: newTabs});
+    }
+
     handleExtraButton() {
         const {tabs} = this.state;
         this.createSchedule();
@@ -249,35 +251,6 @@ export default class CreateTruck
         });
     }
 
-    findTruckByPhone = (e) => {
-
-        e.preventDefault();
-
-        let errors = this.validateLoginForm();
-
-        if (errors === true) {
-            this.yelpService.findTruckByPhone(this.state.formData.email).then((truck) => {
-                if (truck !== false) {
-                    var schedules = this.state.newTruck.schedules;
-                    truck.category1 = 'AMERICAN';
-                    truck.category2 = 'ASIAN';
-                    truck.category3 = 'BREAKFAST';
-                    truck.schedules = schedules;
-                    truck.holidays = [];
-                    this.setState({newTruck: truck});
-                    $('.modal').modal('hide');
-                }
-            })
-        } else {
-            alert(errors.email);
-            this.setState({
-                errors: errors,
-                formSubmitted: true
-            });
-        }
-    }
-
-
     logout = (e) => {
         this.ownerService.logout();
     }
@@ -317,40 +290,32 @@ export default class CreateTruck
         this.setState({newTruck: newTruck});
     }
 
-    validateLoginForm = (e) => {
-
-        let errors = {};
-        const {formData} = this.state;
-
-        if (isEmpty(formData.email) || isContainWhiteSpace(formData.email)
-            || !isLength(formData.email, {gte: 12, lte: 12, trim: true})) {
-            errors.email = "Phone number should be in the format +1XXXXXXXXXX";
-        }
-
-
-        if (isEmpty(errors)) {
-            return true;
-        } else {
-            return errors;
-        }
-
-    }
-
-    createTruck = (e) => {
+    updateTruck = (e) => {
         e.preventDefault();
-        this.truckService.createTruck(this.state.owner.id, this.state.newTruck)
+
+        this.truckService.updateTruck(this.state.newTruck.id, this.state.newTruck)
             .then((truck) => {
-                return truck.id
-            })
-            .then((truckId) => {
+                this.state.oldTruck.schedules.map((schedule) => {
+                    this.scheduleService.deleteSchedule(schedule.id);
+                });
+                this.state.oldTruck.holidays.map((holiday) => {
+                    this.holidayService.deleteHoliday(holiday.id);
+                });
+                this.state.oldTruck.photos.map((photo) => {
+                    this.photoService.deletePhoto(photo.id);
+                });
                 this.state.newTruck.schedules.map((schedule, i) => {
-                    this.scheduleService.createSchedule(truckId, schedule)
+                    this.scheduleService.createSchedule(this.state.newTruck.id, schedule)
                         .then((newSchedule) => {
                             return newSchedule.id;
                         })
                         .then((newScheduleId) => {
                             this.state.newTruck.schedules[i].openTimes.map((openTime) => {
-                                this.openTimeService.createOpenTime(truckId, newScheduleId, openTime)
+                                console.log(openTime);
+                                delete openTime.id;
+                                delete openTime.schedule;
+                                console.log(openTime);
+                                this.openTimeService.createOpenTime(this.state.newTruck.id, newScheduleId, openTime)
                                     .then(() => {
                                         this.setState({count: this.state.count + 1});
                                     })
@@ -358,32 +323,27 @@ export default class CreateTruck
                         });
                 });
                 this.state.newTruck.photos.map((photo) => {
-                    this.photoService.createPhoto(truckId, photo)
-                        .then(() => {
-                            this.setState({count: this.state.count + 1});
-                        });
-                });
-                this.state.newTruck.reviews.map((review) => {
-                    this.reviewService.createReview(truckId, review)
+                    this.photoService.createPhoto(this.state.newTruck.id, photo)
                         .then(() => {
                             this.setState({count: this.state.count + 1});
                         });
                 });
                 this.state.newTruck.holidays.map((holiday) => {
-                    this.holidayService.createHoliday(truckId, holiday)
+                    this.holidayService.createHoliday(this.state.newTruck.id, holiday)
                         .then(() => {
                             this.setState({count: this.state.count + 1});
                         });
                 });
-                this.setState({truckId: truckId});
+                this.setState({truckId: truck.id});
             });
     }
 
     render() {
-        if (this.state.truckId !== null) {
-            if (this.state.count >= this.state.newTruck.schedules.length * 7 + this.state.newTruck.holidays.length + 6) {
-                alert("Truck Created");
-                window.location.href = "/truck/" + this.state.truckId + "/preview";
+        if (this.state.truckId !== null && this.state.truckId !== undefined) {
+            if (this.state.count >= this.state.newTruck.schedules.length * 7 + this.state.newTruck.holidays.length + 3) {
+                alert("Truck Updated");
+                console.log(this.state.truckId);
+                //window.location.href = "/truck/" + this.state.truckId + "/preview";
             }
         }
         if (this.state.owner === undefined || this.state.owner === {}) {
@@ -453,55 +413,10 @@ export default class CreateTruck
                 </PlacesAutocomplete>
                 {this.renderContent(i)}
             </Panel>);
-        })
-        var formname = null;
-        var formphone = null;
-        var photo1 = null;
-        var photo2 = null;
-        var photo3 = null;
-        if (this.state.newTruck !== {} && this.state.newTruck.photos !== undefined) {
-            formname = this.state.newTruck.name;
-            formphone = this.state.newTruck.phone;
-            photo1 = this.state.newTruck.photos[0].href;
-            photo2 = this.state.newTruck.photos[1].href;
-            photo3 = this.state.newTruck.photos[2].href;
-        }
-
-
-        var modal = (
-            <div className="modal fade ripple-effect" id="exampleModal" tabIndex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Yelp Connect</h5>
-                        </div>
-                        <div className="modal-body">
-                            <form action="" method="" className="" role="form" onSubmit={this.findTruckByPhone}>
-                                <div className="form-group">
-                                    <div htmlFor="recipient-name" className="col-form-label">
-                                        Create your truck page faster by entering the phone number associated with your
-                                        Yelp business page.
-                                    </div>
-                                    <input className="form-control" id="recipient-name" placeholder="+1XXXXXXXXXX"
-                                           name="email" type="text" size="14"
-                                           alt="PHONE" onChange={this.handleInputChange} required/>
-                                </div>
-                                <button type="submit" className="btn yelp-btn" name="Submit"><i
-                                    className="fa fa-yelp"></i>Connect To Yelp
-                                </button>
-                            </form>
-
-
-                            <div className="manual"><a onClick={() => ($('.modal').modal('hide'))}>I'll fill out the
-                                info manually.</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+        });
 
         return (
+
             <div id="profile-page" className="user-page vendor-page">
                 <nav className="navbar navbar-light sticky-top">
                     <a className="navbar-brand mt-2" href="/dashboard">
@@ -523,14 +438,17 @@ export default class CreateTruck
                         </div>
                     </span>
                 </nav>
+                {this.state.newTruck === {}
+                &&
                 <div className="container" id="create-container">
-                    {modal}
+                    <div className="truck-loader"><img alt="" src={loader}/></div>
+                </div>
+                }
+                {this.state.newTruck !== {} && this.state.newTruck.photos !== undefined && this.state.newTruck.reviews !== undefined
+                && this.state.newTruck.schedules !== undefined && this.state.newTruck.holidays !== undefined &&
+                <div className="container" id="create-container">
                     <h1 className="display1">Business Information</h1>
-                    <div className="yelp-div">
-                        <button className="btn yelp-yellow-btn btn-block ripple-effect"
-                                onClick={() => $('.modal').modal('show')}>
-                            <i className="fa fa-yelp"></i>Fill Out With Yelp
-                        </button>
+                    <div className="yelp-preview">
                     </div>
                     <form action="" method="" className="create-form" role="form">
                         <div className="row">
@@ -541,7 +459,7 @@ export default class CreateTruck
                                 <div id="form-business-name" className="form-group">
                                     <div className="form-label">Business Name</div>
                                     <input id="business-name" className="form-control" name="name" type="text" size="14"
-                                           alt="NAME" defaultValue={formname}
+                                           alt="NAME" defaultValue={this.state.newTruck.name}
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.name = e.target.value;
@@ -554,7 +472,7 @@ export default class CreateTruck
                                     <div className="form-label">Phone Number</div>
                                     <input id="business-phone" className="form-control" name="phone" type="text"
                                            size="14"
-                                           alt="PHONE" defaultValue={formphone} placeholder="+1"
+                                           alt="PHONE" defaultValue={this.state.newTruck.phone} placeholder="+1"
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.phone = e.target.value;
@@ -567,7 +485,7 @@ export default class CreateTruck
                                     <div className="row mx-1">
                                         <select className="col form-control category mr-2" id="category1"
                                                 name="category1"
-                                                defaultValue='AMERICAN'
+                                                defaultValue={this.state.newTruck.category1}
                                                 onChange={(e) => {
                                                     var truck = this.state.newTruck;
                                                     truck.category1 = e.target.value;
@@ -578,7 +496,7 @@ export default class CreateTruck
                                         </select>
                                         <select className="col form-control category mx-2" id="category2"
                                                 name="category2"
-                                                defaultValue='ASIAN'
+                                                defaultValue={this.state.newTruck.category2}
                                                 onChange={(e) => {
                                                     var truck = this.state.newTruck;
                                                     truck.category2 = e.target.value;
@@ -589,7 +507,7 @@ export default class CreateTruck
                                         </select>
                                         <select className="col form-control category ml-2" id="category3"
                                                 name="category3"
-                                                defaultValue='BREAKFAST'
+                                                defaultValue={this.state.newTruck.category3}
                                                 onChange={(e) => {
                                                     var truck = this.state.newTruck;
                                                     truck.category3 = e.target.value;
@@ -604,8 +522,7 @@ export default class CreateTruck
                                 <div id="form-business-website" className="form-group">
                                     <div className="form-label">Website</div>
                                     <input id="business-website" className="form-control" name="website" type="text"
-                                           size="14"
-                                           alt="WEBSITE" placeholder="http://"
+                                           size="14" alt="WEBSITE" defaultValue={this.state.newTruck.website}
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.website = e.target.value;
@@ -617,7 +534,7 @@ export default class CreateTruck
                                     <div className="form-label">Menu URL</div>
                                     <input id="business-menu" className="form-control" name="menu" type="text"
                                            size="14"
-                                           alt="MENU" placeholder="http://"
+                                           alt="MENU" defaultValue={this.state.newTruck.menu}
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.menu = e.target.value;
@@ -629,7 +546,7 @@ export default class CreateTruck
                                     <div className="form-label">Twitter URL</div>
                                     <input id="business-twitter" className="form-control" name="twitter" type="text"
                                            size="14"
-                                           alt="TWITTER" placeholder="http://"
+                                           alt="TWITTER" defaultValue={this.state.newTruck.twitter}
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.twitter = e.target.value;
@@ -671,7 +588,7 @@ export default class CreateTruck
                                     <input id="business-photo1" className="form-control" name="photo1" type="text"
                                            size="14"
                                            alt="PHOTO1"
-                                           defaultValue={photo1} placeholder="http://"
+                                           defaultValue={this.state.newTruck.photos[0].href} placeholder="http://"
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.photos[0].href = e.target.value;
@@ -684,7 +601,7 @@ export default class CreateTruck
                                     <input id="business-photo2" className="form-control" name="photo2" type="text"
                                            size="14"
                                            alt="PHOTO2"
-                                           defaultValue={photo2} placeholder="http://"
+                                           defaultValue={this.state.newTruck.photos[1].href} placeholder="http://"
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.photos[1].href = e.target.value;
@@ -697,7 +614,7 @@ export default class CreateTruck
                                     <input id="business-photo3" className="form-control" name="photo3" type="text"
                                            size="14"
                                            alt="PHOTO3"
-                                           defaultValue={photo3} placeholder="http://"
+                                           defaultValue={this.state.newTruck.photos[2].href} placeholder="http://"
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.photos[2].href = e.target.value;
@@ -720,9 +637,7 @@ export default class CreateTruck
                                                 }} value={this.numberToDate(this.state.newTruck.holidays[i].date)}/>
                                                 <a onClick={() => {
                                                     var newTruck = this.state.newTruck;
-                                                    console.log(newTruck.holidays);
                                                     newTruck.holidays.splice(i, 1);
-                                                    console.log(newTruck.holidays);
                                                     this.setState({newTruck: newTruck});
                                                 }}>
                                                     <i className="fa fa-times"></i></a></div>)
@@ -733,13 +648,11 @@ export default class CreateTruck
                         </div>
                         <div className="row mb-1">
                             <button className="btn btn-block ripple-effect create-button" type="submit" name="Submit"
-                                    alt="sign in" onClick={this.createTruck}>Save and Preview
+                                    alt="sign in" onClick={this.updateTruck}>Save and Preview
                             </button>
-
                         </div>
-                        <div className="text-center pb-5"><a href='/dashboard'>Go back without saving</a></div>
                     </form>
-                </div>
+                </div>}
 
                 <nav className="navbar navbar-light sticky-bottom">
                     <a className="navbar-brand">

@@ -21,6 +21,7 @@ export const ALL_SCHEDULE_URL = SERVER + '/schedule';
 export const ALL_OPENTIME_URL = SERVER + '/openTime';
 export const ALL_REVIEW_URL = SERVER + '/review';
 export const ALL_PHOTO_URL = SERVER + '/photo';
+export const ALL_HOLIDAY_URL = SERVER + '/holiday';
 export const FAVORITE_API_URL = SERVER + '/favorite';
 export const CATEGORIES = [
     'AMERICAN', 'ASIAN', 'BREAKFAST', 'BURGERS', 'CHEESE', 'CHINESE', 'COFFEE', 'DRINKS', 'HALAL', 'ICECREAM',

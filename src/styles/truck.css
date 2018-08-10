@@ -308,3 +308,36 @@ width:300px;
 #feed-container .card-rating {
     padding-bottom:5px;
 }
+
+.preview-container {
+    background-color: #858135;
+    position:fixed;
+    width: 100vw;
+    height: 48px;
+    vertical-align: middle !important;
+    display: inline-block;
+}
+.preview-container div {
+    font-family: DINPro-Bold;
+    margin-top:10px;
+    font-size: 18px;
+    color:black;
+}
+.preview-container button{
+    position:absolute;
+    top:10px;
+    height:28px;
+    width:150px;
+    font-size:14px;
+    padding-top: 3px;
+    border: none;
+}
+.btn-1 {
+    right:250px;
+}
+.btn-2 {
+    right:60px;
+}
+.nav-preview {
+    cursor: default;
+}

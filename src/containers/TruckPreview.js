@@ -9,7 +9,6 @@ import logo from '../resources/background/logo.png'
 import user from '../resources/icons/user.png'
 import TruckServiceClient from '../services/TruckServiceClient'
 import UserServiceClient from "../services/UserServiceClient";
-import loader from "../resources/background/loader.gif"
 import rating1 from '../resources/icons/rating1.png'
 import rating2 from '../resources/icons/rating2.png'
 import rating3 from '../resources/icons/rating3.png'
@@ -26,42 +25,25 @@ import {
     TwitterTimelineEmbed
 } from 'react-twitter-embed';
 
-export default class TruckPage
+export default class TruckPreview
     extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            user: {},
             truck: {}
         };
 
         this.truckService = TruckServiceClient.instance();
-        this.userService = UserServiceClient.instance();
     }
 
     componentDidMount() {
         let truckId = this.props.match.params.truckId;
         this.truckService.findTruckById(truckId)
             .then(truck => {
+                console.log(truck);
                 this.setState({truck: truck});
             });
-        this.userService.findCurrentUser()
-            .then(user => {
-                this.setState({user: user});
-            });
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.userService.findCurrentUser()
-            .then(user => {
-                this.setState({user: user});
-            });
-    }
-
-    logout = (e) => {
-
-        this.userService.logout();
     }
 
     format(time) {
@@ -140,40 +122,18 @@ export default class TruckPage
 
         return (
             <div id="truck-page">
-                <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="/home">
-                        <img src={logo} width="106.4" height="38"
-                             className="mr-3 d-inline-block align-top" alt=""/>
-                    </a>
-                    <a className="nav-item" id="nav-item-0" href="#">About</a>
-                    <a className="nav-item" id="nav-item-1" href="#schedule-anchor">Schedules</a>
-                    <a className="nav-item" id="nav-item-2" href="#feed-anchor">Feeds</a>
-                    <span className="nav-item dropdown" id="user-icon">
-                        <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
-                        </a>
-                        {this.state.user !== undefined
-                        && <a className="nav-item current-user">{this.state.user.email}</a>}
-                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            {this.state.user === undefined
-                            && <a className="dropdown-item" href="/login/user">Log In</a>}
-                            {this.state.user === undefined
-                            && <a className="dropdown-item" href="/register/user">Register</a>}
-                            {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/profile/user">Profile</a>}
-                            {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
-                        </div>
-                    </span>
-                </nav>
+                <div className="preview-container sticky-top text-center">
+                    <div>You are currently in preview mode.</div>
+                    <button type="button" className="btn btn-1"
+                            onClick={() => {window.location.href = "/truck/"+this.state.truck.id+"/edit"}}>BACK TO EDIT</button>
+                    <button type="button" className="btn btn-2"
+                            onClick={() => {window.location.href = "/dashboard"}}>SAVE AND PUBLISH</button>
+                </div>
 
 
                 {this.state.truck === {}
                 &&
-                    <div className="container-fluid truck-info-container">
-                        <div className="truck-loader"><img alt="" src={loader}/></div>
-                    </div>
+                <div className="container-fluid truck-info-container"></div>
                 }
 
                 {this.state.truck !== {} && this.state.truck.photos !== undefined && this.state.truck.reviews !== undefined
@@ -273,9 +233,9 @@ export default class TruckPage
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {this.state.truck.schedules.map((schedule) => {
+                                    {this.state.truck.schedules.map((schedule, i) => {
                                         return (
-                                            <tr>
+                                            <tr key={i}>
                                                 <th scope="row">{schedule.address.substring(0, schedule.address.indexOf(","))}</th>
                                                 <td></td>
                                                 <td></td>
@@ -296,9 +256,9 @@ export default class TruckPage
                                         <th scope="row">Closed Days</th>
                                         <td></td>
                                         <td></td>
-                                        {this.state.truck.holidays.map((holiday) => {
+                                        {this.state.truck.holidays.map((holiday, i) => {
                                             return (
-                                                <td>{this.convert(holiday.date)}</td>
+                                                <td key={i}>{this.convert(holiday.date)}</td>
                                             )
                                         })}
                                     </tr>
@@ -337,9 +297,9 @@ export default class TruckPage
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
-                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
+                    <a className="nav-item nav-preview" id="nav-item-2">Contact
                         Us</a>
-                    <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
+                    <a className="nav-item nav-preview" id="nav-item-3">Vendor?</a>
                 </nav>
 
 

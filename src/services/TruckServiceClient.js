@@ -1,5 +1,4 @@
 import * as constants from '../constants/constant';
-import YelpServiceClient from './YelpServiceClient';
 
 let _singleton = Symbol();
 
@@ -8,7 +7,6 @@ export default class TruckServiceClient {
         if (_singleton !== singletonToken) {
             throw new Error('Singleton module service.')
         }
-        this.yelpServiceClient = YelpServiceClient.instance();
     }
 
     static instance() {
@@ -49,7 +47,12 @@ export default class TruckServiceClient {
             headers: {
                 'content-type': 'application/json'
             }
-        }).then(response => response.json());
+        }).then(response => {
+            if (response.status === 500) {
+                alert("cannot update truck")
+            }
+            return response.json()
+        });
     }
 
 
@@ -69,7 +72,7 @@ export default class TruckServiceClient {
         })
             .then(response => {
                 if (response.status === 404) {
-                    alert("cannot find user")
+                    alert("cannot find truck")
                 }
             })
     }

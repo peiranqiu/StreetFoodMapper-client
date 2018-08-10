@@ -1,4 +1,7 @@
-
+#dashboard .list-group {
+    margin-left: auto;
+    margin-right: auto;
+}
 .modal-content {
 
     border: none !important;
@@ -35,6 +38,8 @@
     font-size: 12px;
     right:134px;
     position:absolute;
+    cursor:pointer;
+    color:#1271B9;
 }
 .yelp-btn {
      background-color:#B91400 !important;
@@ -57,6 +62,10 @@
 }
 .yelp-div {
     padding-top:150px;
+}
+
+.yelp-preview {
+    padding-top:200px;
 }
 
 .form-label {

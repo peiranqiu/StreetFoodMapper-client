@@ -2,7 +2,7 @@ import * as constants from '../constants/constant';
 
 let _singleton = Symbol();
 
-export default class PhotoServiceClient {
+export default class HolidayServiceClient {
     constructor(singletonToken) {
         if (_singleton !== singletonToken) {
             throw new Error('Singleton module service.')
@@ -11,15 +11,15 @@ export default class PhotoServiceClient {
 
     static instance() {
         if (!this[_singleton]) {
-            this[_singleton] = new PhotoServiceClient(_singleton);
+            this[_singleton] = new HolidayServiceClient(_singleton);
         }
         return this[_singleton];
     }
 
-    createPhoto(truckId, photo) {
-        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/photo', {
+    createHoliday(truckId, holiday) {
+        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/holiday', {
             method: 'post',
-            body: JSON.stringify(photo),
+            body: JSON.stringify(holiday),
             headers: {
                 'content-type': 'application/json'
             }
@@ -28,8 +28,8 @@ export default class PhotoServiceClient {
         });
     }
 
-    deletePhoto(photoId) {
-        return fetch(constants.ALL_PHOTO_URL + '/' + photoId, {
+    deleteHoliday(holidayId) {
+        return fetch(constants.ALL_HOLIDAY_URL + '/' + holidayId, {
             method: 'delete'
         })
             .then(response => {
@@ -39,8 +39,8 @@ export default class PhotoServiceClient {
             })
     }
 
-    findPhotoById(photoId) {
-        return fetch(constants.ALL_PHOTO_URL + '/' + photoId)
+    findHolidayById(holidayId) {
+        return fetch(constants.ALL_HOLIDAY_URL + '/' + holidayId)
             .then(response => {
                 if (response.status === 404) {
                     return null;
@@ -51,9 +51,8 @@ export default class PhotoServiceClient {
             });
     }
 
-    findPhotosForTruck(truckId) {
-        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/photo')
+    findHolidaysForTruck(truckId) {
+        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/holiday')
             .then(response => response.json());
     }
-
 }

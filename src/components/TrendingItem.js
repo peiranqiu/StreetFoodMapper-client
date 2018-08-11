@@ -34,7 +34,7 @@ export default class TrendingItem extends React.Component {
                 <div className="card">
                     <p className="card-user">{this.props.truck.reviews[0].userName}</p>
                     <p className="card-time">Wrote a review at {this.props.truck.reviews[0].timeCreated}</p>
-                    <img className="card-img-top" src={this.props.truck.photos[2].href} alt="Card image cap"/>
+                    <img className="card-img-top" src={this.props.truck.photos[1].href} alt="Card image cap"/>
                     <div className="card-body">
                         <div><a className="card-title" href={href}>{this.props.truck.name}</a></div>
                         <img className="card-rating" width="80px" src={rating} alt="Card image cap"/>

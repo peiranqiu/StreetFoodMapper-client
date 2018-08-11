@@ -32,7 +32,6 @@ export default class Dashboard
                         this.setState({trucks: trucks});
                     });
             });
-
     }
 
     logout = (e) => {
@@ -47,6 +46,7 @@ export default class Dashboard
     }
 
     render() {
+
         if (this.state.owner === undefined || this.state.owner === {}) {
             alert("Plase Log In");
             window.location.href = "/login/owner";

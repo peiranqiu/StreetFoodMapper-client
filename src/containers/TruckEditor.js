@@ -35,8 +35,8 @@ export default class TruckEditor
             loading: false, // Indicates in progress state of login form
             owner: {},
             newTruck: {},
-            truckId: null,
-            count: 0
+            newHolidays: [],
+            newSchedules: []
         };
         this.ownerService = OwnerServiceClient.instance();
         this.truckService = TruckServiceClient.instance();
@@ -85,115 +85,125 @@ export default class TruckEditor
     }
 
     renderContent(i) {
-        return (
-            <div>
-                <div className="schedule-content">
-                    {this.state.newTruck.schedules[i].openTimes.map((openTime, j) => {
-                        var id1 = "open-" + i + "-" + j;
-                        var id2 = "close-" + i + "-" + j;
-                        return (
-                            <div className="schedule-day ml-3 mt-4" key={j}>
-                                <div className="form-check">
-                                    <input className="form-check-input" id={j} type="checkbox" value=""
-                                           defaultChecked={this.state.newTruck.schedules[i].openTimes[j].startTime !== 0}
-                                           onChange={(e) => {
-                                               var newTruck = this.state.newTruck;
-                                               if (e.target.checked === false) {
-                                                   newTruck.schedules[i].openTimes[j].startTime = 0;
-                                                   newTruck.schedules[i].openTimes[j].endTime = 0;
-                                                   document.getElementById(id1).value = 0;
-                                                   document.getElementById(id2).value = 0;
-                                               }
-                                               newTruck.schedules[i].openTimes[j].checked = e.target.checked;
-                                               this.setState({newTruck: newTruck});
-                                           }}/>
-                                </div>
-                                {j === 0 && <span>MON</span>}
-                                {j === 1 && <span>TUE</span>}
-                                {j === 2 && <span>WED</span>}
-                                {j === 3 && <span>THU</span>}
-                                {j === 4 && <span>FRI</span>}
-                                {j === 5 && <span>SAT</span>}
-                                {j === 6 && <span>SUN</span>}
+        if (this.state.newTruck.schedules[i] !== undefined && this.state.newTruck.schedules[i].openTimes.length === 7) {
+            this.state.newTruck.schedules[i].openTimes.sort((a, b) => a.day - b.day);
+            return (
+                <div>
+                    <div className="schedule-content">
+                        {this.state.newTruck.schedules[i].openTimes.map((openTime, j) => {
+                            var id1 = "open-" + i + "-" + j;
+                            var id2 = "close-" + i + "-" + j;
+                            return (
+                                <div className="schedule-day ml-3 mt-4" key={j}>
+                                    <div className="form-check">
+                                        <input className="form-check-input" id={j} type="checkbox" value=""
+                                               defaultChecked={this.state.newTruck.schedules[i].openTimes[j].startTime !== 0}
+                                               onChange={(e) => {
+                                                   var newTruck = this.state.newTruck;
+                                                   if (e.target.checked === false) {
+                                                       newTruck.schedules[i].openTimes[j].startTime = 0;
+                                                       newTruck.schedules[i].openTimes[j].endTime = 0;
+                                                       document.getElementById(id1).value = 0;
+                                                       document.getElementById(id2).value = 0;
+                                                       this.openTimeService.updateOpenTime(newTruck.id, newTruck.schedules[i].id,
+                                                           newTruck.schedules[i].openTimes[j].id, newTruck.schedules[i].openTimes[j]);
+                                                   }
+                                                   newTruck.schedules[i].openTimes[j].checked = e.target.checked;
+                                                   this.setState({newTruck: newTruck});
+                                               }}/>
+                                    </div>
+                                    {j === 0 && <span>MON</span>}
+                                    {j === 1 && <span>TUE</span>}
+                                    {j === 2 && <span>WED</span>}
+                                    {j === 3 && <span>THU</span>}
+                                    {j === 4 && <span>FRI</span>}
+                                    {j === 5 && <span>SAT</span>}
+                                    {j === 6 && <span>SUN</span>}
 
-                                <select className="form-control opentime mx-3" id={id1}
-                                        defaultValue={openTime.startTime}
-                                        onChange={(e) => {
-                                            var newTruck = this.state.newTruck;
-                                            newTruck.schedules[i].openTimes[j].startTime = e.target.value;
-                                            this.setState({newTruck: newTruck});
-                                        }}>
-                                    <option value="0">0:00</option>
-                                    <option value="600">6:00</option>
-                                    <option value="630">6:30</option>
-                                    <option value="700">7:00</option>
-                                    <option value="730">7:30</option>
-                                    <option value="800">8:00</option>
-                                    <option value="830">8:30</option>
-                                    <option value="900">9:00</option>
-                                    <option value="930">9:30</option>
-                                    <option value="1000">10:00</option>
-                                    <option value="1030">10:30</option>
-                                    <option value="1100">11:00</option>
-                                    <option value="1130">11:30</option>
-                                    <option value="1200">12:00</option>
-                                    <option value="1230">12:30</option>
-                                    <option value="1300">13:00</option>
-                                    <option value="1330">13:30</option>
-                                    <option value="1400">14:00</option>
-                                    <option value="1430">14:30</option>
-                                    <option value="1500">15:00</option>
-                                    <option value="1530">15:30</option>
-                                    <option value="1600">16:00</option>
-                                    <option value="1630">16:30</option>
-                                    <option value="1700">17:00</option>
-                                    <option value="1730">17:30</option>
-                                    <option value="1800">18:00</option>
-                                </select>
-                                <span className="to">TO</span>
-                                <select className="form-control closetime ml-3" id={id2}
-                                        defaultValue={openTime.endTime}
-                                        onChange={(e) => {
-                                            var newTruck = this.state.newTruck;
-                                            newTruck.schedules[i].openTimes[j].endTime = e.target.value;
-                                            this.setState({newTruck: newTruck});
-                                        }}>
-                                    <option value="0">0:00</option>
-                                    <option value="1000">10:00</option>
-                                    <option value="1030">10:30</option>
-                                    <option value="1100">11:00</option>
-                                    <option value="1130">11:30</option>
-                                    <option value="1200">12:00</option>
-                                    <option value="1230">12:30</option>
-                                    <option value="1300">13:00</option>
-                                    <option value="1330">13:30</option>
-                                    <option value="1400">14:00</option>
-                                    <option value="1430">14:30</option>
-                                    <option value="1500">15:00</option>
-                                    <option value="1530">15:30</option>
-                                    <option value="1600">16:00</option>
-                                    <option value="1630">16:30</option>
-                                    <option value="1700">17:00</option>
-                                    <option value="1730">17:30</option>
-                                    <option value="1800">18:00</option>
-                                    <option value="1830">18:30</option>
-                                    <option value="1900">19:00</option>
-                                    <option value="1930">19:30</option>
-                                    <option value="2000">20:00</option>
-                                    <option value="2030">20:30</option>
-                                    <option value="2100">21:00</option>
-                                    <option value="2130">21:30</option>
-                                    <option value="2200">22:00</option>
-                                    <option value="2230">22:30</option>
-                                    <option value="2300">23:00</option>
-                                    <option value="2330">23:30</option>
-                                </select>
-                            </div>
-                        );
-                    })}
+                                    <select className="form-control opentime mx-3" id={id1}
+                                            defaultValue={openTime.startTime}
+                                            onChange={(e) => {
+                                                var newTruck = this.state.newTruck;
+                                                newTruck.schedules[i].openTimes[j].startTime = e.target.value;
+                                                this.openTimeService.updateOpenTime(newTruck.id, newTruck.schedules[i].id,
+                                                    newTruck.schedules[i].openTimes[j].id, newTruck.schedules[i].openTimes[j]);
+                                                this.setState({newTruck: newTruck});
+                                            }}>
+                                        <option value="0">0:00</option>
+                                        <option value="600">6:00</option>
+                                        <option value="630">6:30</option>
+                                        <option value="700">7:00</option>
+                                        <option value="730">7:30</option>
+                                        <option value="800">8:00</option>
+                                        <option value="830">8:30</option>
+                                        <option value="900">9:00</option>
+                                        <option value="930">9:30</option>
+                                        <option value="1000">10:00</option>
+                                        <option value="1030">10:30</option>
+                                        <option value="1100">11:00</option>
+                                        <option value="1130">11:30</option>
+                                        <option value="1200">12:00</option>
+                                        <option value="1230">12:30</option>
+                                        <option value="1300">13:00</option>
+                                        <option value="1330">13:30</option>
+                                        <option value="1400">14:00</option>
+                                        <option value="1430">14:30</option>
+                                        <option value="1500">15:00</option>
+                                        <option value="1530">15:30</option>
+                                        <option value="1600">16:00</option>
+                                        <option value="1630">16:30</option>
+                                        <option value="1700">17:00</option>
+                                        <option value="1730">17:30</option>
+                                        <option value="1800">18:00</option>
+                                    </select>
+                                    <span className="to">TO</span>
+                                    <select className="form-control closetime ml-3" id={id2}
+                                            defaultValue={openTime.endTime}
+                                            onChange={(e) => {
+                                                var newTruck = this.state.newTruck;
+                                                newTruck.schedules[i].openTimes[j].endTime = e.target.value;
+                                                this.openTimeService.updateOpenTime(newTruck.id, newTruck.schedules[i].id,
+                                                    newTruck.schedules[i].openTimes[j].id, newTruck.schedules[i].openTimes[j]);
+                                                this.setState({newTruck: newTruck});
+                                            }}>
+                                        <option value="0">0:00</option>
+                                        <option value="1000">10:00</option>
+                                        <option value="1030">10:30</option>
+                                        <option value="1100">11:00</option>
+                                        <option value="1130">11:30</option>
+                                        <option value="1200">12:00</option>
+                                        <option value="1230">12:30</option>
+                                        <option value="1300">13:00</option>
+                                        <option value="1330">13:30</option>
+                                        <option value="1400">14:00</option>
+                                        <option value="1430">14:30</option>
+                                        <option value="1500">15:00</option>
+                                        <option value="1530">15:30</option>
+                                        <option value="1600">16:00</option>
+                                        <option value="1630">16:30</option>
+                                        <option value="1700">17:00</option>
+                                        <option value="1730">17:30</option>
+                                        <option value="1800">18:00</option>
+                                        <option value="1830">18:30</option>
+                                        <option value="1900">19:00</option>
+                                        <option value="1930">19:30</option>
+                                        <option value="2000">20:00</option>
+                                        <option value="2030">20:30</option>
+                                        <option value="2100">21:00</option>
+                                        <option value="2130">21:30</option>
+                                        <option value="2200">22:00</option>
+                                        <option value="2230">22:30</option>
+                                        <option value="2300">23:00</option>
+                                        <option value="2330">23:30</option>
+                                    </select>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-        );
+            )
+        }
+        return (<div className="schedule-content container" id="empty-content"></div>);
     }
 
 
@@ -213,10 +223,12 @@ export default class TruckEditor
         var i = this.state.newTruck.schedules.length - 1;
         const newTabs = [...tabs, {title: 'Location ' + (tabs.length + 1), content: this.renderContent(i)}];
         this.setState({tabs: newTabs, activeIndex: newTabs.length - 1});
+        this.render();
     }
 
     handleTabChange(index) {
         this.setState({activeIndex: index});
+        this.render();
     }
 
     handleEdit({type, index}) {
@@ -224,6 +236,7 @@ export default class TruckEditor
         if (type === 'delete') {
             tabs.splice(index, 1);
             var newTruck = this.state.newTruck;
+            this.scheduleService.deleteSchedule(newTruck.schedules[index].id);
             newTruck.schedules.splice(index, 1);
             this.setState({newTruck: newTruck});
         }
@@ -264,114 +277,56 @@ export default class TruckEditor
 
     createHoliday = (e) => {
         var newTruck = this.state.newTruck;
-        newTruck.holidays.push({date: this.dateToNumber(new Date())});
-        this.setState({newTruck: newTruck});
+        this.holidayService.createHoliday(newTruck.id, {date: this.dateToNumber(new Date())})
+            .then((holiday) => {
+                newTruck.holidays.push(holiday);
+                this.setState({newTruck: newTruck});
+            });
     }
 
     createSchedule = (e) => {
         var newTruck = this.state.newTruck;
-        newTruck.schedules.push({
+        var schedule = {
             address: '',
             latitude: '',
             longitude: '',
-            openTimes: [
-                {day: 1, startTime: 0, endTime: 0, checked: true},
-                {day: 2, startTime: 0, endTime: 0, checked: true},
-                {day: 3, startTime: 0, endTime: 0, checked: true},
-                {day: 4, startTime: 0, endTime: 0, checked: true},
-                {day: 5, startTime: 0, endTime: 0, checked: true},
-                {day: 6, startTime: 0, endTime: 0, checked: true},
-                {day: 7, startTime: 0, endTime: 0, checked: true}
-            ]
-        });
-        this.setState({newTruck: newTruck});
+            openTimes: []
+        };
+        var openTimes = [
+            {day: 1, startTime: 0, endTime: 0, checked: true},
+            {day: 2, startTime: 0, endTime: 0, checked: true},
+            {day: 3, startTime: 0, endTime: 0, checked: true},
+            {day: 4, startTime: 0, endTime: 0, checked: true},
+            {day: 5, startTime: 0, endTime: 0, checked: true},
+            {day: 6, startTime: 0, endTime: 0, checked: true},
+            {day: 7, startTime: 0, endTime: 0, checked: true}
+        ];
+
+        this.scheduleService.createSchedule(newTruck.id, schedule)
+            .then((newSchedule) => {
+                openTimes.map((openTime) => {
+                    this.openTimeService.createOpenTime(newTruck.id, newSchedule.id, openTime)
+                        .then((newOpenTime) => {
+                            newSchedule.openTimes.push(newOpenTime);
+                            newTruck.schedules.push(newSchedule);
+                            this.setState({newTruck: newTruck});
+                        })
+                })
+            });
+
+
     }
 
     updateTruck = (e) => {
         e.preventDefault();
-
-        let newTruck = this.state.newTruck;
-        this.truckService.findTruckById(newTruck.id)
-            .then((oldTruck) => {
-                oldTruck.schedules.map((schedule) => {
-                    this.scheduleService.deleteSchedule(schedule.id)
-                        .then((response) => {
-                            if (response) {
-                                //this.setState({count: this.state.count + 1});
-                            }
-                        });
-                });
-               // this.setState({tabs: []});
-                oldTruck.photos.map((photo) => {
-                    this.photoService.deletePhoto(photo.id)
-                        .then((response) => {
-                            if (response) {
-                                //this.setState({count: this.state.count + 1});
-                            }
-                        });
-                });
-                oldTruck.holidays.map((holiday) => {
-                    this.holidayService.deleteHoliday(holiday.id)
-                        .then((response) => {
-                            if (response) {
-                                //console.log(2);
-                                //this.setState({count: this.state.count + 1});
-                            }
-                        });
-                });
+        this.truckService.updateTruck(this.state.newTruck.id, this.state.newTruck)
+            .then((response) => {
+                console.log(response);
+                alert("Truck Updated");
             });
-
-        newTruck.schedules.map((schedule, i) => {
-            delete schedule.id;
-            this.scheduleService.createSchedule(newTruck.id, schedule)
-                .then((newSchedule) => {
-                    return newSchedule.id;
-                })
-                .then((newScheduleId) => {
-                    newTruck.schedules[i].openTimes.map((openTime) => {
-                        delete openTime.id;
-                        this.openTimeService.createOpenTime(newTruck.id, newScheduleId, openTime)
-                            .then((openTime) => {
-                                if (openTime !== undefined && openTime !== {} && openTime !== null) {
-                                    this.setState({count: this.state.count + 1});
-                                }
-                            })
-                    })
-                });
-        });
-        newTruck.photos.map((photo) => {
-            delete photo.id;
-            this.photoService.createPhoto(newTruck.id, photo)
-                .then((photo) => {
-                    if (photo !== undefined && photo !== {} && photo !== null) {
-
-                        this.setState({count: this.state.count + 1});
-                    }
-                });
-        });
-
-        newTruck.holidays.map((holiday) => {
-            delete holiday.id;
-            this.holidayService.createHoliday(newTruck.id, holiday)
-                .then((holiday) => {
-                    if (holiday !== undefined && holiday !== {} && holiday !== null) {
-                        this.setState({count: this.state.count + 1});
-                    }
-                });
-        });
-        this.truckService.updateTruck(newTruck.id, newTruck).then((truck)=>{
-            console.log(truck);
-        });
     }
 
     render() {
-        if (this.state.newTruck !== {}
-            && this.state.newTruck.schedules !== undefined && this.state.newTruck.holidays !== undefined) {
-            if (this.state.count >= this.state.newTruck.schedules.length * 7 + this.state.newTruck.holidays.length + 3) {
-                alert("Truck Updated");
-                //window.location.href = "/truck/" + this.state.truckId + "/preview";
-            }
-        }
         if (this.state.owner === undefined || this.state.owner === {}) {
             alert("Plase Log In");
             window.location.href = "/login/owner";
@@ -380,14 +335,20 @@ export default class TruckEditor
         const tabTemplate = [];
         const panelTemplate = [];
         tabs.forEach((tab, i) => {
+            console.log(this.state.newTruck.schedules);
             const closable = tabs.length > 1;
             tabTemplate.push(<Tab key={i} closable={closable}>Location {i + 1}</Tab>);
+            var address = '';
+            if (this.state.newTruck.schedules[i] !== undefined) {
+                address = this.state.newTruck.schedules[i].address;
+            }
             panelTemplate.push(<Panel key={i}>
                 <PlacesAutocomplete
-                    value={this.state.newTruck.schedules[i].address}
+                    value={address}
                     onChange={(change) => {
                         var newTruck = this.state.newTruck;
                         newTruck.schedules[i].address = change;
+                        this.scheduleService.updateSchedule(newTruck.id, newTruck.schedules[i].id, newTruck.schedules[i]);
                         this.setState({newTruck: newTruck});
                     }}
                     onSelect={(address) => {
@@ -398,6 +359,7 @@ export default class TruckEditor
                                 newTruck.schedules[i].address = address;
                                 newTruck.schedules[i].latitude = latLng.lat;
                                 newTruck.schedules[i].longitude = latLng.lng;
+                                this.scheduleService.updateSchedule(newTruck.id, newTruck.schedules[i].id, newTruck.schedules[i]);
                                 this.setState({newTruck: newTruck});
                             })
                             .catch(error => console.error('Error', error));
@@ -440,6 +402,7 @@ export default class TruckEditor
                 {this.renderContent(i)}
             </Panel>);
         });
+        var href = "/truck/" + this.state.newTruck.id + "/preview"
 
         return (
 
@@ -470,7 +433,7 @@ export default class TruckEditor
                     <div className="truck-loader"><img alt="" src={loader}/></div>
                 </div>
                 }
-                {this.state.count === 0 && this.state.newTruck !== {} && this.state.newTruck.photos !== undefined && this.state.newTruck.reviews !== undefined
+                {this.state.newTruck !== {} && this.state.newTruck.photos !== undefined && this.state.newTruck.reviews !== undefined
                 && this.state.newTruck.schedules !== undefined && this.state.newTruck.holidays !== undefined &&
                 <div className="container" id="create-container">
                     <h1 className="display1">Business Information</h1>
@@ -618,6 +581,7 @@ export default class TruckEditor
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.photos[0].href = e.target.value;
+                                               this.photoService.updatePhoto(truck.id, truck.photos[0].id, truck.photos[0]);
                                                this.setState({newTruck: truck});
                                                this.handleInputChange(e);
                                            }} required/>
@@ -631,6 +595,7 @@ export default class TruckEditor
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.photos[1].href = e.target.value;
+                                               this.photoService.updatePhoto(truck.id, truck.photos[1].id, truck.photos[1]);
                                                this.setState({newTruck: truck});
                                                this.handleInputChange(e);
                                            }} required/>
@@ -644,6 +609,7 @@ export default class TruckEditor
                                            onChange={(e) => {
                                                var truck = this.state.newTruck;
                                                truck.photos[2].href = e.target.value;
+                                               this.photoService.updatePhoto(truck.id, truck.photos[2].id, truck.photos[2]);
                                                this.setState({newTruck: truck});
                                                this.handleInputChange(e);
                                            }} required/>
@@ -659,10 +625,12 @@ export default class TruckEditor
                                                 <DatePicker onChange={(pick) => {
                                                     var newTruck = this.state.newTruck;
                                                     newTruck.holidays[i].date = this.dateToNumber(pick);
+                                                    this.holidayService.updateHoliday(newTruck.id, newTruck.holidays[i].id, newTruck.holidays[i]);
                                                     this.setState({newTruck: newTruck});
                                                 }} value={this.numberToDate(this.state.newTruck.holidays[i].date)}/>
                                                 <a onClick={() => {
                                                     var newTruck = this.state.newTruck;
+                                                    this.holidayService.deleteHoliday(newTruck.holidays[i].id);
                                                     newTruck.holidays.splice(i, 1);
                                                     this.setState({newTruck: newTruck});
                                                 }}>
@@ -674,9 +642,10 @@ export default class TruckEditor
                         </div>
                         <div className="row mb-1">
                             <button className="btn btn-block ripple-effect create-button" type="submit" name="Submit"
-                                    alt="sign in" onClick={this.updateTruck}>Save and Preview
+                                    alt="sign in" onClick={this.updateTruck}>Save
                             </button>
                         </div>
+                        <div className="text-center pb-5"><a href={href}>Preview</a></div>
                     </form>
                 </div>}
 

@@ -24,7 +24,11 @@ export default class TruckServiceClient {
                 'content-type': 'application/json'
             }
         }).then(response => {
-            return response.json()
+            if (response.status === 400) {
+                alert("something went wrong");
+                return response;
+            }
+            return response.json();
         });
     }
 
@@ -50,8 +54,9 @@ export default class TruckServiceClient {
         }).then(response => {
             if (response.status === 500) {
                 //alert("cannot update truck")
+                return response;
             }
-            return response.json()
+            return response.json();
         });
     }
 

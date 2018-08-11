@@ -57,4 +57,14 @@ export default class HolidayServiceClient {
         return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/holiday')
             .then(response => response.json());
     }
+
+    updateHoliday(truckId, holidayId, holiday) {
+        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/holiday/' + holidayId, {
+            method: 'put',
+            body: JSON.stringify(holiday),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(response => response.json());
+    }
 }

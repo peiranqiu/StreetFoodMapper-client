@@ -28,6 +28,16 @@ export default class PhotoServiceClient {
         });
     }
 
+    updatePhoto(truckId, photoId, photo) {
+        return fetch(constants.ALL_TRUCK_URL + '/' + truckId + '/photo/' + photoId, {
+            method: 'put',
+            body: JSON.stringify(photo),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then(response => response.json());
+    }
+
     deletePhoto(photoId) {
         return fetch(constants.ALL_PHOTO_URL + '/' + photoId, {
             method: 'delete'

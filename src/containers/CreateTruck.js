@@ -338,12 +338,13 @@ export default class CreateTruck
 
     createTruck = (e) => {
         e.preventDefault();
+        console.log(this.state.newTruck.holidays);
         this.truckService.createTruck(this.state.owner.id, this.state.newTruck)
             .then((truck) => {
+                console.log(truck);
                 return truck.id
             })
             .then((truckId) => {
-                console.log(truckId);
                 this.state.newTruck.schedules.map((schedule, i) => {
                     this.scheduleService.createSchedule(truckId, schedule)
                         .then((newSchedule) => {
@@ -381,7 +382,7 @@ export default class CreateTruck
     }
 
     render() {
-        if (this.state.truckId !== null) {
+        if (this.state.truckId !== null && this.state.truckId !== undefined) {
             if (this.state.count >= this.state.newTruck.schedules.length * 7 + this.state.newTruck.holidays.length + 6) {
                 alert("Truck Created");
                 window.location.href = "/truck/" + this.state.truckId + "/preview";

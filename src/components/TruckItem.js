@@ -19,10 +19,6 @@ export default class TruckItem extends React.Component {
                 newClass = newClass + " active";
             }
         }
-        var open = " Closed";
-        if(this.props.schedule.open == true) {
-            open = " Open";
-        }
         var address = " " + this.props.schedule.address.substring( 0, this.props.schedule.address.indexOf(","));
         var href = "/truck/" + this.props.truck.id.toString();
         return (
@@ -34,7 +30,8 @@ export default class TruckItem extends React.Component {
                     <div className="truck-item-category">
                         {this.props.truck.category1}, {this.props.truck.category2}, {this.props.truck.category3}</div>
                     <div className="truck-item-open"><i className="fa fa-clock-o"></i>
-                        <a className="truck-item-content">{open}</a>
+                        {this.props.schedule.open && <a className="truck-item-content open">Open</a>}
+                        {!this.props.schedule.open && <a className="truck-item-content">Closed</a>}
                     </div>
                     <div className="truck-item-address"><i className="fa fa-map-marker"></i><a
                         className="truck-item-content">{address}</a>

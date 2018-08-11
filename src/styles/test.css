@@ -120,6 +120,39 @@ a:hover {
     height:100vh;
 }
 
+.background-404 {
+    background-image: url("../resources/background/404.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    height:100vh;
+}
+
+.title-404 {
+    font-family: "DINPro-Bold";
+    font-size: 32px;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+color:#4A4A4A;
+}
+.content-404 {
+    font-size: 18px;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:#4A4A4A;
+}
+.content-404 a{
+    color:#4A4A4A;
+    margin-left:5px;
+    margin-right:3px;
+    border-bottom: 1px solid currentColor;
+}
+
 .center {
     width: 100%;
     text-align: center;

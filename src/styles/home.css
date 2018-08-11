@@ -86,6 +86,9 @@
 #map-container .list-group-item.active .truck-item-address {
     color: #333333;
 }
+#map-container .list-group-item.active .truck-item-category {
+     color: #333333;
+ }
 
 .col-left {
     width:400px !important;
@@ -130,6 +133,12 @@
     position: absolute;
     font-size: 14px;
     margin-top:53px;
+}
+.truck-item-content.open {
+    color: #00B092 !important;
+}
+.truck-item-content {
+    margin-left:2px;
 }
 .truck-item-address {
     left: 110px;
@@ -181,6 +190,13 @@
     border-radius: 0 !important;
     text-transform: uppercase;
     font-family: DINPro-Medium;
+}
+#map-container .btn:hover {
+    background-color:#F6734B;
+}
+#map-container .btn.active {
+    background-color:#B91400;
+    color:white;
 }
 #btn-open {
     right:364px;

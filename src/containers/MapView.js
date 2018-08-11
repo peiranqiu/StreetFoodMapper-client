@@ -17,6 +17,7 @@ export default class MapView
         super(props);
         this.state = {
             trucks: [],
+            schedules: [],
             user: {}
         };
         this.setTrucks = this.setTrucks.bind(this);
@@ -71,14 +72,24 @@ export default class MapView
             var photo = truck.photos[0].href;
             var category = truck.category1 + ', ' + truck.category2 + ', ' + truck.category3;
             truck.schedules.map((schedule) => {
+
+                var schedules = this.state.schedules;
+                schedules.push(schedule);
+                this.setState({schedules:schedules});
+
                 var address = " " + schedule.address.substring( 0, schedule.address.indexOf(","));
                 var open = " Closed";
                 if(schedule.open == true) {
                     open = " Open";
                 }
-
-                var lat = Number(schedule.latitude);
-                var lng = Number(schedule.longitude);
+                if(schedule.latitude !== undefined) {
+                    var lat = Number(schedule.latitude);
+                    var lng = Number(schedule.longitude);
+                }
+                else {
+                    var lat = 42.355;
+                    var lng = -71.09;
+                }
                 var myLatLng = {lat: lat, lng: lng};
 
                 var marker = new google.maps.Marker({
@@ -134,6 +145,9 @@ export default class MapView
                     $('.iw-subTitle').html(category);
                     $('.iw-open-inner').html(open);
                     $('.iw-address-inner').html(address);
+                    if(schedule.open == true) {
+                        $('.iw-open-inner').addClass('open');
+                    }
 
                     // Reference to the DIV that wraps the bottom of infowindow
                     var iwOuter = $('.gm-style-iw');
@@ -164,10 +178,26 @@ export default class MapView
     }
 
     render() {
+        let openFilter = $('#btn-open').hasClass('active');
+        let laterFilter = $('#btn-later').hasClass('active');
+        let favoriteFilter = $('#btn-favorite').hasClass('active');
+        if(this.state.schedules !== []) {
+            for(var i=0; i< allMarkers.length; i++) {
+                allMarkers[i].setVisible(true);
+            }
+            this.state.schedules.map((schedule) => {
+                if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
+                    for(var i=0; i< allMarkers.length; i++) {
+                        if(allMarkers[i].id === schedule.id) {
+                            allMarkers[i].setVisible(false);
+                            break;
+                        }
+                    }
+            }})
+        }
         if(this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
             for(var i=0; i< allMarkers.length; i++) {
                 if(allMarkers[i].id === this.props.selectedSchedule.id) {
-                    console.log(allWindows[i]);
                     if( prevInfoWindow ) {
                         prevInfoWindow.close();
                     }

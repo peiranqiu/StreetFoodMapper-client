@@ -51,6 +51,9 @@
     display: inline-block;
     font-family: "DINPro";
 }
+.iw-open-inner.open {
+    color: #00B092 !important;
+}
 .iw-address {
     top:88px;
     position: absolute;

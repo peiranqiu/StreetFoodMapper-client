@@ -171,9 +171,9 @@ export default class TruckPage
 
                 {this.state.truck === {}
                 &&
-                    <div className="container-fluid truck-info-container">
-                        <div className="truck-loader"><img alt="" src={loader}/></div>
-                    </div>
+                <div className="container-fluid truck-info-container">
+                    <div className="truck-loader"><img alt="" src={loader}/></div>
+                </div>
                 }
 
                 {this.state.truck !== {} && this.state.truck.photos !== undefined && this.state.truck.reviews !== undefined
@@ -199,6 +199,29 @@ export default class TruckPage
                                 <div className="truck-page-category">
                                     {this.state.truck.category1}, {this.state.truck.category2}, {this.state.truck.category3}</div>
                                 <div className="truck-page-open">Open Now At</div>
+                                {this.state.truck.schedules.map((schedule) => {
+                                    let address = schedule.address.substring(0, schedule.address.indexOf(","));
+                                    var now = new Date();
+                                    var day = now.getDay();
+                                    if (day === 0) {
+                                        day = 7;
+                                    }
+                                    var until = null;
+                                    schedule.openTimes.map((time) => {
+                                        if(day === time.day) {
+                                            until = parseInt(time.endTime / 100) + ":"
+                                                + (time.endTime % 100 < 10 ? "0" + time.endTime % 100 : time.endTime % 100);
+                                        return;
+                                        }
+                                    })
+                                    return (schedule.open &&
+                                        <div className="truck-open-address">
+                                            <i className="fa fa-map-marker"></i>
+                                            <a className="truck-open-content ml-3">{address}</a>
+                                            <i className="fa fa-clock-o mt-1"></i>
+                                            <a className="until">until {until}</a>
+                                        </div>);
+                                })}
                             </div>
                             <div className="col col-2">
                                 <img className="truck-page-img"
@@ -243,7 +266,7 @@ export default class TruckPage
                                     screenName={this.state.truck.twitter.split('com/').pop()}
                                     options={{height: 260}}
                                 />}
-                                {(this.state.truck.twitter === null || this.state.truck.twitter.length === 0) &&
+                                {(this.state.truck.twitter === undefined || this.state.truck.twitter.length < 20) &&
                                 <img className="emptyTwitter" src={emptyTwitter} height='240px' alt=''/>
                                 }
                             </div>

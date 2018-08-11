@@ -16,6 +16,7 @@ import TruckPage from './TruckPage'
 import CreateTruck from './CreateTruck'
 import TruckPreview from './TruckPreview'
 import TruckEditor from './TruckEditor'
+import NotFound from './NotFound'
 
 export default class App extends Component {
     componentDidMount() {
@@ -44,6 +45,7 @@ export default class App extends Component {
                 <Route exact path="/dashboard/create" component={CreateTruck}/>
                 <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
                 <Route exact path="/truck/:truckId/edit" component={TruckEditor}/>
+                <Route component={NotFound}/>
                 {/*
                 <Route exact path="/admin" component={AdminPage}/>
                 */}

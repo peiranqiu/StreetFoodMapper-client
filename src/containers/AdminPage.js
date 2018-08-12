@@ -24,7 +24,6 @@ export default class AdminPage
             user: {},
             allUsers: [],
             allOwners: [],
-            allTrucks: [],
             edit: null,
             formData: {}, // Contains login form data
             errors: {}, // Contains login field errors
@@ -54,10 +53,6 @@ export default class AdminPage
         this.ownerService.findAllOwners()
             .then((owners) => {
                 this.setState({allOwners: owners});
-            });
-        this.truckService.findAllTrucks()
-            .then((trucks) => {
-                this.setState({allTrucks: trucks});
             });
     }
 
@@ -166,7 +161,7 @@ export default class AdminPage
                                                     window.open("/" + this.state.edit + "/create", '_blank')
                                                 }
                                             }
-                                            else{
+                                            else {
                                                 alert("No vendor with this id found");
                                             }
                                         }}>Continue
@@ -217,7 +212,8 @@ export default class AdminPage
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <div className="modal-header"><h5 className="modal-title" id="exampleModalLabel">Create User</h5>
+                        <div className="modal-header"><h5 className="modal-title" id="exampleModalLabel">Create
+                            User</h5>
                         </div>
                         <div className="modal-body">
                             <form action="" method="" className="" role="form" onSubmit={this.createUser}>
@@ -288,7 +284,8 @@ export default class AdminPage
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <div className="modal-header"><h5 className="modal-title" id="exampleModalLabel">Create Owner</h5>
+                        <div className="modal-header"><h5 className="modal-title" id="exampleModalLabel">Create
+                            Owner</h5>
                         </div>
                         <div className="modal-body">
                             <form action="" method="" className="" role="form" onSubmit={this.createOwner}>
@@ -343,8 +340,9 @@ export default class AdminPage
                         <h2 className="truck-page-title">Users
                             <i className="fa fa-plus ml-3"
                                onClick={() => {
-                                   this.setState({edit: {email:"",password:""}});
-                                   $('#createUserModal').modal('show');}}/></h2>
+                                   this.setState({edit: {email: "", password: ""}});
+                                   $('#createUserModal').modal('show');
+                               }}/></h2>
                         {userModal}{createUserModal}
                         <table className="table table-striped user-table">
                             <thead>
@@ -379,8 +377,9 @@ export default class AdminPage
                         <h2 className="truck-page-title">Vendors
                             <i className="fa fa-plus ml-3"
                                onClick={() => {
-                                   this.setState({edit: {email:"",password:""}});
-                                   $('#createOwnerModal').modal('show');}}/></h2>
+                                   this.setState({edit: {email: "", password: ""}});
+                                   $('#createOwnerModal').modal('show');
+                               }}/></h2>
                         {ownerModal}{createOwnerModal}
                         <table className="table table-striped owner-table">
                             <thead>
@@ -426,8 +425,8 @@ export default class AdminPage
                             <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Vendor</th>
                                 <th scope="col">Name</th>
+                                <th scope="col">Vendor</th>
                                 <th scope="col">Website</th>
                                 <th scope="col">Menu</th>
                                 <th scope="col">Phone</th>
@@ -439,27 +438,29 @@ export default class AdminPage
                             </tr>
                             </thead>
                             <tbody>
-                            {this.state.allTrucks.map((truck) => (
-                                <tr key={truck.id}>
-                                    <th scope="row">{truck.id}</th>
-                                    <td>{truck.name}</td>
-                                    <td>{truck.name}</td>
-                                    <td>{truck.website}</td>
-                                    <td>{truck.menu}</td>
-                                    <td>{truck.phone}</td>
-                                    <td>{truck.twitter}</td>
-                                    <td>{truck.category1}</td>
-                                    <td>{truck.category2}</td>
-                                    <td>{truck.category3}</td>
-                                    <td>
-                                        <i className="fa fa-pencil mr-3"
-                                           onClick={() => window.open("/truck/" + truck.id + "/edit", '_blank')}/>
-                                        <i className="fa fa-times mr-3"
-                                           onClick={() => this.deleteTruck(truck.id)}/>
-                                        <i className="fa fa-eye"
-                                           onClick={() => window.open("/truck/" + truck.id, '_blank')}/>
-                                    </td>
-                                </tr>
+                            {this.state.allOwners.map((owner) => (
+                                owner.trucks.map((truck) => (
+                                    <tr key={truck.id}>
+                                        <th scope="row">{truck.id}</th>
+                                        <td>{truck.name}</td>
+                                        <td>{owner.id}</td>
+                                        <td>{truck.website}</td>
+                                        <td>{truck.menu}</td>
+                                        <td>{truck.phone}</td>
+                                        <td>{truck.twitter}</td>
+                                        <td>{truck.category1}</td>
+                                        <td>{truck.category2}</td>
+                                        <td>{truck.category3}</td>
+                                        <td>
+                                            <i className="fa fa-pencil mr-3"
+                                               onClick={() => window.open("/truck/" + truck.id + "/edit", '_blank')}/>
+                                            <i className="fa fa-times mr-3"
+                                               onClick={() => this.deleteTruck(truck.id)}/>
+                                            <i className="fa fa-eye"
+                                               onClick={() => window.open("/truck/" + truck.id, '_blank')}/>
+                                        </td>
+                                    </tr>
+                                ))
                             ))}
                             </tbody>
                         </table>

@@ -60,7 +60,7 @@ export default class UserServiceClient {
     }
 
     createUser(user) {
-        return fetch(constants.USER_REGISTER_URL, {
+        return fetch(constants.ALL_USER_URL, {
             method: 'post',
             body: JSON.stringify(user),
             credentials: 'include',

@@ -1,3 +1,6 @@
+#admin-container {
+    min-height: calc(100vh - 48px);
+}
 .truck-table td {
     max-width: 120px;
     overflow-wrap: break-word;

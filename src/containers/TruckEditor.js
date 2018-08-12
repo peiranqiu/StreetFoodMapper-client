@@ -412,12 +412,16 @@ export default class TruckEditor
             </Panel>);
         });
         var href = "/truck/" + this.state.newTruck.id + "/preview"
+        var homeHref ="/dashboard";
+        if(this.state.admin) {
+            homeHref = "/home";
+        }
 
         return (
 
             <div id="profile-page" className="user-page vendor-page">
                 <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="/dashboard">
+                    <a className="navbar-brand mt-2" href={href}>
                         <img src={logo} width="100" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>

@@ -518,11 +518,15 @@ export default class CreateTruck
                 </div>
             </div>
         );
+        var href = "/dashboard";
+        if(this.state.admin) {
+            href = "/home";
+        }
 
         return (
             <div id="profile-page" className="user-page vendor-page">
                 <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="/dashboard">
+                    <a className="navbar-brand mt-2" href={href}>
                         <img src={logo} width="100" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>

@@ -129,22 +129,10 @@
 .sc-EHOje[aria-selected="true"] {
     background-color:#ffffff !important;
 }
-.sc-ifAKCX {
-    transform: scale(0.5) translateY(-5px);
-}
-.sc-fjdhpX svg {
-    transform: scale(2.5) translateY(-3px) !important;
-}
-.sc-jTzLTM svg{
-    transform: scale(4) translateY(-4px) !important;
-}
 .sc-gzVnrw {
 width:35px;
     height:35px;
     transform:translateY(-9px);
-}
-.jmHZiv svg {
-    transform: scale(2);
 }
 
 .opentime, .closetime{

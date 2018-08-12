@@ -154,7 +154,7 @@ export default class UserRegister
                                     </div>
                                     <div>
                                         <button className="btn btn-block ripple-effect" type="submit" name="Submit"
-                                                alt="sign in">Log In
+                                                alt="sign in">Sign Up
                                         </button>
                                     </div>
                                     <p className="bottom-text">By signing up you agree to Street Food Mapper's <a

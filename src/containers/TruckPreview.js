@@ -131,7 +131,12 @@ export default class TruckPreview
                     </button>
                     <button type="button" className="btn btn-2"
                             onClick={() => {
-                                window.location.href = "/truck/" + this.state.truck.id
+                                if(this.state.admin) {
+                                    window.location.href = "/truck/" + this.state.truck.id;
+                                }
+                                else {
+                                    window.location.href = "/dashboard";
+                                }
                             }}>SAVE AND PUBLISH
                     </button>
                 </div>

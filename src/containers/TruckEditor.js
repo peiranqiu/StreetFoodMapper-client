@@ -164,6 +164,10 @@ export default class TruckEditor
                                         <option value="1700">17:00</option>
                                         <option value="1730">17:30</option>
                                         <option value="1800">18:00</option>
+                                        <option value="1830">18:30</option>
+                                        <option value="1900">19:00</option>
+                                        <option value="1930">19:30</option>
+                                        <option value="2000">20:00</option>
                                     </select>
                                     <span className="to">TO</span>
                                     <select className="form-control closetime ml-3" id={id2}
@@ -176,6 +180,8 @@ export default class TruckEditor
                                                 this.setState({newTruck: newTruck});
                                             }}>
                                         <option value="0">0:00</option>
+                                        <option value="0900">09:00</option>
+                                        <option value="0930">09:30</option>
                                         <option value="1000">10:00</option>
                                         <option value="1030">10:30</option>
                                         <option value="1100">11:00</option>
@@ -204,6 +210,7 @@ export default class TruckEditor
                                         <option value="2230">22:30</option>
                                         <option value="2300">23:00</option>
                                         <option value="2330">23:30</option>
+                                        <option value="2400">24:00</option>
                                     </select>
                                 </div>
                             );

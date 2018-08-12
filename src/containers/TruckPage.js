@@ -179,8 +179,10 @@ export default class TruckPage
                             && <a className="dropdown-item" href="/login/user">Log In</a>}
                             {this.state.user === undefined
                             && <a className="dropdown-item" href="/register/user">Register</a>}
-                            {this.state.user !== undefined
+                            {this.state.user !== undefined && this.state.user.email !== "admin"
                             && <a className="dropdown-item" href="/profile/user">Profile</a>}
+                            {this.state.user !== undefined && this.state.user.email === "admin"
+                            && <a className="dropdown-item" href="/admin">Dashboard</a>}
                             {this.state.user !== undefined
                             && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
                         </div>

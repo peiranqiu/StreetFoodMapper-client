@@ -451,7 +451,7 @@ export default class AdminPage
                                         <td>{truck.category1}</td>
                                         <td>{truck.category2}</td>
                                         <td>{truck.category3}</td>
-                                        <td>
+                                        <td className="tool-icon">
                                             <i className="fa fa-pencil mr-3"
                                                onClick={() => window.open("/truck/" + truck.id + "/edit", '_blank')}/>
                                             <i className="fa fa-times mr-3"

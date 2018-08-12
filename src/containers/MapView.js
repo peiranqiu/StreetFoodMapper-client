@@ -7,6 +7,8 @@ import mapIcon from '../resources/icons/map.png'
 import unfavorite from '../resources/icons/unfavorite.png'
 import favorite from '../resources/icons/favorite.png'
 import $ from 'jquery'
+import FavoriteServiceClient from "../services/FavoriteServiceClient";
+
 const allMarkers = [];
 const allWindows = [];
 var prevInfoWindow = false;
@@ -21,6 +23,7 @@ export default class MapView
             schedules: [],
             user: {}
         };
+        this.favoriteService = FavoriteServiceClient.instance();
         this.setTrucks = this.setTrucks.bind(this);
         this.setUser = this.setUser.bind(this);
         this.initMap = this.initMap.bind(this);
@@ -76,15 +79,21 @@ export default class MapView
 
                 var schedules = this.state.schedules;
                 schedules.push(schedule);
-                this.setState({schedules:schedules});
+                this.setState({schedules: schedules});
 
                 var fav = unfavorite;
-                var address = " " + schedule.address.substring( 0, schedule.address.indexOf(","));
+                this.favoriteService.findFavorite(schedule.id)
+                    .then((isFav) => {
+                        if (isFav) {
+                            fav = favorite;
+                        }
+                    });
+                var address = " " + schedule.address.substring(0, schedule.address.indexOf(","));
                 var open = " Closed";
-                if(schedule.open == true) {
+                if (schedule.open == true) {
                     open = " Open";
                 }
-                if(schedule.latitude !== undefined) {
+                if (schedule.latitude !== undefined) {
                     var lat = Number(schedule.latitude);
                     var lng = Number(schedule.longitude);
                 }
@@ -118,12 +127,11 @@ export default class MapView
                 });
 
 
-
                 marker.addListener('click', () => {
-                    if( prevInfoWindow ) {
+                    if (prevInfoWindow) {
                         prevInfoWindow.close();
                     }
-                    if(infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                    if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
                         infoWindow.close();
                     }
                     else {
@@ -147,7 +155,7 @@ export default class MapView
                     $('.iw-subTitle').html(category);
                     $('.iw-open-inner').html(open);
                     $('.iw-address-inner').html(address);
-                    if(schedule.open == true) {
+                    if (schedule.open == true) {
                         $('.iw-open-inner').addClass('open');
                     }
 
@@ -162,7 +170,7 @@ export default class MapView
                     iwBackground.children(':nth-child(4)').css({'display': 'none'});
                     var iwCloseBtn = iwOuter.next();
                     iwCloseBtn.css({display: 'none'});
-                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){
+                    iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
                         return s + 'display: none !important;'
                     });
                     $("div:eq(0)", iwBackground).hide();
@@ -185,19 +193,19 @@ export default class MapView
         let favoriteFilter = $('#btn-favorite').hasClass('active');
         let searching = $('#search-icon').hasClass('fa-times');
 
-        if(this.state.trucks !== [] && this.state.schedules != []) {
-            for(var i=0; i< allMarkers.length; i++) {
+        if (this.state.trucks !== [] && this.state.schedules != []) {
+            for (var i = 0; i < allMarkers.length; i++) {
                 allMarkers[i].setVisible(true);
             }
             this.state.trucks.map((truck) => {
                 if (searching
                     && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(this.props.search.toLowerCase())
-                        || truck.category1.toString().toLowerCase()===(this.props.search.toLowerCase())
-                        || truck.category2.toString().toLowerCase()===(this.props.search.toLowerCase())
-                        || truck.category3.toString().toLowerCase()===(this.props.search.toLowerCase()))) {
+                        || truck.category1.toString().toLowerCase() === (this.props.search.toLowerCase())
+                        || truck.category2.toString().toLowerCase() === (this.props.search.toLowerCase())
+                        || truck.category3.toString().toLowerCase() === (this.props.search.toLowerCase()))) {
                     truck.schedules.map((schedule) => {
-                        for(var i=0; i< allMarkers.length; i++) {
-                            if(allMarkers[i].id === schedule.id) {
+                        for (var i = 0; i < allMarkers.length; i++) {
+                            if (allMarkers[i].id === schedule.id) {
                                 allMarkers[i].setVisible(false);
                                 break;
                             }
@@ -206,9 +214,9 @@ export default class MapView
                     return null;
                 }
                 truck.schedules.map((schedule) => {
-                    if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
-                        for(var i=0; i< allMarkers.length; i++) {
-                            if(allMarkers[i].id === schedule.id) {
+                    if ((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
+                        for (var i = 0; i < allMarkers.length; i++) {
+                            if (allMarkers[i].id === schedule.id) {
                                 allMarkers[i].setVisible(false);
                                 break;
                             }
@@ -222,8 +230,8 @@ export default class MapView
                             }
                         });
                         if (isFav === false) {
-                            for(var i=0; i< allMarkers.length; i++) {
-                                if(allMarkers[i].id === schedule.id) {
+                            for (var i = 0; i < allMarkers.length; i++) {
+                                if (allMarkers[i].id === schedule.id) {
                                     allMarkers[i].setVisible(false);
                                     break;
                                 }
@@ -234,10 +242,10 @@ export default class MapView
             })
 
         }
-        if(this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
-            for(var i=0; i< allMarkers.length; i++) {
-                if(allMarkers[i].id === this.props.selectedSchedule.id) {
-                    if( prevInfoWindow ) {
+        if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
+            for (var i = 0; i < allMarkers.length; i++) {
+                if (allMarkers[i].id === this.props.selectedSchedule.id) {
+                    if (prevInfoWindow) {
                         prevInfoWindow.close();
                     }
                     allWindows[i].open(map, allMarkers[i]);

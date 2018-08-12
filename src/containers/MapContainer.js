@@ -9,7 +9,6 @@ import TruckServiceClient from "../services/TruckServiceClient";
 import ScheduleServiceClient from "../services/ScheduleServiceClient";
 import FavoriteServiceClient from "../services/FavoriteServiceClient";
 import loader from "../resources/background/loader.gif"
-import ReactSVG from 'react-svg'
 import $ from 'jquery'
 import UserServiceClient from "../services/UserServiceClient";
 
@@ -37,19 +36,33 @@ export default class MapContainer
 
     scheduleCallback = (selectedSchedule) => {
         this.setState({selectedSchedule: selectedSchedule});
+        if(this.state.user !== undefined) {
+            this.favoriteService.findFavoritesForUser(this.state.user.id)
+                .then((favorites) => {
+                    this.setState({favorites: favorites})
+                });
+        }
     }
     truckCallback = (selectedTruck) => {
         this.setState({selectedTruck: selectedTruck});
+        if(this.state.user !== undefined) {
+            this.favoriteService.findFavoritesForUser(this.state.user.id)
+                .then((favorites) => {
+                    this.setState({favorites: favorites})
+                });
+        }
     }
 
     componentDidMount() {
         this.userService.findCurrentUser()
             .then(user => {
                 this.setState({user: user});
-                this.favoriteService.findFavoritesForUser(user.id)
-                    .then((favorites) => {
-                        this.setState({favorites: favorites})
-                    });
+                if(user !== undefined) {
+                    this.favoriteService.findFavoritesForUser(user.id)
+                        .then((favorites) => {
+                            this.setState({favorites: favorites})
+                        });
+                }
             });
         this.truckService.findAllTrucks()
             .then((trucks) => {
@@ -197,7 +210,10 @@ export default class MapContainer
                                     $('#btn-open').removeClass('active');
                                     $('#btn-later').removeClass('active');
                                 }
-                                this.setState({refresh: true});
+                                this.favoriteService.findFavoritesForUser(this.state.user.id)
+                                    .then((favorites) => {
+                                        this.setState({favorites: favorites})
+                                    });
                             }}>Favorites
                     </button>
                     <div className="table-cell m-0 p-0 col-left">

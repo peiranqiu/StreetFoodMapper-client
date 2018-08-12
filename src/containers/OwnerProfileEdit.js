@@ -93,6 +93,7 @@ export default class OwnerProfileEdit
 
     logout = (e) => {
         this.ownerService.logout();
+        alert("Logged out");
     }
 
     render() {

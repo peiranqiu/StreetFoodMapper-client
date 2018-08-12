@@ -20,7 +20,7 @@ import loader from "../resources/background/loader.gif"
 import OpenTimeServiceClient from "../services/OpenTimeServiceClient";
 import ScheduleServiceClient from "../services/ScheduleServiceClient";
 import PhotoServiceClient from "../services/PhotoServiceClient";
-import ReviewServiceClient from "../services/ReviewServiceClient";
+import UserServiceClient from "../services/UserServiceClient";
 
 export default class TruckEditor
     extends React.Component {
@@ -36,9 +36,11 @@ export default class TruckEditor
             owner: {},
             newTruck: {},
             newHolidays: [],
-            newSchedules: []
-        };
+            newSchedules: [],
+            admin: null
+        }
         this.ownerService = OwnerServiceClient.instance();
+        this.userService = UserServiceClient.instance();
         this.truckService = TruckServiceClient.instance();
         this.scheduleService = ScheduleServiceClient.instance();
         this.photoService = PhotoServiceClient.instance();
@@ -52,6 +54,15 @@ export default class TruckEditor
     }
 
     componentDidMount() {
+        this.userService.findCurrentUser()
+            .then(user => {
+                if (user !== undefined && user !== null && user.email === "admin") {
+                    this.setState({admin: true});
+                }
+                else {
+                    this.setState({admin: false});
+                }
+            });
         this.ownerService.findCurrentOwner()
             .then(owner => {
                 this.setState({owner: owner});
@@ -73,8 +84,6 @@ export default class TruckEditor
         script.src = "https://maps.googleapis.com/maps/api/js?key=" + constants.GOOGLE_MAP_KEY + "&libraries=places&callback=myCallbackFunc";
         script.async = true;
         ref.parentNode.insertBefore(script, ref);
-
-
     }
 
     renderCategories() {
@@ -263,6 +272,7 @@ export default class TruckEditor
 
     logout = (e) => {
         this.ownerService.logout();
+        alert("Logged out");
     }
 
     dateToNumber(date) {
@@ -321,13 +331,12 @@ export default class TruckEditor
         e.preventDefault();
         this.truckService.updateTruck(this.state.newTruck.id, this.state.newTruck)
             .then((response) => {
-                console.log(response);
                 alert("Truck Updated");
             });
     }
 
     render() {
-        if (this.state.owner === undefined || this.state.owner === {}) {
+        if ((this.state.owner === undefined || this.state.owner === {}) && this.state.admin === false) {
             alert("Plase Log In");
             window.location.href = "/login/owner";
         }
@@ -417,12 +426,14 @@ export default class TruckEditor
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
                         </a>
-                        {this.state.owner !== undefined
+                        {this.state.owner !== undefined && !this.state.admin
                         && <a className="nav-item current-user">{this.state.owner.email}</a>}
+                        {this.state.admin
+                        && <a className="nav-item current-user">admin</a>}
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            {this.state.owner !== undefined
+                            {this.state.owner !== undefined && !this.state.admin
                             && <a className="dropdown-item" href="/profile/owner">Profile</a>}
-                            {this.state.owner !== undefined
+                            {this.state.owner !== undefined && !this.state.admin
                             && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
                         </div>
                     </span>
@@ -653,9 +664,10 @@ export default class TruckEditor
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
+                    {!this.state.admin &&
                     <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
-                        Us</a>
-                    <a className="nav-item" id="nav-item-3" href="/register/user">Foodie?</a>
+                        Us</a>}
+                    {!this.state.admin && <a className="nav-item" id="nav-item-3" href="/register/user">Foodie?</a>}
                 </nav>
             </div>
         );

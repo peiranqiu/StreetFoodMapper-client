@@ -37,6 +37,8 @@ export default class Test
     }
 
     render() {
+
+        window.location.href = "/home";
         return (
             <div>
                 <div className="background test"></div>

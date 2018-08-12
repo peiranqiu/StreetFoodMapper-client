@@ -17,6 +17,7 @@ import CreateTruck from './CreateTruck'
 import TruckPreview from './TruckPreview'
 import TruckEditor from './TruckEditor'
 import NotFound from './NotFound'
+import AdminPage from './AdminPage'
 
 export default class App extends Component {
     componentDidMount() {
@@ -42,13 +43,11 @@ export default class App extends Component {
                 <Route exact path="/dashboard" component={Dashboard}/>
                 <Route exact path="/policy" component={Policy}/>
                 <Route exact path="/truck/:truckId" component={TruckPage}/>
-                <Route exact path="/dashboard/create" component={CreateTruck}/>
+                <Route exact path="/:ownerId/create" component={CreateTruck}/>
                 <Route exact path="/truck/:truckId/preview" component={TruckPreview}/>
                 <Route exact path="/truck/:truckId/edit" component={TruckEditor}/>
-                <Route component={NotFound}/>
-                {/*
                 <Route exact path="/admin" component={AdminPage}/>
-                */}
+                <Route component={NotFound}/>
             </Switch>
         </Router>
     )

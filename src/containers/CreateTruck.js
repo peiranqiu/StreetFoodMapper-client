@@ -24,6 +24,7 @@ import {Tabs, TabList, Tab, PanelList, Panel, ExtraButton} from 'react-tabtab';
 import * as constants from "../constants/constant";
 import {geocodeByAddress, geocodeByPlaceId, getLatLng,} from 'react-places-autocomplete';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import UserServiceClient from "../services/UserServiceClient";
 
 export default class CreateTruck
     extends React.Component {
@@ -51,9 +52,11 @@ export default class CreateTruck
                 category1: 'AMERICAN',
                 category2: 'ASIAN',
                 category3: 'BREAKFAST'
-            }
+            },
+            admin: null
         };
         this.ownerService = OwnerServiceClient.instance();
+        this.userService = UserServiceClient.instance();
         this.yelpService = YelpServiceClient.instance();
         this.truckService = TruckServiceClient.instance();
         this.scheduleService = ScheduleServiceClient.instance();
@@ -68,7 +71,17 @@ export default class CreateTruck
     }
 
     componentDidMount() {
-        this.ownerService.findCurrentOwner()
+        this.userService.findCurrentUser()
+            .then(user => {
+                if (user !== undefined && user !== null && user.email === "admin") {
+                    this.setState({admin: true});
+                }
+                else {
+                    this.setState({admin: false});
+                }
+            });
+        let ownerId = this.props.match.params.ownerId;
+        this.ownerService.findOwnerById(ownerId)
             .then(owner => {
                 this.setState({owner: owner});
             });
@@ -282,6 +295,7 @@ export default class CreateTruck
 
     logout = (e) => {
         this.ownerService.logout();
+        alert("Logged out");
     }
 
     dateToNumber(date) {
@@ -390,7 +404,7 @@ export default class CreateTruck
                 window.location.href = "/truck/" + this.state.truckId + "/preview";
             }
         }
-        if (this.state.owner === undefined || this.state.owner === {}) {
+        if ((this.state.owner === undefined || this.state.owner === {}) && this.state.admin === false) {
             alert("Plase Log In");
             window.location.href = "/login/owner";
         }
@@ -517,12 +531,14 @@ export default class CreateTruck
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
                         </a>
-                        {this.state.owner !== undefined
+                        {this.state.owner !== undefined && !this.state.admin
                         && <a className="nav-item current-user">{this.state.owner.email}</a>}
+                        {this.state.admin
+                        && <a className="nav-item current-user">admin</a>}
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            {this.state.owner !== undefined
+                            {this.state.owner !== undefined && !this.state.admin
                             && <a className="dropdown-item" href="/profile/owner">Profile</a>}
-                            {this.state.owner !== undefined
+                            {this.state.owner !== undefined && !this.state.admin
                             && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
                         </div>
                     </span>
@@ -743,8 +759,13 @@ export default class CreateTruck
                         </div>
                         <div className="text-center pb-5">
                             <a id="goBack" onClick={() => {
-                                if (window.confirm('Are you sure you want to go back to the dashboard without saving?')) {
-                                    window.location.href = "/dashboard";
+                                if (window.confirm('Are you sure you want to go back without saving?')) {
+                                    if(this.state.admin) {
+                                        window.close();
+                                    }
+                                    else {
+                                        window.location.href = "/dashboard";
+                                    }
                                 }
                             }}>Go back without saving</a></div>
                     </form>
@@ -754,9 +775,10 @@ export default class CreateTruck
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
+                    {!this.state.admin &&
                     <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
-                        Us</a>
-                    <a className="nav-item" id="nav-item-3" href="/register/user">Foodie?</a>
+                        Us</a>}
+                    {!this.state.admin && <a className="nav-item" id="nav-item-3" href="/register/user">Foodie?</a>}
                 </nav>
             </div>
         );

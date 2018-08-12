@@ -45,18 +45,18 @@ export default class Home
     }
 
     logout = (e) => {
-
         this.userService.logout();
+        alert("Logged out");
     }
 
     render() {
         window.addEventListener("scroll", function(event) {
             document.getElementById("nav-item-1").classList.remove("active");
             document.getElementById("nav-item-2").classList.remove("active");
-            if(document.getElementById("trending-container").getBoundingClientRect().top <= 0) {
+            if(document.getElementById("trending-container") !== null && document.getElementById("trending-container").getBoundingClientRect().top <= 0) {
                 document.getElementById("nav-item-2").classList.add("active");
             }
-            else if(document.getElementById("map-anchor").getBoundingClientRect().top <= 0){
+            else if(document.getElementById("map-anchor") !== null && document.getElementById("map-anchor").getBoundingClientRect().top <= 0){
                 document.getElementById("nav-item-1").classList.add("active");
             }
         }, false);

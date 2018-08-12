@@ -54,9 +54,26 @@ export default class UserServiceClient {
                     return null;
                 }
                 else {
-                    alert("Sign up successful!\n" +
-                        "Now you can sign in to bookmark and access your favorite food trucks.");
-                    window.location.reload();
+                    return response.json();
+                }
+            });
+    }
+
+    createUser(user) {
+        return fetch(constants.USER_REGISTER_URL, {
+            method: 'post',
+            body: JSON.stringify(user),
+            credentials: 'include',
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.status === 409) {
+                    alert("User Already Exist");
+                    return null;
+                }
+                else {
                     return response.json();
                 }
             });
@@ -100,7 +117,7 @@ export default class UserServiceClient {
                 return null;
             }
             else {
-                alert("Password Changed");
+                alert("Account Updated");
                 return response.json();
             }
         });

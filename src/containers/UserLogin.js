@@ -88,7 +88,9 @@ export default class UserLogin
             if(this.state.user.email === "admin") {
                 window.location.href = "/admin";
             }
-           window.location.href = "/home";
+            else {
+                window.location.href = "/home";
+            }
         }
         return (
             <div id="login-page" className="user-page">

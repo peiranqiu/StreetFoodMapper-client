@@ -94,6 +94,7 @@ export default class UserProfileEdit
 
     logout = (e) => {
         this.userService.logout();
+        alert("Logged out");
     }
 
     render() {

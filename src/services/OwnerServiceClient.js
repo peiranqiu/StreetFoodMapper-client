@@ -54,9 +54,6 @@ export default class OwnerServiceClient {
                     return null;
                 }
                 else {
-                    alert("Sign up successful!\n" +
-                        "Now you can sign in and add your food trucks to our map.");
-                    window.location.reload();
                     return response.json();
                 }
             });
@@ -100,7 +97,7 @@ export default class OwnerServiceClient {
                 return null;
             }
             else {
-                alert("Password Changed");
+                alert("Account Updated");
                 return response.json();
             }
         });
@@ -120,5 +117,17 @@ export default class OwnerServiceClient {
                     alert("cannot find user")
                 }
             })
+    }
+
+    findOwnerById(ownerId) {
+        return fetch(constants.ALL_OWNER_URL + '/' + ownerId)
+            .then(response => {
+                if (response.status === 404 || response.status === 400) {
+                    return null;
+                }
+                else {
+                    return response.json();
+                }
+            });
     }
 }

@@ -9,7 +9,7 @@ import user from '../resources/icons/user-white.png'
 import venderregister from '../resources/account/venderregistor.png'
 
 import OwnerServiceClient from "../services/OwnerServiceClient";
-import { isEmail, isEmpty, isLength, isContainWhiteSpace } from '../constants/validator'
+import {isEmail, isEmpty, isLength, isContainWhiteSpace} from '../constants/validator'
 
 export default class OwnerRegister
     extends React.Component {
@@ -20,7 +20,7 @@ export default class OwnerRegister
             errors: {}, // Contains login field errors
             formSubmitted: false, // Indicates submit status of login form
             loading: false, // Indicates in progress state of login form
-            owner:{}
+            owner: {}
         }
         this.ownerService = OwnerServiceClient.instance();
     }
@@ -31,18 +31,20 @@ export default class OwnerRegister
                 this.setState({owner: owner});
             });
     }
+
     componentWillReceiveProps() {
         this.ownerService.findCurrentOwner()
             .then(owner => {
                 this.setState({owner: owner});
             });
     }
+
     handleInputChange = (event) => {
         const target = event.target;
         const value = target.value;
         const name = target.name;
 
-        let { formData } = this.state;
+        let {formData} = this.state;
         formData[name] = value;
 
         this.setState({
@@ -53,7 +55,7 @@ export default class OwnerRegister
     validateLoginForm = (e) => {
 
         let errors = {};
-        const { formData } = this.state;
+        const {formData} = this.state;
 
         if (isEmpty(formData.email)) {
             errors.email = "Email can't be blank";
@@ -63,12 +65,12 @@ export default class OwnerRegister
 
         if (isEmpty(formData.password)) {
             errors.password = "Password can't be blank";
-        }  else if (isContainWhiteSpace(formData.password)) {
+        } else if (isContainWhiteSpace(formData.password)) {
             errors.password = "Password should not contain white spaces";
-        } else if (!isLength(formData.password, { gte: 6, lte: 16, trim: true })) {
+        } else if (!isLength(formData.password, {gte: 6, lte: 16, trim: true})) {
             errors.password = "Password's length must between 6 to 16";
         }
-        if(formData.password !== formData.passwordRetype) {
+        if (formData.password !== formData.passwordRetype) {
             errors.password = "Password does not match"
         }
 
@@ -85,8 +87,15 @@ export default class OwnerRegister
 
         let errors = this.validateLoginForm();
 
-        if(errors === true){
-            this.ownerService.register({email: this.state.formData.email, password: this.state.formData.password});
+        if (errors === true) {
+            this.ownerService.register({email: this.state.formData.email, password: this.state.formData.password})
+                .then((response) => {
+                    if (response !== null) {
+                        alert("Sign up successful!\n" +
+                            "Now you can sign in and add your food trucks to our map.");
+                        window.location.reload();
+                    }
+                });
         } else {
             alert(errors.email || errors.password);
             this.setState({
@@ -120,22 +129,26 @@ export default class OwnerRegister
                         <div className="col-sm-6 container user-register-form">
                             <div id="register" className="user-page-card">
                                 <h1 className="display1">Are You a Truck?</h1>
-                                <p className="subtitle">Sign up to create, customize and broadcast your custom truck profile on Food Truck Mapper.</p>
+                                <p className="subtitle">Sign up to create, customize and broadcast your custom truck
+                                    profile on Food Truck Mapper.</p>
                                 <p className="subhead">Already on Food Truck Mapper?
                                     <a href="/login/owner"> Sign in</a></p>
                                 <form action="" method="" className="" role="form" onSubmit={this.register}>
                                     <div id="form-register-email" className="form-group">
-                                        <input id="register-email" className="form-control" name="email" type="text" size="14"
+                                        <input id="register-email" className="form-control" name="email" type="text"
+                                               size="14"
                                                alt="EMAIL" placeholder="Eamil"
                                                onChange={this.handleInputChange} required/>
                                     </div>
                                     <div id="form-register-password" className="form-group">
-                                        <input id="register-passwd" className="form-control" name="password" type="password"
+                                        <input id="register-passwd" className="form-control" name="password"
+                                               type="password"
                                                size="14" alt="password" placeholder="Password"
                                                onChange={this.handleInputChange} required/>
                                     </div>
                                     <div id="form-register-password-retype" className="form-group">
-                                        <input id="register-passwd-retype" className="form-control" name="passwordRetype"
+                                        <input id="register-passwd-retype" className="form-control"
+                                               name="passwordRetype"
                                                type="password"
                                                size="14" alt="password" placeholder="Re-type Password"
                                                onChange={this.handleInputChange} required/>
@@ -145,11 +158,13 @@ export default class OwnerRegister
                                                 alt="sign in">Sign Up
                                         </button>
                                     </div>
-                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's <a href="/policy">Privacy Policy</a>.</p>
+                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's <a
+                                        href="/policy">Privacy Policy</a>.</p>
                                 </form>
                             </div>
                         </div>
-                        <div className="col-sm-6"><img className="user-page-img" src={venderregister} alt="vendorlogin"/>
+                        <div className="col-sm-6"><img className="user-page-img" src={venderregister}
+                                                       alt="vendorlogin"/>
                         </div>
                     </div>
                 </div>

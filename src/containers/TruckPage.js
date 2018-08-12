@@ -64,6 +64,7 @@ export default class TruckPage
     logout = (e) => {
 
         this.userService.logout();
+        alert("Logged out");
     }
 
     format(time) {
@@ -125,10 +126,10 @@ export default class TruckPage
             document.getElementById("nav-item-0").classList.remove("active");
             document.getElementById("nav-item-1").classList.remove("active");
             document.getElementById("nav-item-2").classList.remove("active");
-            if(document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
+            if(document.getElementById("feed-anchor") !== null && document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
                 document.getElementById("nav-item-2").classList.add("active");
             }
-            else if(document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0){
+            else if(document.getElementById("schedule-anchor") !== null && document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0){
                 document.getElementById("nav-item-1").classList.add("active");
             }
             else {
@@ -328,7 +329,7 @@ export default class TruckPage
                                     <tbody>
                                     {this.state.truck.schedules.map((schedule) => {
                                         return (
-                                            <tr>
+                                            <tr key={schedule.id}>
                                                 <th scope="row">{schedule.address.substring(0, schedule.address.indexOf(","))}</th>
                                                 <td></td>
                                                 <td></td>
@@ -351,7 +352,7 @@ export default class TruckPage
                                         <td></td>
                                         {this.state.truck.holidays.map((holiday) => {
                                             return (
-                                                <td>{this.convert(holiday.date)}</td>
+                                                <td key={holiday.id}>{this.convert(holiday.date)}</td>
                                             )
                                         })}
                                     </tr>

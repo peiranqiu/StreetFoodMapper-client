@@ -30,6 +30,7 @@ export default class UserProfile
 
     logout = (e) => {
         this.userService.logout();
+        alert("Logged out");
     }
 
     render() {

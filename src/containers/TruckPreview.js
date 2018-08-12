@@ -125,9 +125,15 @@ export default class TruckPreview
                 <div className="preview-container sticky-top text-center">
                     <div>You are currently in preview mode.</div>
                     <button type="button" className="btn btn-1"
-                            onClick={() => {window.location.href = "/truck/"+this.state.truck.id+"/edit"}}>BACK TO EDIT</button>
+                            onClick={() => {
+                                window.location.href = "/truck/" + this.state.truck.id + "/edit"
+                            }}>BACK TO EDIT
+                    </button>
                     <button type="button" className="btn btn-2"
-                            onClick={() => {window.location.href = "/dashboard"}}>SAVE AND PUBLISH</button>
+                            onClick={() => {
+                                window.location.href = "/truck/" + this.state.truck.id
+                            }}>SAVE AND PUBLISH
+                    </button>
                 </div>
 
 

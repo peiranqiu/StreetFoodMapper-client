@@ -36,13 +36,14 @@ export default class Dashboard
 
     logout = (e) => {
         this.ownerService.logout();
+        alert("Logged out");
     }
 
     delete(id) {
         if (window.confirm('Are you sure you want to delete this truck?\nThis action is permanent and cannot be undone.')) {
             this.truckService.deleteTruck(id);
+            window.location.reload();
         }
-        window.location.reload();
     }
 
     render() {
@@ -51,7 +52,7 @@ export default class Dashboard
             alert("Plase Log In");
             window.location.href = "/login/owner";
         }
-
+        var href = "/" + this.state.owner.id + "/create";
         var content = (
             <div id="dashboard" className="card-group">
                 <div className="list-group">
@@ -60,9 +61,7 @@ export default class Dashboard
                         <div className="row justify-content-between">
                             <div>You don’t have any truck profiles set up yet.</div>
                             <button type="button" className="btn btn-block ripple-effect"
-                                    onClick={() => {
-                                        window.location.href = "/dashboard/create"
-                                    }}>
+                                    onClick={() => window.location.href = href}>
                                 Add Your First Truck
                             </button>
                         </div>
@@ -71,10 +70,9 @@ export default class Dashboard
             </div>);
 
         if (this.state.trucks !== undefined && this.state.trucks.length > 0) {
-            //this.truckService.deleteTruck(this.state.trucks[0].id);
             content = (
                 <div id="dashboard" className="card-group">
-                    <a className="create-truck" href="/dashboard/create">Add New Truck</a>
+                    <a className="create-truck" href={href}>Add New Truck</a>
                     <div className="row">
                         {this.state.trucks.map((truck) => {
                             var href = "/truck/" + truck.id + "/edit";

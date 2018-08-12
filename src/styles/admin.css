@@ -1,0 +1,27 @@
+.truck-table td {
+    max-width: 120px;
+    overflow-wrap: break-word;
+}
+.tool {
+    width: 100px;
+}
+
+i {
+    cursor: pointer;
+}
+i:hover {
+    color: #F6734B;
+}
+.fa-plus {
+    font-size: 18px;
+    vertical-align: middle;
+}
+#edit-email, #edit-password {
+    border:solid 1px grey !important;
+    width:300px;
+    height:36px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3px;
+    margin-top:20px;
+}

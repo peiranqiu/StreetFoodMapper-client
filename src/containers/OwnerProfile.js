@@ -26,6 +26,7 @@ export default class OwnerProfile
     }
     logout = (e) => {
         this.ownerService.logout();
+        alert("Logged out");
     }
 
     render() {

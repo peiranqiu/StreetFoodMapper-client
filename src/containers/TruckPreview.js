@@ -31,7 +31,8 @@ export default class TruckPreview
         super(props);
 
         this.state = {
-            truck: {}
+            truck: {},
+            admin:false
         };
 
         this.truckService = TruckServiceClient.instance();
@@ -43,6 +44,12 @@ export default class TruckPreview
             .then(truck => {
                 console.log(truck);
                 this.setState({truck: truck});
+            });
+        this.userService.findCurrentUser()
+            .then(user => {
+                if (user === undefined || user.email === "admin") {
+                    this.setState({admin:true});
+                }
             });
     }
 

@@ -54,7 +54,8 @@ export default class OwnerServiceClient {
                     return null;
                 }
                 else {
-                    alert("Successfully Registered");
+                    alert("Sign up successful!\n" +
+                        "Now you can sign in and add your food trucks to our map.");
                     window.location.reload();
                     return response.json();
                 }

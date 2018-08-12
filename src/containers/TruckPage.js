@@ -120,6 +120,22 @@ export default class TruckPage
     }
 
     render() {
+
+        window.addEventListener("scroll", function(event) {
+            document.getElementById("nav-item-0").classList.remove("active");
+            document.getElementById("nav-item-1").classList.remove("active");
+            document.getElementById("nav-item-2").classList.remove("active");
+            if(document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
+                document.getElementById("nav-item-2").classList.add("active");
+            }
+            else if(document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0){
+                document.getElementById("nav-item-1").classList.add("active");
+            }
+            else {
+                document.getElementById("nav-item-0").classList.add("active");
+            }
+        }, false);
+
         var rating = null;
         if (this.state.truck !== {}) {
             switch (this.state.truck.rating) {

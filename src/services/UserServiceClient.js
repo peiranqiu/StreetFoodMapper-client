@@ -54,7 +54,8 @@ export default class UserServiceClient {
                     return null;
                 }
                 else {
-                    alert("Successfully Registered");
+                    alert("Sign up successful!\n" +
+                        "Now you can sign in to bookmark and access your favorite food trucks.");
                     window.location.reload();
                     return response.json();
                 }

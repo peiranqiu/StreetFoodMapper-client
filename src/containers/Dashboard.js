@@ -39,7 +39,7 @@ export default class Dashboard
     }
 
     delete(id) {
-        if (window.confirm('Delete Truck?')) {
+        if (window.confirm('Are you sure you want to delete this truck?\nThis action is permanent and cannot be undone.')) {
             this.truckService.deleteTruck(id);
         }
         window.location.reload();

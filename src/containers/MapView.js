@@ -4,6 +4,7 @@ import '../styles/map.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
+import mapWhite from '../resources/icons/map-white.png'
 import unfavorite from '../resources/icons/unfavorite.png'
 import favorite from '../resources/icons/favorite.png'
 import $ from 'jquery'
@@ -132,15 +133,18 @@ export default class MapView
                         prevInfoWindow.close();
                     }
                     if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                        marker.setIcon(mapIcon);
                         infoWindow.close();
                     }
                     else {
                         prevInfoWindow = infoWindow;
                         infoWindow.open(map, marker);
                         this.selectingTruck(schedule, truck);
+                        marker.setIcon(mapWhite);
                     }
                 });
                 map.addListener('click', function () {
+                    marker.setIcon(mapIcon);
                     infoWindow.close();
                 });
                 allMarkers.push(marker);
@@ -244,11 +248,13 @@ export default class MapView
         }
         if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
             for (var i = 0; i < allMarkers.length; i++) {
+                allMarkers[i].setIcon(mapIcon);
                 if (allMarkers[i].id === this.props.selectedSchedule.id) {
                     if (prevInfoWindow) {
                         prevInfoWindow.close();
                     }
                     allWindows[i].open(map, allMarkers[i]);
+                    allMarkers[i].setIcon(mapWhite);
                     prevInfoWindow = allWindows[i];
                 }
             }

@@ -217,9 +217,10 @@ export default class MapContainer
                             }}>Favorites
                     </button>
                     <div className="table-cell m-0 p-0 col-left">
-                        <div className="list-view">
+                        <div className="list-view p-0">
                             <div className="list-header">Find Trucks</div>
-                            <div className="list-group">
+                            <div className="list-group p-0">
+                                <div id="background-test">Whoops! No trucks found.</div>
                                 {this.renderListOfTrucks()}
                             </div>
                         </div>

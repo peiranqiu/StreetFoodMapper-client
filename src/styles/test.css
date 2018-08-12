@@ -74,14 +74,26 @@ hr {
 #nav-item-0 {
     right:660px;
     position:absolute;
+    line-height: 43px;
+}
+#nav-item-0.active {
+    border-bottom: 5px solid black;
 }
 #nav-item-1 {
     right:500px;
     position:absolute;
+    line-height: 43px;
+}
+#nav-item-1.active {
+    border-bottom: 5px solid black;
 }
 #nav-item-2 {
     right:350px;
     position:absolute;
+    line-height: 43px;
+}
+#nav-item-2.active {
+    border-bottom: 5px solid black;
 }
 #nav-item-3 {
     right:100px;

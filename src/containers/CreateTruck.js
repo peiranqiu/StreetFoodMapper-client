@@ -265,6 +265,8 @@ export default class CreateTruck
                     truck.schedules = schedules;
                     truck.holidays = [];
                     this.setState({newTruck: truck});
+                    alert("Successfully connected to Yelp!\n" +
+                        "Now you can review and make necessary edits to the imported information.");
                     $('.modal').modal('hide');
                 }
             })
@@ -739,7 +741,12 @@ export default class CreateTruck
                             </button>
 
                         </div>
-                        <div className="text-center pb-5"><a href='/dashboard'>Go back without saving</a></div>
+                        <div className="text-center pb-5">
+                            <a id="goBack" onClick={() => {
+                                if (window.confirm('Are you sure you want to go back to the dashboard without saving?')) {
+                                    window.location.href = "/dashboard";
+                                }
+                            }}>Go back without saving</a></div>
                     </form>
                 </div>
 

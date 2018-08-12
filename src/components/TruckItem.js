@@ -1,5 +1,6 @@
 import React from 'react';
 import unfavorite from '../resources/icons/unfavorite.png'
+import favorite from '../resources/icons/favorite.png'
 import '../../node_modules/font-awesome/css/font-awesome.css';
 
 export default class TruckItem extends React.Component {
@@ -21,6 +22,7 @@ export default class TruckItem extends React.Component {
         }
         var address = " " + this.props.schedule.address.substring( 0, this.props.schedule.address.indexOf(","));
         var href = "/truck/" + this.props.truck.id.toString();
+        var fav = favorite;
         return (
             <div className={newClass} onClick={this.selectingTruck}>
                 <div className="row justify-content-between" id="truck-item">
@@ -36,7 +38,14 @@ export default class TruckItem extends React.Component {
                     <div className="truck-item-address"><i className="fa fa-map-marker"></i><a
                         className="truck-item-content">{address}</a>
                     </div>
-                    <img className="truck-item-icon" src={unfavorite}/>
+                    <img className="truck-item-icon" id="fav-btn" src={fav}
+                         onClick={() => {
+                             if(this.props.user === undefined) {
+                                 alert("Please log in to use this feature");
+                                 return;
+                             }
+                             this.setState({refresh: true});
+                         }}/>
                 </div>
             </div>
 

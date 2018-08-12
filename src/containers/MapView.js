@@ -5,6 +5,7 @@ import '../../node_modules/font-awesome/css/font-awesome.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
 import unfavorite from '../resources/icons/unfavorite.png'
+import favorite from '../resources/icons/favorite.png'
 import $ from 'jquery'
 const allMarkers = [];
 const allWindows = [];
@@ -77,6 +78,7 @@ export default class MapView
                 schedules.push(schedule);
                 this.setState({schedules:schedules});
 
+                var fav = unfavorite;
                 var address = " " + schedule.address.substring( 0, schedule.address.indexOf(","));
                 var open = " Closed";
                 if(schedule.open == true) {
@@ -139,7 +141,7 @@ export default class MapView
 
                 google.maps.event.addListener(infoWindow, 'domready', function () {
                     $('img[src="replace"]').attr('src', photo);
-                    $('img[src="replace-fav"]').attr('src', unfavorite);
+                    $('img[src="replace-fav"]').attr('src', fav);
                     $('.iw-title').attr('href', href);
                     $('.iw-title').html(name);
                     $('.iw-subTitle').html(category);
@@ -181,19 +183,56 @@ export default class MapView
         let openFilter = $('#btn-open').hasClass('active');
         let laterFilter = $('#btn-later').hasClass('active');
         let favoriteFilter = $('#btn-favorite').hasClass('active');
-        if(this.state.schedules !== []) {
+        let searching = $('#search-icon').hasClass('fa-times');
+
+        if(this.state.trucks !== [] && this.state.schedules != []) {
             for(var i=0; i< allMarkers.length; i++) {
                 allMarkers[i].setVisible(true);
             }
-            this.state.schedules.map((schedule) => {
-                if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
-                    for(var i=0; i< allMarkers.length; i++) {
-                        if(allMarkers[i].id === schedule.id) {
-                            allMarkers[i].setVisible(false);
-                            break;
+            this.state.trucks.map((truck) => {
+                if (searching
+                    && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(this.props.search.toLowerCase())
+                        || truck.category1.toString().toLowerCase()===(this.props.search.toLowerCase())
+                        || truck.category2.toString().toLowerCase()===(this.props.search.toLowerCase())
+                        || truck.category3.toString().toLowerCase()===(this.props.search.toLowerCase()))) {
+                    truck.schedules.map((schedule) => {
+                        for(var i=0; i< allMarkers.length; i++) {
+                            if(allMarkers[i].id === schedule.id) {
+                                allMarkers[i].setVisible(false);
+                                break;
+                            }
+                        }
+                    });
+                    return null;
+                }
+                truck.schedules.map((schedule) => {
+                    if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
+                        for(var i=0; i< allMarkers.length; i++) {
+                            if(allMarkers[i].id === schedule.id) {
+                                allMarkers[i].setVisible(false);
+                                break;
+                            }
                         }
                     }
-            }})
+                    if (favoriteFilter) {
+                        var isFav = false;
+                        this.props.favorites.map((favorite) => {
+                            if (schedule.id === favorite.id) {
+                                isFav = true;
+                            }
+                        });
+                        if (isFav === false) {
+                            for(var i=0; i< allMarkers.length; i++) {
+                                if(allMarkers[i].id === schedule.id) {
+                                    allMarkers[i].setVisible(false);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                })
+            })
+
         }
         if(this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
             for(var i=0; i< allMarkers.length; i++) {

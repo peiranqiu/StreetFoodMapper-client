@@ -113,6 +113,22 @@ export default class TruckMap
     }
 
     render() {
+        let openFilter = $('#btn-open').hasClass('active');
+        let laterFilter = $('#btn-later').hasClass('active');
+        if(this.props.schedules !== []) {
+            for(var i=0; i< allMarkers.length; i++) {
+                allMarkers[i].setVisible(true);
+            }
+            this.props.schedules.map((schedule) => {
+                if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
+                    for(var i=0; i< allMarkers.length; i++) {
+                        if(allMarkers[i].id === schedule.id) {
+                            allMarkers[i].setVisible(false);
+                            break;
+                        }
+                    }
+                }})
+        }
         return (
                <div id="truckmap"></div>
         );

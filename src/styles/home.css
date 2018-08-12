@@ -154,6 +154,7 @@
     right: 15px;
     top: 40px;
     position: absolute;
+    cursor:pointer;
 }
 
 #home-search {
@@ -166,6 +167,7 @@
 #search-icon {
     transform: translate(230px, -25px);
     color:white;
+    cursor: pointer;
 }
 #search-input {
     background-color:#F4511E;

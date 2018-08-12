@@ -87,7 +87,7 @@ export default class Home
                     </span>
                     </nav>
                     <a className="anchor" id="map-anchor"></a>
-                    <MapContainer user={this.state.user}/>
+                    <MapContainer/>
                     <TrendingContainer/>
                     <nav className="navbar navbar-light sticky-bottom">
                         <a className="navbar-brand">

@@ -7,9 +7,11 @@ import MapView from './MapView';
 import TruckItem from '../components/TruckItem';
 import TruckServiceClient from "../services/TruckServiceClient";
 import ScheduleServiceClient from "../services/ScheduleServiceClient";
+import FavoriteServiceClient from "../services/FavoriteServiceClient";
 import loader from "../resources/background/loader.gif"
 import ReactSVG from 'react-svg'
 import $ from 'jquery'
+import UserServiceClient from "../services/UserServiceClient";
 
 export default class MapContainer
     extends React.Component {
@@ -18,13 +20,16 @@ export default class MapContainer
         this.state = {
             trucks: [],
             user: {},
+            favorites: [],
             refresh: false,
+            search: "",
             selectedSchedule: null,
             selectedTruck: null
         };
         this.truckService = TruckServiceClient.instance();
+        this.userService = UserServiceClient.instance();
         this.scheduleService = ScheduleServiceClient.instance();
-        this.setUser = this.setUser.bind(this);
+        this.favoriteService = FavoriteServiceClient.instance();
         this.scheduleCallback = this.scheduleCallback.bind(this);
         this.truckCallback = this.truckCallback.bind(this);
         this.refreshTrucks = this.refreshTrucks.bind(this);
@@ -37,16 +42,15 @@ export default class MapContainer
         this.setState({selectedTruck: selectedTruck});
     }
 
-    setUser(user) {
-        this.setState({user: user});
-    }
-
-    componentWillReceiveProps(newProps) {
-        this.setUser(newProps.user);
-    }
-
     componentDidMount() {
-        this.setUser(this.props.user);
+        this.userService.findCurrentUser()
+            .then(user => {
+                this.setState({user: user});
+                this.favoriteService.findFavoritesForUser(user.id)
+                    .then((favorites) => {
+                        this.setState({favorites: favorites})
+                    });
+            });
         this.truckService.findAllTrucks()
             .then((trucks) => {
                 this.setState({trucks: trucks});
@@ -85,12 +89,32 @@ export default class MapContainer
         let openFilter = $('#btn-open').hasClass('active');
         let laterFilter = $('#btn-later').hasClass('active');
         let favoriteFilter = $('#btn-favorite').hasClass('active');
+        let searching = $('#search-icon').hasClass('fa-times');
 
         let trucks = this.state.trucks.map((truck) => {
+            if (searching
+                && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(this.state.search.toLowerCase())
+                    || truck.category1.toString().toLowerCase() === (this.state.search.toLowerCase())
+                    || truck.category2.toString().toLowerCase() === (this.state.search.toLowerCase())
+                    || truck.category3.toString().toLowerCase() === (this.state.search.toLowerCase()))) {
+                return null;
+            }
             return (
                 truck.schedules.map((schedule) => {
-                    if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
+                    if ((openFilter && !schedule.open)
+                        || (laterFilter && schedule.open)) {
                         return null;
+                    }
+                    if (favoriteFilter) {
+                        var isFav = false;
+                        this.state.favorites.map((favorite) => {
+                            if (schedule.id === favorite.id) {
+                                isFav = true;
+                            }
+                        });
+                        if (isFav === false) {
+                            return null;
+                        }
                     }
                     return (<TruckItem key={schedule.id}
                                        scheduleCallbackFromParent={this.scheduleCallback}
@@ -114,7 +138,10 @@ export default class MapContainer
                 </div>
             );
         }
-
+        if (this.state.search.length === 0 && $('#search-icon').hasClass('fa-times')) {
+            $('#search-icon').removeClass('fa-times');
+            $('#search-icon').addClass('fa-search');
+        }
 
         return (
             <div className="table m-0 p-0" id="map-container">
@@ -122,34 +149,55 @@ export default class MapContainer
                     <form className="form-inline active-purple-4" id="home-search">
                         <input className="form-control form-control-sm mr-3 w-100 shadow" type="text"
                                placeholder="  Search for trucks & categories"
-                               aria-label="Search" id="search-input" size="14"/>
-                        <i className="fa fa-search" id="search-icon" aria-hidden="true"></i>
+                               aria-label="Search" id="search-input" autoComplete="off" size="14"
+                               onChange={(e) => {
+                                   this.setState({search: e.target.value});
+                               }}
+                        />
+                        <i className="fa fa-search" id="search-icon" aria-hidden="true" onClick={() => {
+                            if ($('#search-icon').hasClass('fa-search')) {
+                                $('#search-icon').removeClass('fa-search');
+                                $('#search-icon').addClass('fa-times');
+                            }
+                            else {
+                                $('#search-icon').removeClass('fa-times');
+                                $('#search-icon').addClass('fa-search');
+                                document.getElementById("search-input").value = "";
+                                this.setState({search: ""});
+                            }
+                            this.setState({refresh: true});
+                        }}/>
                     </form>
                     <button type="button" data-toggle="button" className="btn shadow" id="btn-open"
                             onClick={() => {
-                                if($('#btn-open').hasClass('active')) {
+                                if ($('#btn-open').hasClass('active')) {
                                     $('#btn-later').removeClass('active');
                                     $('#btn-favorite').removeClass('active');
                                 }
-                                this.setState({refresh:true});
+                                this.setState({refresh: true});
                             }}>Open Now
                     </button>
                     <button type="button" data-toggle="button" className="btn shadow" id="btn-later"
                             onClick={() => {
-                                if($('#btn-later').hasClass('active')) {
+                                if ($('#btn-later').hasClass('active')) {
                                     $('#btn-open').removeClass('active');
                                     $('#btn-favorite').removeClass('active');
                                 }
-                                this.setState({refresh:true});
+                                this.setState({refresh: true});
                             }}>Open Later
                     </button>
                     <button type="button" data-toggle="button" className="btn shadow" id="btn-favorite"
                             onClick={() => {
-                                if($('#btn-favorite').hasClass('active')) {
+                                if (this.state.user === undefined) {
+                                    alert("Please log in to use this feature");
+                                    $('#btn-favorite').removeClass('active');
+                                    return;
+                                }
+                                if ($('#btn-favorite').hasClass('active')) {
                                     $('#btn-open').removeClass('active');
                                     $('#btn-later').removeClass('active');
                                 }
-                                this.setState({refresh:true});
+                                this.setState({refresh: true});
                             }}>Favorites
                     </button>
                     <div className="table-cell m-0 p-0 col-left">
@@ -165,6 +213,8 @@ export default class MapContainer
                                  truckCallbackFromParent={this.truckCallback}
                                  selectedTruck={this.state.selectedTruck}
                                  selectedSchedule={this.state.selectedSchedule}
+                                 search={this.state.search}
+                                 favorites = {this.state.favorites}
                                  trucks={this.state.trucks} user={this.state.user}/>
                     </div>
                 </div>

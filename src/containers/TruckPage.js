@@ -25,6 +25,7 @@ import TruckMap from './TruckMap'
 import {
     TwitterTimelineEmbed
 } from 'react-twitter-embed';
+import $ from "jquery";
 
 export default class TruckPage
     extends React.Component {
@@ -33,6 +34,7 @@ export default class TruckPage
 
         this.state = {
             user: {},
+            refresh: false,
             truck: {}
         };
 
@@ -238,8 +240,20 @@ export default class TruckPage
                         <div className="row map-row">
                             <div className="col col-1"></div>
                             <div className="col col-6">
-                                <button type="button" className="btn shadow" id="btn-open">Open Now</button>
-                                <button type="button" className="btn shadow" id="btn-later">Open Later</button>
+                                <button type="button" data-toggle="button" className="btn shadow" id="btn-open"
+                                        onClick={() => {
+                                            if ($('#btn-open').hasClass('active')) {
+                                                $('#btn-later').removeClass('active');
+                                            }
+                                            this.setState({refresh: true});
+                                        }}>Open Now</button>
+                                <button type="button" data-toggle="button" className="btn shadow" id="btn-later"
+                                        onClick={() => {
+                                            if ($('#btn-later').hasClass('active')) {
+                                                $('#btn-open').removeClass('active');
+                                            }
+                                            this.setState({refresh: true});
+                                        }}>Open Later</button>
                                 <TruckMap schedules={this.state.truck.schedules}/>
                             </div>
                             <div className="col col-4 right-info">

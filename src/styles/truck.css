@@ -162,6 +162,20 @@
     height: 370px;
     width: 100%;
 }
+#truck-page #btn-open:hover {
+    background-color:#F6734B;
+}
+#truck-page #btn-open.active {
+    background-color:#B91400;
+    color:white;
+}
+#truck-page #btn-later:hover {
+    background-color:#F6734B;
+}
+#truck-page #btn-later.active {
+    background-color:#B91400;
+    color:white;
+}
 #truck-page #btn-open {
     position: relative;
     left:20px;

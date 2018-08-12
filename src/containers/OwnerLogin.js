@@ -89,7 +89,7 @@ export default class OwnerLogin
         return (
             <div id="vendor-login-page" className="vendor-page user-page">
                 <nav className="navbar navbar-light sticky-top">
-                    <a className="navbar-brand mt-2" href="/dashboard">
+                    <a className="navbar-brand mt-2" href="/home">
                         <img src={logo} width="100" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>

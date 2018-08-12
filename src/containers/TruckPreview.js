@@ -36,7 +36,6 @@ export default class TruckPreview
         };
 
         this.truckService = TruckServiceClient.instance();
-        this.userService = UserServiceClient.instance();
     }
 
     componentDidMount() {
@@ -48,7 +47,7 @@ export default class TruckPreview
             });
         this.userService.findCurrentUser()
             .then(user => {
-                if (user !== undefined && user.email === "admin") {
+                if (user === undefined || user.email === "admin") {
                     this.setState({admin:true});
                 }
             });

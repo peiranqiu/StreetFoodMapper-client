@@ -72,8 +72,8 @@ export default class Dashboard
         if (this.state.trucks !== undefined && this.state.trucks.length > 0) {
             content = (
                 <div id="dashboard" className="card-group">
+                    <a className="create-truck" href={href}>Add New Truck</a>
                     <div className="row">
-                        <a className="create-truck" href={href}>Add New Truck</a>
                         {this.state.trucks.map((truck) => {
                             var href = "/truck/" + truck.id + "/edit";
                             return (

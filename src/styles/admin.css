@@ -2,15 +2,11 @@
     min-height: calc(100vh - 48px);
 }
 .truck-table td {
-    max-width: 100px;
+    max-width: 120px;
     overflow-wrap: break-word;
 }
 .tool {
-    width: 100px !important;
-}
-.tool-icon {
-    display: inline-block;
-    width: 100px !important;
+    width: 100px;
 }
 
 i {

@@ -434,7 +434,7 @@ export default class AdminPage
                                 <th scope="col">Category1</th>
                                 <th scope="col">Category2</th>
                                 <th scope="col">Category3</th>
-                                <th scope="col" className="tool"></th>
+                                <th scope="col" className="tool-icon"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -451,7 +451,7 @@ export default class AdminPage
                                         <td>{truck.category1}</td>
                                         <td>{truck.category2}</td>
                                         <td>{truck.category3}</td>
-                                        <td>
+                                        <td className="tool-icon">
                                             <i className="fa fa-pencil mr-3"
                                                onClick={() => window.open("/truck/" + truck.id + "/edit", '_blank')}/>
                                             <i className="fa fa-times mr-3"

@@ -35,6 +35,7 @@ export default class TruckPreview
             admin:false
         };
 
+        this.userService = UserServiceClient.instance();
         this.truckService = TruckServiceClient.instance();
     }
 
@@ -42,12 +43,11 @@ export default class TruckPreview
         let truckId = this.props.match.params.truckId;
         this.truckService.findTruckById(truckId)
             .then(truck => {
-                console.log(truck);
                 this.setState({truck: truck});
             });
         this.userService.findCurrentUser()
             .then(user => {
-                if (user === undefined || user.email === "admin") {
+                if (user !== undefined && user.email === "admin") {
                     this.setState({admin:true});
                 }
             });

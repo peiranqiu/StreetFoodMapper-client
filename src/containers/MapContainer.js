@@ -104,7 +104,7 @@ export default class MapContainer
         let favoriteFilter = $('#btn-favorite').hasClass('active');
         let searching = $('#search-icon').hasClass('fa-times');
 
-        let trucks = this.state.trucks.map((truck) => {
+        let trucks = this.state.trucks.slice().reverse().map((truck) => {
             if (searching
                 && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(this.state.search.toLowerCase())
                     || truck.category1.toString().toLowerCase() === (this.state.search.toLowerCase())

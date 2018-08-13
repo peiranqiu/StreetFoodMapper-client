@@ -3,6 +3,7 @@ import '../styles/home.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
+import mapWhite from '../resources/icons/map-white.png'
 import $ from 'jquery'
 const allMarkers = [];
 const allWindows = [];
@@ -13,6 +14,9 @@ export default class TruckMap
     extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            selected:{}
+        };
         this.initMap = this.initMap.bind(this);
     }
 
@@ -68,14 +72,18 @@ export default class TruckMap
                         prevInfoWindow.close();
                     }
                     if(infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                        marker.setIcon(mapIcon);
                         infoWindow.close();
                     }
                     else {
                         prevInfoWindow = infoWindow;
                         infoWindow.open(map, marker);
+                        this.setState({selected:marker.id});
+                        marker.setIcon(mapWhite);
                     }
                 });
                 map.addListener('click', function () {
+                    marker.setIcon(mapIcon);
                     infoWindow.close();
                 });
                 allMarkers.push(marker);
@@ -117,6 +125,7 @@ export default class TruckMap
         let laterFilter = $('#btn-later').hasClass('active');
         if(this.props.schedules !== []) {
             for(var i=0; i< allMarkers.length; i++) {
+                allMarkers[i].setIcon(mapIcon);
                 allMarkers[i].setVisible(true);
             }
             this.props.schedules.map((schedule) => {

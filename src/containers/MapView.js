@@ -82,15 +82,6 @@ export default class MapView
                 schedules.push(schedule);
                 this.setState({schedules: schedules});
 
-                var isFav = false;
-                var icon = mapIcon;
-                this.favoriteService.findFavorite(schedule.id)
-                    .then((response) => {
-                        if (response) {
-                            isFav = true;
-                            icon = mapRed;
-                        }
-                    });
                 var address = " " + schedule.address.substring(0, schedule.address.indexOf(","));
                 var open = " Closed";
                 if (schedule.open === true) {
@@ -104,92 +95,99 @@ export default class MapView
                 }
                 var myLatLng = {lat: lat, lng: lng};
 
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    icon: icon
-                });
-                marker.id = schedule.id;
-                marker.isFav = isFav;
-
-                var infoWindow = new google.maps.InfoWindow({
-                    position: myLatLng,
-                    content: '<div id="iw-container row">' +
-                    '<img class="iw-img" src="replace" alt="" height="90" width="90">' +
-                    '<a class="iw-title" href=""></a>' +
-                    '<div class="iw-subTitle"></div>' +
-                    '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
-                    '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
-                    //'<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
-                    '</div>'
-                });
-
-                infoWindow.addListener('click', () => {
-                    this.openWindow(truck.id);
-                });
-
-
-                marker.addListener('click', () => {
-                    if (prevInfoWindow) {
-                        prevInfoWindow.close();
-                    }
-                    if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                        if(marker.isFav) {
-                            marker.setIcon(mapRed);
+                var isFav = false;
+                var icon = mapIcon;
+                this.favoriteService.findFavorite(schedule.id)
+                    .then((response) => {
+                        if (response) {
+                            isFav = true;
+                            icon = mapRed;
                         }
-                        else {
-                            marker.setIcon(mapIcon);
-                        }
-                        infoWindow.close();
-                    }
-                    else {
-                        prevInfoWindow = infoWindow;
-                        infoWindow.open(map, marker);
-                        this.selectingTruck(schedule, truck);
-                        marker.setIcon(mapWhite);
-                    }
-                });
-                map.addListener('click', function () {
-                    if(marker.isFav) {
-                        marker.setIcon(mapRed);
-                    }
-                    else {
-                        marker.setIcon(mapIcon);
-                    }
-                    infoWindow.close();
-                });
-                allMarkers.push(marker);
-                allWindows.push(infoWindow);
-                var href = "/truck/" + truck.id;
+                        var marker = new google.maps.Marker({
+                            position: myLatLng,
+                            map: map,
+                            icon: icon
+                        });
+                        marker.id = schedule.id;
+                        marker.isFav = isFav;
+                        var infoWindow = new google.maps.InfoWindow({
+                            position: myLatLng,
+                            content: '<div id="iw-container row">' +
+                            '<img class="iw-img" src="replace" alt="" height="90" width="90">' +
+                            '<a class="iw-title" href=""></a>' +
+                            '<div class="iw-subTitle"></div>' +
+                            '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
+                            '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
+                            //'<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
+                            '</div>'
+                        });
 
-                google.maps.event.addListener(infoWindow, 'domready', function () {
-                    $('img[src="replace"]').attr('src', photo);
-                    //$('img[src="replace-fav"]').attr('src', fav);
-                    $('.iw-title').attr('href', href);
-                    $('.iw-title').html(name);
-                    $('.iw-subTitle').html(category);
-                    $('.iw-open-inner').html(open);
-                    $('.iw-address-inner').html(address);
-                    if (schedule.open === true) {
-                        $('.iw-open-inner').addClass('open');
-                    }
+                        infoWindow.addListener('click', () => {
+                            this.openWindow(truck.id);
+                        });
 
-                    // Reference to the DIV that wraps the bottom of infowindow
-                    var iwOuter = $('.gm-style-iw');
-                    var iwBackground = iwOuter.prev();
+                        marker.addListener('click', () => {
+                            if (prevInfoWindow) {
+                                prevInfoWindow.close();
+                            }
+                            if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                                if(marker.isFav) {
+                                    marker.setIcon(mapRed);
+                                }
+                                else {
+                                    marker.setIcon(mapIcon);
+                                }
+                                infoWindow.close();
+                            }
+                            else {
+                                marker.setIcon(mapWhite);
+                                prevInfoWindow = infoWindow;
+                                infoWindow.open(map, marker);
+                                this.selectingTruck(schedule, truck);
+                            }
+                        });
+                        map.addListener('click', function () {
+                            if(marker.isFav) {
+                                marker.setIcon(mapRed);
+                            }
+                            else {
+                                marker.setIcon(mapIcon);
+                            }
+                            infoWindow.close();
+                        });
+                        allMarkers.push(marker);
+                        allWindows.push(infoWindow);
+                        var href = "/truck/" + truck.id;
 
-                    // Removes background shadow DIV
-                    iwBackground.children(':nth-child(2)').css({'display': 'none'});
+                        google.maps.event.addListener(infoWindow, 'domready', function () {
+                            $('img[src="replace"]').attr('src', photo);
+                            //$('img[src="replace-fav"]').attr('src', fav);
+                            $('.iw-title').attr('href', href);
+                            $('.iw-title').html(name);
+                            $('.iw-subTitle').html(category);
+                            $('.iw-open-inner').html(open);
+                            $('.iw-address-inner').html(address);
+                            if (schedule.open === true) {
+                                $('.iw-open-inner').addClass('open');
+                            }
 
-                    // Removes white background DIV
-                    iwBackground.children(':nth-child(4)').css({'display': 'none'});
-                    var iwCloseBtn = iwOuter.next();
-                    iwCloseBtn.css({display: 'none'});
-                    iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
-                        return s + 'display: none !important;'
+                            // Reference to the DIV that wraps the bottom of infowindow
+                            var iwOuter = $('.gm-style-iw');
+                            var iwBackground = iwOuter.prev();
+
+                            // Removes background shadow DIV
+                            iwBackground.children(':nth-child(2)').css({'display': 'none'});
+
+                            // Removes white background DIV
+                            iwBackground.children(':nth-child(4)').css({'display': 'none'});
+                            var iwCloseBtn = iwOuter.next();
+                            iwCloseBtn.css({display: 'none'});
+                            iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                                return s + 'display: none !important;'
+                            });
+                            $("div:eq(0)", iwBackground).hide();
+                        });
                     });
-                    $("div:eq(0)", iwBackground).hide();
-                });
             })
         });
     }

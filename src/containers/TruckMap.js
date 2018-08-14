@@ -44,18 +44,7 @@ export default class TruckMap
             styles: constants.MAP_STYLE
         });
 
-
         this.props.schedules.map((schedule) => {
-
-            var isFav = false;
-            var icon = mapIcon;
-            this.favoriteService.findFavorite(schedule.id)
-                .then((response) => {
-                    if (response) {
-                        isFav = true;
-                        icon = mapRed;
-                    }
-                });
             var address = " " + schedule.address.substring(0, schedule.address.indexOf(","));
             var open = " Closed";
             if (schedule.open == true) {
@@ -70,73 +59,82 @@ export default class TruckMap
             }
             var myLatLng = {lat: lat, lng: lng};
 
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                icon: icon
-            });
-            marker.id = schedule.id;
-            marker.isFav = isFav;
-
-            var infoWindow = new google.maps.InfoWindow({
-                position: myLatLng,
-                content: '<div id="iw-container row">' +
-                '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
-                '</div>'
-            });
-
-            marker.addListener('click', () => {
-                if (prevInfoWindow) {
-                    prevInfoWindow.close();
-                }
-                if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                    if(marker.isFav) {
-                        marker.setIcon(mapRed);
+            var isFav = false;
+            var icon = mapIcon;
+            this.favoriteService.findFavorite(schedule.id)
+                .then((response) => {
+                    if (response) {
+                        isFav = true;
+                        icon = mapRed;
                     }
-                    else {
-                        marker.setIcon(mapIcon);
-                    }
-                    infoWindow.close();
-                }
-                else {
-                    prevInfoWindow = infoWindow;
-                    infoWindow.open(map, marker);
-                    this.setState({selected: marker.id});
-                    marker.setIcon(mapWhite);
-                }
-            });
-            map.addListener('click', function () {
-                if(marker.isFav) {
-                    marker.setIcon(mapRed);
-                }
-                else {
-                    marker.setIcon(mapIcon);
-                }
-                infoWindow.close();
-            });
-            allMarkers.push(marker);
-            allWindows.push(infoWindow);
 
-            google.maps.event.addListener(infoWindow, 'domready', function () {
-                $('.iw-address-inner').html(address);
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,
+                        map: map,
+                        icon: icon
+                    });
+                    marker.id = schedule.id;
+                    marker.isFav = isFav;
 
-                // Reference to the DIV that wraps the bottom of infowindow
-                var iwOuter = $('.gm-style-iw');
-                var iwBackground = iwOuter.prev();
+                    var infoWindow = new google.maps.InfoWindow({
+                        position: myLatLng,
+                        content: '<div id="iw-container row">' +
+                        '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
+                        '</div>'
+                    });
 
-                // Removes background shadow DIV
-                iwBackground.children(':nth-child(2)').css({'display': 'none'});
+                    marker.addListener('click', () => {
+                        if (prevInfoWindow) {
+                            prevInfoWindow.close();
+                        }
+                        if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                            if (marker.isFav) {
+                                marker.setIcon(mapRed);
+                            }
+                            else {
+                                marker.setIcon(mapIcon);
+                            }
+                            infoWindow.close();
+                        }
+                        else {
+                            prevInfoWindow = infoWindow;
+                            infoWindow.open(map, marker);
+                            this.setState({selected: marker.id});
+                            marker.setIcon(mapWhite);
+                        }
+                    });
+                    map.addListener('click', function () {
+                        if (marker.isFav) {
+                            marker.setIcon(mapRed);
+                        }
+                        else {
+                            marker.setIcon(mapIcon);
+                        }
+                        infoWindow.close();
+                    });
+                    allMarkers.push(marker);
+                    allWindows.push(infoWindow);
 
-                // Removes white background DIV
-                iwBackground.children(':nth-child(4)').css({'display': 'none'});
-                var iwCloseBtn = iwOuter.next();
-                iwCloseBtn.css({display: 'none'});
-                iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
-                    return s + 'display: none !important;'
+                    google.maps.event.addListener(infoWindow, 'domready', function () {
+                        $('.iw-address-inner').html(address);
+
+                        // Reference to the DIV that wraps the bottom of infowindow
+                        var iwOuter = $('.gm-style-iw');
+                        var iwBackground = iwOuter.prev();
+
+                        // Removes background shadow DIV
+                        iwBackground.children(':nth-child(2)').css({'display': 'none'});
+
+                        // Removes white background DIV
+                        iwBackground.children(':nth-child(4)').css({'display': 'none'});
+                        var iwCloseBtn = iwOuter.next();
+                        iwCloseBtn.css({display: 'none'});
+                        iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                            return s + 'display: none !important;'
+                        });
+                        $("div:eq(0)", iwBackground).hide();
+                    });
                 });
-                $("div:eq(0)", iwBackground).hide();
-            });
-
         });
     }
 
@@ -153,7 +151,7 @@ export default class TruckMap
         let laterFilter = $('#btn-later').hasClass('active');
         if (this.props.schedules !== []) {
             for (var i = 0; i < allMarkers.length; i++) {
-                if(allMarkers[i].isFav) {
+                if (allMarkers[i].isFav) {
                     allMarkers[i].setIcon(mapRed);
                 }
                 else {

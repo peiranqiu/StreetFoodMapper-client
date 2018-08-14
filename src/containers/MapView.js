@@ -263,15 +263,6 @@ export default class MapView
                     if (prevInfoWindow) {
                         prevInfoWindow.close();
                     }
-                    this.favoriteService.findFavorite(this.props.selectedSchedule.id)
-                        .then((response) => {
-                            if (response) {
-                                allMarkers[i].isFav = true;
-                            }
-                            else {
-                                allMarkers[i].isFav = false;
-                            }
-                        });
                     allWindows[i].open(map, allMarkers[i]);
                     allMarkers[i].setIcon(mapWhite);
                     prevInfoWindow = allWindows[i];

@@ -152,8 +152,8 @@ export default class OwnerRegister
                                                 alt="sign in">Sign Up
                                         </button>
                                     </div>
-                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's <a
-                                        href="/policy">Privacy Policy</a>.</p>
+                                    <p className="bottom-text">By signing up you agree to Street Food Mapper's
+                                        <a target="_blank" href="/policy">Privacy Policy</a>.</p>
                                 </form>
                             </div>
                         </div>

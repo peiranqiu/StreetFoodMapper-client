@@ -4,10 +4,10 @@ export default class Policy extends Component {
 
     render() {
         return (
-            <div className="p-4">
+            <div className="p-5">
                 <h1>Privacy Policy</h1>
                 <p>Effective date: August 01, 2018</p>
-                <p>Street Food Mapper ("us", "we", or "our") operates the https://streetfoodmapper.herokuapp.com/ website (the
+                <p>Street Food Mapper ("us", "we", or "our") operates the http://www.streetfoodmapper.co/ website (the
                     "Service").</p>
                 <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you
                     use
@@ -18,7 +18,7 @@ export default class Policy extends Component {
                     information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in
                     this
                     Privacy Policy have the same meanings as in our Terms and Conditions, accessible from
-                    https://streetfoodmapper.herokuapp.com/</p>
+                    http://www.streetfoodmapper.co/</p>
                 <h2>Information Collection And Use</h2>
                 <p>We collect several different types of information for various purposes to provide and improve our Service to
                     you.</p>

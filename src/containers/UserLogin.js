@@ -123,7 +123,8 @@ export default class UserLogin
                                                 alt="sign in">Log In
                                         </button>
                                     </div>
-                                    <p className="bottom-text">By logging in you agree to Street Food Mapper's <a href="/policy">Privacy Policy</a>.</p>
+                                    <p className="bottom-text">By logging in you agree to Street Food Mapper's
+                                        <a target="_blank" href="/policy">Privacy Policy</a>.</p>
                                 </form>
                             </div>
                         </div>

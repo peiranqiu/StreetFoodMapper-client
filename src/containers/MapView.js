@@ -162,19 +162,13 @@ export default class MapView
                                 prevInfoWindow.close();
                             }
                             if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                                if (marker.isFav) {
-                                    marker.setIcon(mapRed);
-                                }
-                                else {
-                                    marker.setIcon(mapIcon);
-                                }
                                 infoWindow.close();
                             }
                             else {
                                 marker.setIcon(mapWhite);
                                 prevInfoWindow = infoWindow;
                                 infoWindow.open(map, marker);
-                                this.selectingTruck(schedule, truck);
+                                //this.selectingTruck(schedule, truck);
                             }
                         });
                         map.addListener('click', function () {
@@ -188,7 +182,6 @@ export default class MapView
                         });
                         allMarkers.push(marker);
                         allWindows.push(infoWindow);
-
                     });
             })
         });
@@ -210,6 +203,21 @@ export default class MapView
 
         if (this.state.trucks !== [] && this.state.schedules !== []) {
             for (var i = 0; i < allMarkers.length; i++) {
+                if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined &&
+                    allMarkers[i].id === this.props.selectedSchedule.id) {
+                    if (prevInfoWindow) {
+                        prevInfoWindow.close();
+                    }
+                    allWindows[i].open(map, allMarkers[i]);
+                    allMarkers[i].setIcon(mapWhite);
+                    prevInfoWindow = allWindows[i];
+                }
+                else if (allMarkers[i].isFav) {
+                    allMarkers[i].setIcon(mapRed);
+                }
+                else {
+                    allMarkers[i].setIcon(mapIcon);
+                }
                 allMarkers[i].setVisible(true);
             }
             this.state.trucks.map((truck) => {
@@ -256,24 +264,6 @@ export default class MapView
                     }
                 })
             })
-        }
-        if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
-            for (var i = 0; i < allMarkers.length; i++) {
-                if (allMarkers[i].id === this.props.selectedSchedule.id) {
-                    if (prevInfoWindow) {
-                        prevInfoWindow.close();
-                    }
-                    allWindows[i].open(map, allMarkers[i]);
-                    allMarkers[i].setIcon(mapWhite);
-                    prevInfoWindow = allWindows[i];
-                }
-                else if (allMarkers[i].isFav) {
-                    allMarkers[i].setIcon(mapRed);
-                }
-                else {
-                    allMarkers[i].setIcon(mapIcon);
-                }
-            }
         }
         return (
             <div id="map"></div>

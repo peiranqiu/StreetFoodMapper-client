@@ -108,12 +108,6 @@ export default class TruckMap
                             prevInfoWindow.close();
                         }
                         if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                            if (marker.isFav) {
-                                marker.setIcon(mapRed);
-                            }
-                            else {
-                                marker.setIcon(mapIcon);
-                            }
                             infoWindow.close();
                         }
                         else {

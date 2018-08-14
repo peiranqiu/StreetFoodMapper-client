@@ -181,6 +181,7 @@
     background-color:#F4511E;
     border: none;
     height:32px;
+    border-radius: 0 !important;
 }
 
 #map-container ::-webkit-input-placeholder { /* WebKit browsers */

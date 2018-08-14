@@ -22,7 +22,8 @@ export default class MapView
         this.state = {
             trucks: [],
             schedules: [],
-            user: {}
+            user: {},
+            refresh: false
         };
         this.setTrucks = this.setTrucks.bind(this);
         this.setUser = this.setUser.bind(this);
@@ -151,6 +152,7 @@ export default class MapView
                 marker.addListener('click', () => {
                     if (prevInfoWindow) {
                         prevInfoWindow.close();
+                        this.setState({refresh:true});
                     }
                     if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
                         infoWindow.close();

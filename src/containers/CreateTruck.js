@@ -45,7 +45,7 @@ export default class CreateTruck
                 twitter: "",
                 website: "",
                 menu: "",
-                phone:"not provided",
+                phone:"",
                 rating: 1,
                 holidays: [],
                 schedules: [],

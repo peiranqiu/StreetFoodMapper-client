@@ -100,6 +100,13 @@
     height:auto;
     margin:0;
     padding:0;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
+}
+.truck-open-container {
+    height:70px;
+    overflow-y: auto;
 }
 .truck-info-container {
     margin-top:40px;
@@ -145,11 +152,12 @@
 .truck-page-open {
     font-size: 14px;
     font-weight: bolder;
-    margin-top:20px;
+    margin-top:5px;
 }
 .truck-page-img {
     width: 100%;
     height: 150px;
+    object-fit: cover;
 }
 .truck-info-container .row .col {
     padding-left:5px;
@@ -157,6 +165,9 @@
 }
 .right-info a {
     color:#B91400;
+}
+.truck-website, .truck-menu, .truck-yelp {
+    display: inline-block;
 }
 #truckmap {
     height: 370px;
@@ -301,6 +312,7 @@ width:300px;
     padding:0;
     max-width:100%;
     max-height: 200px;
+    object-fit: cover;
 }
 #feed-container .card-user {
     padding-top:0px;
@@ -329,6 +341,7 @@ width:300px;
     height: 48px;
     vertical-align: middle !important;
     display: inline-block;
+    opacity: 0.8;
 }
 .preview-container div {
     font-family: DINPro-Bold;
@@ -344,6 +357,7 @@ width:300px;
     font-size:14px;
     padding-top: 3px;
     border: none;
+    opacity: 1 !important;
 }
 .btn-1 {
     right:250px;
@@ -361,11 +375,11 @@ width:300px;
 }
 
 .truck-open-address .fa-clock-o {
-    position:absolute;
-    left:185px;
+    position:relative;
+    left:20px;
 }
 .truck-open-address .until {
-    position:absolute;
-    left:210px;
+    position:relative;
+    left:30px;
     font-size:13px;
 }

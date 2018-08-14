@@ -78,8 +78,9 @@ export default class AdminPage
     }
 
     logout = (e) => {
-        this.userService.logout();
-        alert("Logged out");
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.userService.logout();
+        }
     }
 
     handleInputChange = (event) => {

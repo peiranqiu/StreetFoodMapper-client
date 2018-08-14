@@ -32,7 +32,7 @@ export default class TruckPreview
 
         this.state = {
             truck: {},
-            admin:false
+            admin: false
         };
 
         this.userService = UserServiceClient.instance();
@@ -48,7 +48,7 @@ export default class TruckPreview
         this.userService.findCurrentUser()
             .then(user => {
                 if (user !== undefined && user.email === "admin") {
-                    this.setState({admin:true});
+                    this.setState({admin: true});
                 }
             });
     }
@@ -138,7 +138,7 @@ export default class TruckPreview
                     </button>
                     <button type="button" className="btn btn-2"
                             onClick={() => {
-                                if(this.state.admin) {
+                                if (this.state.admin) {
                                     window.location.href = "/truck/" + this.state.truck.id;
                                 }
                                 else {
@@ -177,6 +177,32 @@ export default class TruckPreview
                                 <div className="truck-page-category">
                                     {this.state.truck.category1}, {this.state.truck.category2}, {this.state.truck.category3}</div>
                                 <div className="truck-page-open">Open Now At</div>
+                                <div className="truck-open-container">
+                                    {this.state.truck.schedules.map((schedule) => {
+                                        let address = schedule.address.substring(0, schedule.address.indexOf(","));
+                                        let href = "https://www.google.com/maps/?q=" + schedule.latitude + "," + schedule.longitude;
+                                        var now = new Date();
+                                        var day = now.getDay();
+                                        if (day === 0) {
+                                            day = 7;
+                                        }
+                                        var until = null;
+                                        schedule.openTimes.map((time) => {
+                                            if (day === time.day) {
+                                                until = parseInt(time.endTime / 100) + ":"
+                                                    + (time.endTime % 100 < 10 ? "0" + time.endTime % 100 : time.endTime % 100);
+                                                return;
+                                            }
+                                        })
+                                        return (schedule.open &&
+                                            <div className="truck-open-address">
+                                                <i className="fa fa-map-marker"></i>
+                                                <a className="truck-open-content ml-3" target="_blank" href={href}>{address}</a>
+                                                <i className="fa fa-clock-o mt-1"></i>
+                                                <a className="until">until {until}</a>
+                                            </div>);
+                                    })}
+                                </div>
                             </div>
                             <div className="col col-2">
                                 <img className="truck-page-img"
@@ -199,29 +225,29 @@ export default class TruckPreview
                             </div>
                             <div className="col col-4 right-info">
                                 <div className="truck-website mb-1">
-                                    <img className="truck-website-icon" width='16px' src={website} alt=""/>
-                                    <a href={this.state.truck.website}>{this.state.truck.website}</a>
+                                    <img className="truck-website-icon mr-1" width='16px' src={website} alt=""/>
+                                    <a href={this.state.truck.website}>Website</a>
                                 </div>
-                                <div className="truck-menu mb-1">
-                                    <img className="truck-menu-icon" width='16px' src={menu} alt=""/>
-                                    <a href={this.state.truck.menu}>{this.state.truck.menu}</a>
+                                <div className="truck-menu mb-1 ml-5">
+                                    <img className="truck-menu-icon mr-1" width='16px' src={menu} alt=""/>
+                                    <a href={this.state.truck.menu}>Menu</a>
                                 </div>
-                                <div className="truck-yelp mb-1">
-                                    <i className="fa fa-yelp"></i>
-                                    <a href={this.state.truck.url}>{this.state.truck.url.split('?', 1)}</a>
+                                <div className="truck-yelp mb-1 ml-5">
+                                    <i className="fa fa-yelp mr-1"></i>
+                                    <a href={this.state.truck.url}>Yelp</a>
                                 </div>
-                                <div className="truck-phone mb-1">
-                                    <img className="truck-phone-icon" width='16px' src={phone} alt=""/>
+                                <div className="truck-phone mb-3">
+                                    <img className="truck-phone-icon mr-1" width='16px' src={phone} alt=""/>
                                     <a>{this.state.truck.phone}</a>
                                 </div>
 
                                 {this.state.truck.twitter !== undefined && this.state.truck.twitter.length > 0 &&
                                 <TwitterTimelineEmbed
                                     sourceType="profile"
-                                    screenName={this.state.truck.twitter.split('com/').pop()}
-                                    options={{height: 260}}
+                                    screenName={this.state.truck.twitter.split('com/').pop().split('/')[0].split('?')[0]}
+                                    options={{height: 300}}
                                 />}
-                                {(this.state.truck.twitter === null || this.state.truck.twitter.length === 0) &&
+                                {(this.state.truck.twitter === undefined || this.state.truck.twitter.length < 20) &&
                                 <img className="emptyTwitter" src={emptyTwitter} height='240px' alt=''/>
                                 }
                             </div>
@@ -252,6 +278,7 @@ export default class TruckPreview
                                     </thead>
                                     <tbody>
                                     {this.state.truck.schedules.map((schedule, i) => {
+                                        schedule.openTimes.sort((a, b) => a.day - b.day);
                                         return (
                                             <tr key={i}>
                                                 <th scope="row">{schedule.address.substring(0, schedule.address.indexOf(","))}</th>

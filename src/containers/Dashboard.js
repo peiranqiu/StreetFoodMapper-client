@@ -35,10 +35,10 @@ export default class Dashboard
     }
 
     logout = (e) => {
-        this.ownerService.logout();
-        alert("Logged out");
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.ownerService.logout();
+        }
     }
-
     delete(id) {
         if (window.confirm('Are you sure you want to delete this truck?\nThis action is permanent and cannot be undone.')) {
             this.truckService.deleteTruck(id);

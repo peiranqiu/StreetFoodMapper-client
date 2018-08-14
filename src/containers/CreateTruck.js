@@ -41,10 +41,11 @@ export default class CreateTruck
             truckId: null,
             count: 0,
             newTruck: {
-                url: "not provided",
+                url: "",
                 twitter: "",
-                website: "not provided",
-                menu: "not provided",
+                website: "",
+                menu: "",
+                phone:"not provided",
                 rating: 1,
                 holidays: [],
                 schedules: [],
@@ -109,6 +110,7 @@ export default class CreateTruck
     }
 
     renderContent(i) {
+        this.state.newTruck.schedules[i].openTimes.sort((a, b) => a.day - b.day);
         return (
             <div>
                 <div className="schedule-content">
@@ -292,10 +294,10 @@ export default class CreateTruck
         }
     }
 
-
     logout = (e) => {
-        this.ownerService.logout();
-        alert("Logged out");
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.ownerService.logout();
+        }
     }
 
     dateToNumber(date) {
@@ -354,47 +356,63 @@ export default class CreateTruck
 
     createTruck = (e) => {
         e.preventDefault();
-        console.log(this.state.newTruck.holidays);
-        this.truckService.createTruck(this.state.owner.id, this.state.newTruck)
-            .then((truck) => {
-                console.log(truck);
-                return truck.id
-            })
-            .then((truckId) => {
-                this.state.newTruck.schedules.map((schedule, i) => {
-                    this.scheduleService.createSchedule(truckId, schedule)
-                        .then((newSchedule) => {
-                            return newSchedule.id;
-                        })
-                        .then((newScheduleId) => {
-                            this.state.newTruck.schedules[i].openTimes.map((openTime) => {
-                                this.openTimeService.createOpenTime(truckId, newScheduleId, openTime)
-                                    .then(() => {
-                                        this.setState({count: this.state.count + 1});
-                                    })
+        let validate = false;
+        this.state.newTruck.photos.map((photo) => {
+            if (photo.href === "" || photo.href === undefined) {
+                validate = true;
+            }
+        });
+        this.state.newTruck.schedules.map((schedule) => {
+            if (schedule.address === "" || schedule.address === undefined) {
+                validate = true;
+            }
+        });
+        if (this.state.newTruck.name === undefined || validate) {
+            alert("Please fill out the form correctly.");
+        }
+        else {
+            this.truckService.createTruck(this.state.owner.id, this.state.newTruck)
+                .then((truck) => {
+                    return truck.id
+                })
+                .then((truckId) => {
+                    this.state.newTruck.schedules.map((schedule, i) => {
+                        this.scheduleService.createSchedule(truckId, schedule)
+                            .then((newSchedule) => {
+                                return newSchedule.id;
                             })
+                            .then((newScheduleId) => {
+                                this.state.newTruck.schedules[i].openTimes.map((openTime) => {
+                                    this.openTimeService.createOpenTime(truckId, newScheduleId, openTime)
+                                        .then(() => {
+                                            this.setState({count: this.state.count + 1});
+                                        })
+                                })
+                            });
+                    });
+                    this.state.newTruck.photos.map((photo) => {
+                        this.photoService.createPhoto(truckId, photo)
+                            .then(() => {
+                                this.setState({count: this.state.count + 1});
+                            });
+                    });
+                    if (this.state.newTruck.reviews !== undefined) {
+                        this.state.newTruck.reviews.map((review) => {
+                            this.reviewService.createReview(truckId, review)
+                                .then(() => {
+                                    this.setState({count: this.state.count + 1});
+                                });
                         });
+                    }
+                    this.state.newTruck.holidays.map((holiday) => {
+                        this.holidayService.createHoliday(truckId, holiday)
+                            .then(() => {
+                                this.setState({count: this.state.count + 1});
+                            });
+                    });
+                    this.setState({truckId: truckId});
                 });
-                this.state.newTruck.photos.map((photo) => {
-                    this.photoService.createPhoto(truckId, photo)
-                        .then(() => {
-                            this.setState({count: this.state.count + 1});
-                        });
-                });
-                this.state.newTruck.reviews.map((review) => {
-                    this.reviewService.createReview(truckId, review)
-                        .then(() => {
-                            this.setState({count: this.state.count + 1});
-                        });
-                });
-                this.state.newTruck.holidays.map((holiday) => {
-                    this.holidayService.createHoliday(truckId, holiday)
-                        .then(() => {
-                            this.setState({count: this.state.count + 1});
-                        });
-                });
-                this.setState({truckId: truckId});
-            });
+        }
     }
 
     render() {
@@ -519,7 +537,7 @@ export default class CreateTruck
             </div>
         );
         var href = "/dashboard";
-        if(this.state.admin) {
+        if (this.state.admin) {
             href = "/home";
         }
 
@@ -764,7 +782,7 @@ export default class CreateTruck
                         <div className="text-center pb-5">
                             <a id="goBack" onClick={() => {
                                 if (window.confirm('Are you sure you want to go back without saving?')) {
-                                    if(this.state.admin) {
+                                    if (this.state.admin) {
                                         window.close();
                                     }
                                     else {

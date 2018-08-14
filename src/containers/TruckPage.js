@@ -52,6 +52,32 @@ export default class TruckPage
             .then(user => {
                 this.setState({user: user});
             });
+
+        $(document).ready(function () {
+            // Add smooth scrolling to all links
+            $("a").on('click', function (event) {
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    if ($(hash).offset() !== undefined) {
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 500, function () {
+
+                            // Add hash (#) to URL when done scrolling (default click behavior)
+                            window.location.hash = hash;
+                        });
+                    }
+                } // End if
+            });
+        });
     }
 
     componentWillReceiveProps(newProps) {
@@ -62,9 +88,9 @@ export default class TruckPage
     }
 
     logout = (e) => {
-
-        this.userService.logout();
-        alert("Logged out");
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.userService.logout();
+        }
     }
 
     format(time) {
@@ -122,14 +148,14 @@ export default class TruckPage
 
     render() {
 
-        window.addEventListener("scroll", function(event) {
+        window.addEventListener("scroll", function (event) {
             document.getElementById("nav-item-0").classList.remove("active");
             document.getElementById("nav-item-1").classList.remove("active");
             document.getElementById("nav-item-2").classList.remove("active");
-            if(document.getElementById("feed-anchor") !== null && document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
+            if (document.getElementById("feed-anchor") !== null && document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
                 document.getElementById("nav-item-2").classList.add("active");
             }
-            else if(document.getElementById("schedule-anchor") !== null && document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0){
+            else if (document.getElementById("schedule-anchor") !== null && document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0) {
                 document.getElementById("nav-item-1").classList.add("active");
             }
             else {
@@ -137,8 +163,8 @@ export default class TruckPage
             }
         }, false);
 
-        var rating = null;
-        if (this.state.truck !== {}) {
+        var rating = rating1;
+        if (this.state.truck !== {} && this.state.truck.rating !== undefined) {
             switch (this.state.truck.rating) {
                 case 2:
                     rating = rating2;
@@ -156,7 +182,6 @@ export default class TruckPage
                     rating = rating1;
             }
         }
-
         return (
             <div id="truck-page">
                 <nav className="navbar navbar-light sticky-top">
@@ -164,7 +189,7 @@ export default class TruckPage
                         <img src={logo} width="106.4" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>
-                    <a className="nav-item" id="nav-item-0" href="#">About</a>
+                    <a className="nav-item" id="nav-item-0" href="#truck-page">About</a>
                     <a className="nav-item" id="nav-item-1" href="#schedule-anchor">Schedules</a>
                     <a className="nav-item" id="nav-item-2" href="#feed-anchor">Feeds</a>
                     <span className="nav-item dropdown" id="user-icon">
@@ -178,7 +203,7 @@ export default class TruckPage
                             {this.state.user === undefined
                             && <a className="dropdown-item" href="/login/user">Log In</a>}
                             {this.state.user === undefined
-                            && <a className="dropdown-item" href="/register/user">Register</a>}
+                            && <a className="dropdown-item" href="/register/user">Sign Up</a>}
                             {this.state.user !== undefined && this.state.user.email !== "admin"
                             && <a className="dropdown-item" href="/profile/user">Profile</a>}
                             {this.state.user !== undefined && this.state.user.email === "admin"
@@ -218,31 +243,36 @@ export default class TruckPage
                                 <img className="truck-rating" src={rating} alt=""/>
                                 <a className="onYelp">(On Yelp)</a>
                                 <div className="truck-page-category">
-                                    {this.state.truck.category1}, {this.state.truck.category2}, {this.state.truck.category3}</div>
+                                    {this.state.truck.category1.charAt(0) + this.state.truck.category1.substring(1).toLowerCase()},
+                                    {this.state.truck.category2.charAt(0) + this.state.truck.category2.substring(1).toLowerCase()},
+                                    {this.state.truck.category3.charAt(0) + this.state.truck.category3.substring(1).toLowerCase()}</div>
                                 <div className="truck-page-open">Open Now At</div>
-                                {this.state.truck.schedules.map((schedule) => {
-                                    let address = schedule.address.substring(0, schedule.address.indexOf(","));
-                                    var now = new Date();
-                                    var day = now.getDay();
-                                    if (day === 0) {
-                                        day = 7;
-                                    }
-                                    var until = null;
-                                    schedule.openTimes.map((time) => {
-                                        if(day === time.day) {
-                                            until = parseInt(time.endTime / 100) + ":"
-                                                + (time.endTime % 100 < 10 ? "0" + time.endTime % 100 : time.endTime % 100);
-                                        return;
+                                <div className="truck-open-container">
+                                    {this.state.truck.schedules.map((schedule) => {
+                                        let address = schedule.address.substring(0, schedule.address.indexOf(","));
+                                        let href = "https://www.google.com/maps/?q=" + schedule.latitude + "," + schedule.longitude;
+                                        var now = new Date();
+                                        var day = now.getDay();
+                                        if (day === 0) {
+                                            day = 7;
                                         }
-                                    })
-                                    return (schedule.open &&
-                                        <div className="truck-open-address">
-                                            <i className="fa fa-map-marker"></i>
-                                            <a className="truck-open-content ml-3">{address}</a>
-                                            <i className="fa fa-clock-o mt-1"></i>
-                                            <a className="until">until {until}</a>
-                                        </div>);
-                                })}
+                                        var until = null;
+                                        schedule.openTimes.map((time) => {
+                                            if (day === time.day) {
+                                                until = parseInt(time.endTime / 100) + ":"
+                                                    + (time.endTime % 100 < 10 ? "0" + time.endTime % 100 : time.endTime % 100);
+                                                return;
+                                            }
+                                        })
+                                        return (schedule.open &&
+                                            <div className="truck-open-address">
+                                                <i className="fa fa-map-marker"></i>
+                                                <a className="truck-open-content ml-3" target="_blank" href={href}>{address}</a>
+                                                <i className="fa fa-clock-o mt-1"></i>
+                                                <a className="until">until {until}</a>
+                                            </div>);
+                                    })}
+                                </div>
                             </div>
                             <div className="col col-2">
                                 <img className="truck-page-img"
@@ -265,39 +295,41 @@ export default class TruckPage
                                                 $('#btn-later').removeClass('active');
                                             }
                                             this.setState({refresh: true});
-                                        }}>Open Now</button>
+                                        }}>Open Now
+                                </button>
                                 <button type="button" data-toggle="button" className="btn shadow" id="btn-later"
                                         onClick={() => {
                                             if ($('#btn-later').hasClass('active')) {
                                                 $('#btn-open').removeClass('active');
                                             }
                                             this.setState({refresh: true});
-                                        }}>Open Later</button>
+                                        }}>Open Later
+                                </button>
                                 <TruckMap schedules={this.state.truck.schedules}/>
                             </div>
                             <div className="col col-4 right-info">
                                 <div className="truck-website mb-1">
-                                    <img className="truck-website-icon" width='16px' src={website} alt=""/>
-                                    <a href={this.state.truck.website}>{this.state.truck.website}</a>
+                                    <img className="truck-website-icon mr-1" width='16px' src={website} alt=""/>
+                                    <a href={this.state.truck.website}>Website</a>
                                 </div>
-                                <div className="truck-menu mb-1">
-                                    <img className="truck-menu-icon" width='16px' src={menu} alt=""/>
-                                    <a href={this.state.truck.menu}>{this.state.truck.menu}</a>
+                                <div className="truck-menu mb-1 ml-5">
+                                    <img className="truck-menu-icon mr-1" width='16px' src={menu} alt=""/>
+                                    <a href={this.state.truck.menu}>Menu</a>
                                 </div>
-                                <div className="truck-yelp mb-1">
-                                    <i className="fa fa-yelp"></i>
-                                    <a href={this.state.truck.url}>{this.state.truck.url.split('?', 1)}</a>
+                                <div className="truck-yelp mb-1 ml-5">
+                                    <i className="fa fa-yelp mr-1"></i>
+                                    <a href={this.state.truck.url}>Yelp</a>
                                 </div>
-                                <div className="truck-phone mb-1">
-                                    <img className="truck-phone-icon" width='16px' src={phone} alt=""/>
+                                <div className="truck-phone mb-3">
+                                    <img className="truck-phone-icon mr-1" width='16px' src={phone} alt=""/>
                                     <a>{this.state.truck.phone}</a>
                                 </div>
 
                                 {this.state.truck.twitter !== undefined && this.state.truck.twitter.length > 0 &&
                                 <TwitterTimelineEmbed
                                     sourceType="profile"
-                                    screenName={this.state.truck.twitter.split('com/').pop()}
-                                    options={{height: 260}}
+                                    screenName={this.state.truck.twitter.split('com/').pop().split('/')[0].split('?')[0]}
+                                    options={{height: 300}}
                                 />}
                                 {(this.state.truck.twitter === undefined || this.state.truck.twitter.length < 20) &&
                                 <img className="emptyTwitter" src={emptyTwitter} height='240px' alt=''/>
@@ -330,6 +362,7 @@ export default class TruckPage
                                     </thead>
                                     <tbody>
                                     {this.state.truck.schedules.map((schedule) => {
+                                        schedule.openTimes.sort((a, b) => a.day - b.day);
                                         return (
                                             <tr key={schedule.id}>
                                                 <th scope="row">{schedule.address.substring(0, schedule.address.indexOf(","))}</th>

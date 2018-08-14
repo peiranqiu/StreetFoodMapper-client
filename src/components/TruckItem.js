@@ -54,7 +54,9 @@ export default class TruckItem extends React.Component {
                          src={this.props.truck.photos[this.props.schedule.id % 3].href}/>
                     <a className="truck-item-title" href={href}>{this.props.truck.name}</a>
                     <div className="truck-item-category">
-                        {this.props.truck.category1}, {this.props.truck.category2}, {this.props.truck.category3}</div>
+                        {this.props.truck.category1.charAt(0) + this.props.truck.category1.substring(1).toLowerCase()},
+                        {this.props.truck.category2.charAt(0) + this.props.truck.category2.substring(1).toLowerCase()},
+                        {this.props.truck.category3.charAt(0) + this.props.truck.category3.substring(1).toLowerCase()}</div>
                     <div className="truck-item-open"><i className="fa fa-clock-o"></i>
                         {this.props.schedule.open && <a className="truck-item-content open">Open</a>}
                         {!this.props.schedule.open && <a className="truck-item-content">Closed</a>}

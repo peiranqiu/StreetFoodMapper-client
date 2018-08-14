@@ -24,9 +24,11 @@ export default class OwnerProfile
                 this.setState({owner: owner});
             });
     }
+
     logout = (e) => {
-        this.ownerService.logout();
-        alert("Logged out");
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.ownerService.logout();
+        }
     }
 
     render() {

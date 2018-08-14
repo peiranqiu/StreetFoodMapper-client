@@ -5,6 +5,7 @@ import '../../node_modules/font-awesome/css/font-awesome.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
 import mapWhite from '../resources/icons/map-white.png'
+import mapRed from '../resources/icons/map-red.png'
 import unfavorite from '../resources/icons/unfavorite.png'
 import favorite from '../resources/icons/favorite.png'
 import $ from 'jquery'
@@ -77,39 +78,37 @@ export default class MapView
             var photo = truck.photos[0].href;
             var category = truck.category1 + ', ' + truck.category2 + ', ' + truck.category3;
             truck.schedules.map((schedule) => {
-
                 var schedules = this.state.schedules;
                 schedules.push(schedule);
                 this.setState({schedules: schedules});
 
-                var fav = unfavorite;
+                var icon = mapIcon;
                 this.favoriteService.findFavorite(schedule.id)
                     .then((isFav) => {
                         if (isFav) {
-                            fav = favorite;
+                            icon = mapRed;
                         }
                     });
                 var address = " " + schedule.address.substring(0, schedule.address.indexOf(","));
                 var open = " Closed";
-                if (schedule.open == true) {
+                if (schedule.open === true) {
                     open = " Open";
                 }
+                var lat = 42.355;
+                var lng = -71.09;
                 if (schedule.latitude !== undefined) {
-                    var lat = Number(schedule.latitude);
-                    var lng = Number(schedule.longitude);
-                }
-                else {
-                    var lat = 42.355;
-                    var lng = -71.09;
+                    lat = Number(schedule.latitude);
+                    lng = Number(schedule.longitude);
                 }
                 var myLatLng = {lat: lat, lng: lng};
 
                 var marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
-                    icon: mapIcon
+                    icon: icon
                 });
                 marker.id = schedule.id;
+                marker.icon = icon;
 
                 var infoWindow = new google.maps.InfoWindow({
                     position: myLatLng,
@@ -119,7 +118,7 @@ export default class MapView
                     '<div class="iw-subTitle"></div>' +
                     '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
                     '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
-                    '<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
+                    //'<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
                     '</div>'
                 });
 
@@ -133,7 +132,7 @@ export default class MapView
                         prevInfoWindow.close();
                     }
                     if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                        marker.setIcon(mapIcon);
+                        marker.setIcon(icon);
                         infoWindow.close();
                     }
                     else {
@@ -144,7 +143,7 @@ export default class MapView
                     }
                 });
                 map.addListener('click', function () {
-                    marker.setIcon(mapIcon);
+                    marker.setIcon(icon);
                     infoWindow.close();
                 });
                 allMarkers.push(marker);
@@ -153,13 +152,13 @@ export default class MapView
 
                 google.maps.event.addListener(infoWindow, 'domready', function () {
                     $('img[src="replace"]').attr('src', photo);
-                    $('img[src="replace-fav"]').attr('src', fav);
+                    //$('img[src="replace-fav"]').attr('src', fav);
                     $('.iw-title').attr('href', href);
                     $('.iw-title').html(name);
                     $('.iw-subTitle').html(category);
                     $('.iw-open-inner').html(open);
                     $('.iw-address-inner').html(address);
-                    if (schedule.open == true) {
+                    if (schedule.open === true) {
                         $('.iw-open-inner').addClass('open');
                     }
 
@@ -197,7 +196,7 @@ export default class MapView
         let favoriteFilter = $('#btn-favorite').hasClass('active');
         let searching = $('#search-icon').hasClass('fa-times');
 
-        if (this.state.trucks !== [] && this.state.schedules != []) {
+        if (this.state.trucks !== [] && this.state.schedules !== []) {
             for (var i = 0; i < allMarkers.length; i++) {
                 allMarkers[i].setVisible(true);
             }
@@ -248,7 +247,7 @@ export default class MapView
         }
         if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
             for (var i = 0; i < allMarkers.length; i++) {
-                allMarkers[i].setIcon(mapIcon);
+                allMarkers[i].setIcon(allMarkers[i].icon);
                 if (allMarkers[i].id === this.props.selectedSchedule.id) {
                     if (prevInfoWindow) {
                         prevInfoWindow.close();

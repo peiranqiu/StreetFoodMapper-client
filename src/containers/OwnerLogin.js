@@ -93,12 +93,6 @@ export default class OwnerLogin
                         <img src={logo} width="100" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>
-                    <span className="nav-item dropdown" id="user-icon">
-                        <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
-                        </a>
-                    </span>
                 </nav>
                 <div className="container-fluid" id="login-container">
                     <div className="row">

@@ -117,12 +117,6 @@ export default class OwnerRegister
                         <img src={logo} width="100" height="38"
                              className="mr-3 d-inline-block align-top" alt=""/>
                     </a>
-                    <span className="nav-item dropdown" id="user-icon">
-                        <a className="nav-item dropdown dropdown-toggle" id="navbarDropdownMenuLink" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src={user} width="14" height="14" className="d-inline-block" alt=""/>
-                        </a>
-                    </span>
                 </nav>
                 <div className="container-fluid" id="register-container">
                     <div className="row">
@@ -132,7 +126,7 @@ export default class OwnerRegister
                                 <p className="subtitle">Sign up to create, customize and broadcast your custom truck
                                     profile on Food Truck Mapper.</p>
                                 <p className="subhead">Already on Food Truck Mapper?
-                                    <a href="/login/owner"> Sign in</a></p>
+                                    <a href="/login/owner"> Log In</a></p>
                                 <form action="" method="" className="" role="form" onSubmit={this.register}>
                                     <div id="form-register-email" className="form-group">
                                         <input id="register-email" className="form-control" name="email" type="text"

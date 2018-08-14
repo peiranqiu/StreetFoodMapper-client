@@ -11,22 +11,25 @@ export default class TrendingItem extends React.Component {
     }
 
     render() {
-        var rating = null;
-        switch(this.props.truck.reviews[0].rating) {
-            case 2:
-                rating = rating2;
-                break;
-            case 3:
-                rating = rating3;
-                break;
-            case 4:
-                rating = rating4;
-                break;
-            case 5:
-                rating = rating5;
-                break;
-            default:
-                rating = rating1;
+        var rating = rating1;
+        if (this.props.truck !== undefined && this.props.truck.reviews !== undefined
+            && this.props.truck.reviews[2] !== undefined && this.props.truck.reviews[2].rating !== undefined) {
+            switch (this.props.truck.reviews[2].rating) {
+                case 2:
+                    rating = rating2;
+                    break;
+                case 3:
+                    rating = rating3;
+                    break;
+                case 4:
+                    rating = rating4;
+                    break;
+                case 5:
+                    rating = rating5;
+                    break;
+                default:
+                    rating = rating1;
+            }
         }
         var href = "/truck/" + this.props.truck.id;
         return (

@@ -11,7 +11,7 @@ export default class FeedItem extends React.Component {
     }
 
     render() {
-        var rating = null;
+        var rating = rating1;
         if(this.props.truck.photos !== undefined && this.props.truck.reviews !== undefined && this.props.index !== undefined
         && this.props.truck.photos.length > 0 && this.props.truck.reviews.length > 0) {
             switch(this.props.truck.reviews[this.props.index].rating) {

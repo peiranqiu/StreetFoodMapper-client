@@ -10,14 +10,13 @@
     z-index:0;
 }
 #homepage {
-
     background-color: #FFF866;
 }
 #arrow-text {
     position:absolute;
     top: 90vh;
     left:50%;
-    font-weight: bolder;
+    font-family: DINPro-Bold;
     font-size:20px;
     transform: translate(-50%, -50%);
 }
@@ -118,7 +117,7 @@
     width: 90px;
     height: 90px;
     max-height: 100px;
-
+    object-fit: cover;
 }
 
 .truck-item-title {
@@ -186,6 +185,7 @@
 
 #map-container ::-webkit-input-placeholder { /* WebKit browsers */
     color:    white !important;
+    opacity: 0.7 !important;
 }
 
 #map-container input {
@@ -263,6 +263,7 @@
     padding:0;
     max-width:100%;
     max-height: 200px;
+    object-fit: cover;
 }
 #trending-container .card-user {
     padding-top:0px;

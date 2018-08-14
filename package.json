@@ -20,6 +20,7 @@
     "react-date-picker": "^6.11.3",
     "react-day-picker": "^7.1.10",
     "react-dom": "^16.4.2",
+    "react-favicon": "0.0.14",
     "react-fontawesome": "^1.6.1",
     "react-google-maps": "^9.4.5",
     "react-helmet": "^5.2.0",

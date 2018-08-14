@@ -271,8 +271,9 @@ export default class TruckEditor
     }
 
     logout = (e) => {
-        this.ownerService.logout();
-        alert("Logged out");
+        if (window.confirm('Are you sure you want to log out?')) {
+            this.ownerService.logout();
+        }
     }
 
     dateToNumber(date) {
@@ -329,10 +330,27 @@ export default class TruckEditor
 
     updateTruck = (e) => {
         e.preventDefault();
-        this.truckService.updateTruck(this.state.newTruck.id, this.state.newTruck)
-            .then((response) => {
-                alert("Truck Updated");
-            });
+        let validate = false;
+        this.state.newTruck.photos.map((photo) => {
+            if (photo.href === "" || photo.href === undefined) {
+                validate = true;
+            }
+        });
+        this.state.newTruck.schedules.map((schedule) => {
+            if (schedule.address === "" || schedule.address === undefined) {
+                validate = true;
+            }
+        });
+        if (this.state.newTruck.name === undefined || validate) {
+            alert("Please fill out the form correctly.");
+        }
+        else {
+            this.truckService.updateTruck(this.state.newTruck.id, this.state.newTruck)
+                .then(() => {
+                    alert("Truck Updated");
+                    window.location.href = "/truck/" + this.state.newTruck.id + "/preview";
+                });
+        }
     }
 
     render() {
@@ -412,8 +430,8 @@ export default class TruckEditor
             </Panel>);
         });
         var href = "/truck/" + this.state.newTruck.id + "/preview"
-        var homeHref ="/dashboard";
-        if(this.state.admin) {
+        var homeHref = "/dashboard";
+        if (this.state.admin) {
             homeHref = "/home";
         }
 
@@ -657,10 +675,9 @@ export default class TruckEditor
                         </div>
                         <div className="row mb-1">
                             <button className="btn btn-block ripple-effect create-button" type="submit" name="Submit"
-                                    alt="sign in" onClick={this.updateTruck}>Save
+                                    alt="sign in" onClick={this.updateTruck}>Save and Preview
                             </button>
                         </div>
-                        <div className="text-center pb-5"><a href={href}>Preview</a></div>
                     </form>
                 </div>}
 

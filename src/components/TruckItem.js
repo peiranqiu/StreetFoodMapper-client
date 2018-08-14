@@ -71,6 +71,7 @@ export default class TruckItem extends React.Component {
                                  return;
                              }
                              this.handleFavorite();
+                             this.selectingTruck();
                              this.setState({refresh: true});
                          }}/>
                 </div>

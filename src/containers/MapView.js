@@ -255,7 +255,6 @@ export default class MapView
                     }
                 })
             })
-
         }
         if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
             for (var i = 0; i < allMarkers.length; i++) {

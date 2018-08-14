@@ -64,10 +64,6 @@ export default class TruckServiceClient {
     findAllTrucks() {
         return fetch(constants.ALL_TRUCK_URL)
             .then(response => {
-                if (response.status === 503) {
-                    alert("The server is slow now, please come back later!")
-                    return response;
-                }
                 return response.json();
             });
     }

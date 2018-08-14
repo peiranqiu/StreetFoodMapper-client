@@ -274,6 +274,7 @@ export default class CreateTruck
             this.yelpService.findTruckByPhone(this.state.formData.email).then((truck) => {
                 if (truck !== false) {
                     var schedules = this.state.newTruck.schedules;
+                    truck.phone = this.state.formData.email;
                     truck.category1 = 'AMERICAN';
                     truck.category2 = 'ASIAN';
                     truck.category3 = 'BREAKFAST';

@@ -95,20 +95,6 @@ export default class MapView
                 }
                 var myLatLng = {lat: lat, lng: lng};
 
-                var isFav = false;
-                var icon = mapIcon;
-                if(this.props.favorites.includes(schedule)) {
-                    icon = mapRed;
-                    isFav = true;
-                }
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    icon: icon
-                });
-                marker.id = schedule.id;
-                marker.isFav = isFav;
-
                 var infoWindow = new google.maps.InfoWindow({
                     position: myLatLng,
                     content: '<div id="iw-container row">' +
@@ -124,26 +110,6 @@ export default class MapView
                 infoWindow.addListener('click', () => {
                     this.openWindow(truck.id);
                 });
-
-                marker.addListener('click', () => {
-                    if (prevInfoWindow) {
-                        prevInfoWindow.close();
-                    }
-                    if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                        infoWindow.close();
-                    }
-                    else {
-                        marker.setIcon(mapWhite);
-                        prevInfoWindow = infoWindow;
-                        infoWindow.open(map, marker);
-                        //this.selectingTruck(schedule, truck);
-                    }
-                });
-                map.addListener('click', function () {
-                    marker.setIcon(icon);
-                    infoWindow.close();
-                });
-
                 var href = "/truck/" + truck.id;
 
                 google.maps.event.addListener(infoWindow, 'domready', function () {
@@ -174,9 +140,50 @@ export default class MapView
                     });
                     $("div:eq(0)", iwBackground).hide();
                 });
-                allMarkers.push(marker);
-                allWindows.push(infoWindow);
-            });
+
+                var isFav = false;
+                var icon = mapIcon;
+                this.favoriteService.findFavorite(schedule.id)
+                    .then((response) => {
+                        if (response) {
+                            isFav = true;
+                            icon = mapRed;
+                        }
+                        var marker = new google.maps.Marker({
+                            position: myLatLng,
+                            map: map,
+                            icon: icon
+                        });
+                        marker.id = schedule.id;
+                        marker.isFav = isFav;
+
+                        marker.addListener('click', () => {
+                            if (prevInfoWindow) {
+                                prevInfoWindow.close();
+                            }
+                            if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                                infoWindow.close();
+                            }
+                            else {
+                                marker.setIcon(mapWhite);
+                                prevInfoWindow = infoWindow;
+                                infoWindow.open(map, marker);
+                                //this.selectingTruck(schedule, truck);
+                            }
+                        });
+                        map.addListener('click', function () {
+                            if (marker.isFav) {
+                                marker.setIcon(mapRed);
+                            }
+                            else {
+                                marker.setIcon(mapIcon);
+                            }
+                            infoWindow.close();
+                        });
+                        allMarkers.push(marker);
+                        allWindows.push(infoWindow);
+                    });
+            })
         });
     }
 

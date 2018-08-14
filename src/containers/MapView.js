@@ -9,7 +9,6 @@ import mapRed from '../resources/icons/map-red.png'
 import unfavorite from '../resources/icons/unfavorite.png'
 import favorite from '../resources/icons/favorite.png'
 import $ from 'jquery'
-import FavoriteServiceClient from "../services/FavoriteServiceClient";
 
 const allMarkers = [];
 const allWindows = [];
@@ -25,7 +24,6 @@ export default class MapView
             schedules: [],
             user: {}
         };
-        this.favoriteService = FavoriteServiceClient.instance();
         this.setTrucks = this.setTrucks.bind(this);
         this.setUser = this.setUser.bind(this);
         this.initMap = this.initMap.bind(this);
@@ -143,48 +141,47 @@ export default class MapView
 
                 var isFav = false;
                 var icon = mapIcon;
-                this.favoriteService.findFavorite(schedule.id)
-                    .then((response) => {
-                        if (response) {
-                            isFav = true;
-                            icon = mapRed;
-                        }
-                        var marker = new google.maps.Marker({
-                            position: myLatLng,
-                            map: map,
-                            icon: icon
-                        });
-                        marker.id = schedule.id;
-                        marker.isFav = isFav;
+                this.props.favorites.map((favorite) => {
+                    if(favorite.id === schedule.id) {
+                        isFav = true;
+                        icon = mapRed;
+                    }
+                });
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    icon: icon
+                });
+                marker.id = schedule.id;
+                marker.isFav = isFav;
 
-                        marker.addListener('click', () => {
-                            if (prevInfoWindow) {
-                                prevInfoWindow.close();
-                            }
-                            if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                                infoWindow.close();
-                            }
-                            else {
-                                marker.setIcon(mapWhite);
-                                prevInfoWindow = infoWindow;
-                                infoWindow.open(map, marker);
-                                //this.selectingTruck(schedule, truck);
-                            }
-                        });
-                        map.addListener('click', function () {
-                            if (marker.isFav) {
-                                marker.setIcon(mapRed);
-                            }
-                            else {
-                                marker.setIcon(mapIcon);
-                            }
-                            infoWindow.close();
-                        });
-                        allMarkers.push(marker);
-                        allWindows.push(infoWindow);
-                    });
-            })
-        });
+                marker.addListener('click', () => {
+                    if (prevInfoWindow) {
+                        prevInfoWindow.close();
+                    }
+                    if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                        infoWindow.close();
+                    }
+                    else {
+                        marker.setIcon(mapWhite);
+                        prevInfoWindow = infoWindow;
+                        infoWindow.open(map, marker);
+                        //this.selectingTruck(schedule, truck);
+                    }
+                });
+                map.addListener('click', function () {
+                    if (marker.isFav) {
+                        marker.setIcon(mapRed);
+                    }
+                    else {
+                        marker.setIcon(mapIcon);
+                    }
+                    infoWindow.close();
+                });
+                allMarkers.push(marker);
+                allWindows.push(infoWindow);
+            });
+        })
     }
 
     loadJS(src) {

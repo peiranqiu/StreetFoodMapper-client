@@ -22,22 +22,18 @@ import emptyTwitter from '../resources/background/twitter-background.jpg'
 import FeedItem from '../components/FeedItem'
 
 import TruckMap from './TruckMap'
-import {
-    TwitterTimelineEmbed
-} from 'react-twitter-embed';
+import {TwitterTimelineEmbed} from 'react-twitter-embed';
 import $ from "jquery";
 
 export default class TruckPage
     extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             user: {},
             refresh: false,
             truck: {}
         };
-
         this.truckService = TruckServiceClient.instance();
         this.userService = UserServiceClient.instance();
     }
@@ -60,7 +56,6 @@ export default class TruckPage
                 if (this.hash !== "") {
                     // Prevent default anchor click behavior
                     event.preventDefault();
-
                     // Store hash
                     var hash = this.hash;
 
@@ -70,7 +65,6 @@ export default class TruckPage
                         $('html, body').animate({
                             scrollTop: $(hash).offset().top
                         }, 500, function () {
-
                             // Add hash (#) to URL when done scrolling (default click behavior)
                             window.location.hash = hash;
                         });
@@ -97,7 +91,6 @@ export default class TruckPage
         if (time.startTime === 0) {
             return ("");
         }
-
         return (parseInt(time.startTime / 100) + ":"
             + (time.startTime % 100 < 10 ? "0" + time.startTime % 100 : time.startTime % 100) + " - "
             + parseInt(time.endTime / 100) + ":"
@@ -147,15 +140,16 @@ export default class TruckPage
     }
 
     render() {
-
         window.addEventListener("scroll", function (event) {
             document.getElementById("nav-item-0").classList.remove("active");
             document.getElementById("nav-item-1").classList.remove("active");
             document.getElementById("nav-item-2").classList.remove("active");
-            if (document.getElementById("feed-anchor") !== null && document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
+            if (document.getElementById("feed-anchor") !== null
+                && document.getElementById("feed-anchor").getBoundingClientRect().top <= 0) {
                 document.getElementById("nav-item-2").classList.add("active");
             }
-            else if (document.getElementById("schedule-anchor") !== null && document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0) {
+            else if (document.getElementById("schedule-anchor") !== null
+                && document.getElementById("schedule-anchor").getBoundingClientRect().top <= 0) {
                 document.getElementById("nav-item-1").classList.add("active");
             }
             else {
@@ -182,6 +176,7 @@ export default class TruckPage
                     rating = rating1;
             }
         }
+        
         return (
             <div id="truck-page">
                 <nav className="navbar navbar-light sticky-top">
@@ -214,7 +209,6 @@ export default class TruckPage
                     </span>
                 </nav>
 
-
                 {this.state.truck === {}
                 &&
                 <div className="container-fluid truck-info-container">
@@ -245,7 +239,8 @@ export default class TruckPage
                                 <div className="truck-page-category">
                                     {this.state.truck.category1.charAt(0) + this.state.truck.category1.substring(1).toLowerCase()},
                                     {this.state.truck.category2.charAt(0) + this.state.truck.category2.substring(1).toLowerCase()},
-                                    {this.state.truck.category3.charAt(0) + this.state.truck.category3.substring(1).toLowerCase()}</div>
+                                    {this.state.truck.category3.charAt(0) + this.state.truck.category3.substring(1).toLowerCase()}
+                                </div>
                                 <div className="truck-page-open">Open Now At</div>
                                 <div className="truck-open-container">
                                     {this.state.truck.schedules.map((schedule) => {
@@ -267,7 +262,8 @@ export default class TruckPage
                                         return (schedule.open &&
                                             <div className="truck-open-address">
                                                 <i className="fa fa-map-marker"></i>
-                                                <a className="truck-open-content ml-3" target="_blank" href={href}>{address}</a>
+                                                <a className="truck-open-content ml-3" target="_blank"
+                                                   href={href}>{address}</a>
                                                 <i className="fa fa-clock-o mt-1"></i>
                                                 <a className="until">until {until}</a>
                                             </div>);
@@ -365,7 +361,9 @@ export default class TruckPage
                                         schedule.openTimes.sort((a, b) => a.day - b.day);
                                         return (
                                             <tr key={schedule.id}>
-                                                <th scope="row">{schedule.address.substring(0, schedule.address.indexOf(","))}</th>
+                                                <th scope="row">
+                                                    {schedule.address.substring(0, schedule.address.indexOf(","))}
+                                                </th>
                                                 <td></td>
                                                 <td></td>
                                                 <td>{this.format(schedule.openTimes[0])}</td>
@@ -396,9 +394,7 @@ export default class TruckPage
                             </div>
                             <div className="col col-1"></div>
                         </div>
-
                     </div>
-
                     <a className="anchor" id="feed-anchor"></a>
                     <div className="container" id="feed-container">
                         <div className="row">
@@ -415,23 +411,16 @@ export default class TruckPage
                             <div className="col col-1"></div>
                         </div>
                     </div>
-
-
                 </div>
-
-
                 }
-
                 <nav className="navbar navbar-light sticky-bottom">
                     <a className="navbar-brand">
                         ©2018 All Rights Reserved.
                     </a>
-                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">Contact
-                        Us</a>
+                    <a className="nav-item" id="nav-item-2" href="mailto:streetfoodmapper@gmail.com?Subject=Hello">
+                        Contact Us</a>
                     <a className="nav-item" id="nav-item-3" href="/register/owner">Vendor?</a>
                 </nav>
-
-
             </div>
         );
     }

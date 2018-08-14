@@ -4,7 +4,10 @@ import '../../node_modules/font-awesome/css/font-awesome.css';
 import * as constants from '../constants/constant';
 import mapIcon from '../resources/icons/map.png'
 import mapWhite from '../resources/icons/map-white.png'
+import mapRed from '../resources/icons/map-red.png'
 import $ from 'jquery'
+import FavoriteServiceClient from "../services/FavoriteServiceClient";
+
 const allMarkers = [];
 const allWindows = [];
 var prevInfoWindow = false;
@@ -15,8 +18,9 @@ export default class TruckMap
     constructor(props) {
         super(props);
         this.state = {
-            selected:{}
+            selected: {}
         };
+        this.favoriteService = FavoriteServiceClient.instance();
         this.initMap = this.initMap.bind(this);
     }
 
@@ -43,71 +47,95 @@ export default class TruckMap
 
         this.props.schedules.map((schedule) => {
 
-                var address = " " + schedule.address.substring( 0, schedule.address.indexOf(","));
-                var open = " Closed";
-                if(schedule.open == true) {
-                    open = " Open";
-                }
-
-                var lat = Number(schedule.latitude);
-                var lng = Number(schedule.longitude);
-                var myLatLng = {lat: lat, lng: lng};
-
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    icon: mapIcon
-                });
-                marker.id = schedule.id;
-
-                var infoWindow = new google.maps.InfoWindow({
-                    position: myLatLng,
-                    content: '<div id="iw-container row">' +
-                    '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
-                    '</div>'
-                });
-
-                marker.addListener('click', () => {
-                    if( prevInfoWindow ) {
-                        prevInfoWindow.close();
+            var isFav = false;
+            var icon = mapIcon;
+            this.favoriteService.findFavorite(schedule.id)
+                .then((response) => {
+                    if (response) {
+                        isFav = true;
+                        icon = mapRed;
                     }
-                    if(infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                        marker.setIcon(mapIcon);
-                        infoWindow.close();
+                });
+            var address = " " + schedule.address.substring(0, schedule.address.indexOf(","));
+            var open = " Closed";
+            if (schedule.open == true) {
+                open = " Open";
+            }
+
+            var lat = 42.355;
+            var lng = -71.09;
+            if (schedule.latitude !== undefined) {
+                lat = Number(schedule.latitude);
+                lng = Number(schedule.longitude);
+            }
+            var myLatLng = {lat: lat, lng: lng};
+
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                icon: icon
+            });
+            marker.id = schedule.id;
+            marker.isFav = isFav;
+
+            var infoWindow = new google.maps.InfoWindow({
+                position: myLatLng,
+                content: '<div id="iw-container row">' +
+                '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
+                '</div>'
+            });
+
+            marker.addListener('click', () => {
+                if (prevInfoWindow) {
+                    prevInfoWindow.close();
+                }
+                if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
+                    if(marker.isFav) {
+                        marker.setIcon(mapRed);
                     }
                     else {
-                        prevInfoWindow = infoWindow;
-                        infoWindow.open(map, marker);
-                        this.setState({selected:marker.id});
-                        marker.setIcon(mapWhite);
+                        marker.setIcon(mapIcon);
                     }
-                });
-                map.addListener('click', function () {
-                    marker.setIcon(mapIcon);
                     infoWindow.close();
+                }
+                else {
+                    prevInfoWindow = infoWindow;
+                    infoWindow.open(map, marker);
+                    this.setState({selected: marker.id});
+                    marker.setIcon(mapWhite);
+                }
+            });
+            map.addListener('click', function () {
+                if(marker.isFav) {
+                    marker.setIcon(mapRed);
+                }
+                else {
+                    marker.setIcon(mapIcon);
+                }
+                infoWindow.close();
+            });
+            allMarkers.push(marker);
+            allWindows.push(infoWindow);
+
+            google.maps.event.addListener(infoWindow, 'domready', function () {
+                $('.iw-address-inner').html(address);
+
+                // Reference to the DIV that wraps the bottom of infowindow
+                var iwOuter = $('.gm-style-iw');
+                var iwBackground = iwOuter.prev();
+
+                // Removes background shadow DIV
+                iwBackground.children(':nth-child(2)').css({'display': 'none'});
+
+                // Removes white background DIV
+                iwBackground.children(':nth-child(4)').css({'display': 'none'});
+                var iwCloseBtn = iwOuter.next();
+                iwCloseBtn.css({display: 'none'});
+                iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                    return s + 'display: none !important;'
                 });
-                allMarkers.push(marker);
-                allWindows.push(infoWindow);
-
-                google.maps.event.addListener(infoWindow, 'domready', function () {
-                    $('.iw-address-inner').html(address);
-
-                    // Reference to the DIV that wraps the bottom of infowindow
-                    var iwOuter = $('.gm-style-iw');
-                    var iwBackground = iwOuter.prev();
-
-                    // Removes background shadow DIV
-                    iwBackground.children(':nth-child(2)').css({'display': 'none'});
-
-                    // Removes white background DIV
-                    iwBackground.children(':nth-child(4)').css({'display': 'none'});
-                    var iwCloseBtn = iwOuter.next();
-                    iwCloseBtn.css({display: 'none'});
-                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){
-                        return s + 'display: none !important;'
-                    });
-                    $("div:eq(0)", iwBackground).hide();
-                });
+                $("div:eq(0)", iwBackground).hide();
+            });
 
         });
     }
@@ -123,23 +151,29 @@ export default class TruckMap
     render() {
         let openFilter = $('#btn-open').hasClass('active');
         let laterFilter = $('#btn-later').hasClass('active');
-        if(this.props.schedules !== []) {
-            for(var i=0; i< allMarkers.length; i++) {
-                allMarkers[i].setIcon(mapIcon);
+        if (this.props.schedules !== []) {
+            for (var i = 0; i < allMarkers.length; i++) {
+                if(allMarkers[i].isFav) {
+                    allMarkers[i].setIcon(mapRed);
+                }
+                else {
+                    allMarkers[i].setIcon(mapIcon);
+                }
                 allMarkers[i].setVisible(true);
             }
             this.props.schedules.map((schedule) => {
-                if((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
-                    for(var i=0; i< allMarkers.length; i++) {
-                        if(allMarkers[i].id === schedule.id) {
+                if ((openFilter && !schedule.open) || (laterFilter && schedule.open)) {
+                    for (var i = 0; i < allMarkers.length; i++) {
+                        if (allMarkers[i].id === schedule.id) {
                             allMarkers[i].setVisible(false);
                             break;
                         }
                     }
-                }})
+                }
+            })
         }
         return (
-               <div id="truckmap"></div>
+            <div id="truckmap"></div>
         );
     }
 

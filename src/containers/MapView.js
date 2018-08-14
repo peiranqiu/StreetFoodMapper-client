@@ -82,10 +82,12 @@ export default class MapView
                 schedules.push(schedule);
                 this.setState({schedules: schedules});
 
+                var isFav = false;
                 var icon = mapIcon;
                 this.favoriteService.findFavorite(schedule.id)
-                    .then((isFav) => {
-                        if (isFav) {
+                    .then((response) => {
+                        if (response) {
+                            isFav = true;
                             icon = mapRed;
                         }
                     });
@@ -108,7 +110,7 @@ export default class MapView
                     icon: icon
                 });
                 marker.id = schedule.id;
-                marker.icon = icon;
+                marker.isFav = isFav;
 
                 var infoWindow = new google.maps.InfoWindow({
                     position: myLatLng,
@@ -132,7 +134,12 @@ export default class MapView
                         prevInfoWindow.close();
                     }
                     if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                        marker.setIcon(icon);
+                        if(marker.isFav) {
+                            marker.setIcon(mapRed);
+                        }
+                        else {
+                            marker.setIcon(mapIcon);
+                        }
                         infoWindow.close();
                     }
                     else {
@@ -143,7 +150,12 @@ export default class MapView
                     }
                 });
                 map.addListener('click', function () {
-                    marker.setIcon(icon);
+                    if(marker.isFav) {
+                        marker.setIcon(mapRed);
+                    }
+                    else {
+                        marker.setIcon(mapIcon);
+                    }
                     infoWindow.close();
                 });
                 allMarkers.push(marker);
@@ -247,7 +259,6 @@ export default class MapView
         }
         if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined) {
             for (var i = 0; i < allMarkers.length; i++) {
-                allMarkers[i].setIcon(allMarkers[i].icon);
                 if (allMarkers[i].id === this.props.selectedSchedule.id) {
                     if (prevInfoWindow) {
                         prevInfoWindow.close();
@@ -255,6 +266,12 @@ export default class MapView
                     allWindows[i].open(map, allMarkers[i]);
                     allMarkers[i].setIcon(mapWhite);
                     prevInfoWindow = allWindows[i];
+                }
+                else if(allMarkers[i].isFav) {
+                    allMarkers[i].setIcon(mapRed);
+                }
+                else {
+                    allMarkers[i].setIcon(mapIcon);
                 }
             }
         }

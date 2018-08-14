@@ -95,6 +95,52 @@ export default class MapView
                 }
                 var myLatLng = {lat: lat, lng: lng};
 
+                var infoWindow = new google.maps.InfoWindow({
+                    position: myLatLng,
+                    content: '<div id="iw-container row">' +
+                    '<img class="iw-img" src="replace" alt="" height="90" width="90">' +
+                    '<a class="iw-title" href=""></a>' +
+                    '<div class="iw-subTitle"></div>' +
+                    '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
+                    '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
+                    //'<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
+                    '</div>'
+                });
+
+                infoWindow.addListener('click', () => {
+                    this.openWindow(truck.id);
+                });
+                var href = "/truck/" + truck.id;
+
+                google.maps.event.addListener(infoWindow, 'domready', function () {
+                    $('img[src="replace"]').attr('src', photo);
+                    //$('img[src="replace-fav"]').attr('src', fav);
+                    $('.iw-title').attr('href', href);
+                    $('.iw-title').html(name);
+                    $('.iw-subTitle').html(category);
+                    $('.iw-open-inner').html(open);
+                    $('.iw-address-inner').html(address);
+                    if (schedule.open === true) {
+                        $('.iw-open-inner').addClass('open');
+                    }
+
+                    // Reference to the DIV that wraps the bottom of infowindow
+                    var iwOuter = $('.gm-style-iw');
+                    var iwBackground = iwOuter.prev();
+
+                    // Removes background shadow DIV
+                    iwBackground.children(':nth-child(2)').css({'display': 'none'});
+
+                    // Removes white background DIV
+                    iwBackground.children(':nth-child(4)').css({'display': 'none'});
+                    var iwCloseBtn = iwOuter.next();
+                    iwCloseBtn.css({display: 'none'});
+                    iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                        return s + 'display: none !important;'
+                    });
+                    $("div:eq(0)", iwBackground).hide();
+                });
+
                 var isFav = false;
                 var icon = mapIcon;
                 this.favoriteService.findFavorite(schedule.id)
@@ -110,28 +156,13 @@ export default class MapView
                         });
                         marker.id = schedule.id;
                         marker.isFav = isFav;
-                        var infoWindow = new google.maps.InfoWindow({
-                            position: myLatLng,
-                            content: '<div id="iw-container row">' +
-                            '<img class="iw-img" src="replace" alt="" height="90" width="90">' +
-                            '<a class="iw-title" href=""></a>' +
-                            '<div class="iw-subTitle"></div>' +
-                            '<div class="iw-open"><i class="fa fa-clock-o"></i><a class="iw-open-inner"></a></div>' +
-                            '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
-                            //'<img class="iw-fav" src="replace-fav" alt="" height="40" width="40">' +
-                            '</div>'
-                        });
-
-                        infoWindow.addListener('click', () => {
-                            this.openWindow(truck.id);
-                        });
 
                         marker.addListener('click', () => {
                             if (prevInfoWindow) {
                                 prevInfoWindow.close();
                             }
                             if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
-                                if(marker.isFav) {
+                                if (marker.isFav) {
                                     marker.setIcon(mapRed);
                                 }
                                 else {
@@ -147,7 +178,7 @@ export default class MapView
                             }
                         });
                         map.addListener('click', function () {
-                            if(marker.isFav) {
+                            if (marker.isFav) {
                                 marker.setIcon(mapRed);
                             }
                             else {
@@ -157,36 +188,7 @@ export default class MapView
                         });
                         allMarkers.push(marker);
                         allWindows.push(infoWindow);
-                        var href = "/truck/" + truck.id;
 
-                        google.maps.event.addListener(infoWindow, 'domready', function () {
-                            $('img[src="replace"]').attr('src', photo);
-                            //$('img[src="replace-fav"]').attr('src', fav);
-                            $('.iw-title').attr('href', href);
-                            $('.iw-title').html(name);
-                            $('.iw-subTitle').html(category);
-                            $('.iw-open-inner').html(open);
-                            $('.iw-address-inner').html(address);
-                            if (schedule.open === true) {
-                                $('.iw-open-inner').addClass('open');
-                            }
-
-                            // Reference to the DIV that wraps the bottom of infowindow
-                            var iwOuter = $('.gm-style-iw');
-                            var iwBackground = iwOuter.prev();
-
-                            // Removes background shadow DIV
-                            iwBackground.children(':nth-child(2)').css({'display': 'none'});
-
-                            // Removes white background DIV
-                            iwBackground.children(':nth-child(4)').css({'display': 'none'});
-                            var iwCloseBtn = iwOuter.next();
-                            iwCloseBtn.css({display: 'none'});
-                            iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
-                                return s + 'display: none !important;'
-                            });
-                            $("div:eq(0)", iwBackground).hide();
-                        });
                     });
             })
         });
@@ -212,7 +214,8 @@ export default class MapView
             }
             this.state.trucks.map((truck) => {
                 if (searching
-                    && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(this.props.search.toLowerCase())
+                    && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+                            .includes(this.props.search.toLowerCase())
                         || truck.category1.toString().toLowerCase() === (this.props.search.toLowerCase())
                         || truck.category2.toString().toLowerCase() === (this.props.search.toLowerCase())
                         || truck.category3.toString().toLowerCase() === (this.props.search.toLowerCase()))) {
@@ -260,11 +263,20 @@ export default class MapView
                     if (prevInfoWindow) {
                         prevInfoWindow.close();
                     }
+                    this.favoriteService.findFavorite(this.props.selectedSchedule.id)
+                        .then((response) => {
+                            if (response) {
+                                allMarkers[i].isFav = true;
+                            }
+                            else {
+                                allMarkers[i].isFav = false;
+                            }
+                        });
                     allWindows[i].open(map, allMarkers[i]);
                     allMarkers[i].setIcon(mapWhite);
                     prevInfoWindow = allWindows[i];
                 }
-                else if(allMarkers[i].isFav) {
+                else if (allMarkers[i].isFav) {
                     allMarkers[i].setIcon(mapRed);
                 }
                 else {

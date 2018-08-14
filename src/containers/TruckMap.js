@@ -59,6 +59,33 @@ export default class TruckMap
             }
             var myLatLng = {lat: lat, lng: lng};
 
+            var infoWindow = new google.maps.InfoWindow({
+                position: myLatLng,
+                content: '<div id="iw-container row">' +
+                '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
+                '</div>'
+            });
+
+            google.maps.event.addListener(infoWindow, 'domready', function () {
+                $('.iw-address-inner').html(address);
+
+                // Reference to the DIV that wraps the bottom of infowindow
+                var iwOuter = $('.gm-style-iw');
+                var iwBackground = iwOuter.prev();
+
+                // Removes background shadow DIV
+                iwBackground.children(':nth-child(2)').css({'display': 'none'});
+
+                // Removes white background DIV
+                iwBackground.children(':nth-child(4)').css({'display': 'none'});
+                var iwCloseBtn = iwOuter.next();
+                iwCloseBtn.css({display: 'none'});
+                iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
+                    return s + 'display: none !important;'
+                });
+                $("div:eq(0)", iwBackground).hide();
+            });
+
             var isFav = false;
             var icon = mapIcon;
             this.favoriteService.findFavorite(schedule.id)
@@ -75,13 +102,6 @@ export default class TruckMap
                     });
                     marker.id = schedule.id;
                     marker.isFav = isFav;
-
-                    var infoWindow = new google.maps.InfoWindow({
-                        position: myLatLng,
-                        content: '<div id="iw-container row">' +
-                        '<div class="iw-address"><i class="fa fa-map-marker"></i><a class="iw-address-inner"></a></div>' +
-                        '</div>'
-                    });
 
                     marker.addListener('click', () => {
                         if (prevInfoWindow) {
@@ -114,26 +134,6 @@ export default class TruckMap
                     });
                     allMarkers.push(marker);
                     allWindows.push(infoWindow);
-
-                    google.maps.event.addListener(infoWindow, 'domready', function () {
-                        $('.iw-address-inner').html(address);
-
-                        // Reference to the DIV that wraps the bottom of infowindow
-                        var iwOuter = $('.gm-style-iw');
-                        var iwBackground = iwOuter.prev();
-
-                        // Removes background shadow DIV
-                        iwBackground.children(':nth-child(2)').css({'display': 'none'});
-
-                        // Removes white background DIV
-                        iwBackground.children(':nth-child(4)').css({'display': 'none'});
-                        var iwCloseBtn = iwOuter.next();
-                        iwCloseBtn.css({display: 'none'});
-                        iwBackground.children(':nth-child(3)').attr('style', function (i, s) {
-                            return s + 'display: none !important;'
-                        });
-                        $("div:eq(0)", iwBackground).hide();
-                    });
                 });
         });
     }

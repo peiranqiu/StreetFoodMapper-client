@@ -24,13 +24,13 @@ export default class TruckItem extends React.Component {
     }
 
     handleFavorite() {
-        if(this.state.isFav) {
+        if (this.state.isFav) {
             this.favoriteService.userUnlikesSchedule(this.props.schedule.id);
-            this.setState({isFav:false});
+            this.setState({isFav: false});
         }
         else {
             this.favoriteService.userLikesSchedule(this.props.schedule.id);
-            this.setState({isFav:true});
+            this.setState({isFav: true});
         }
     }
 
@@ -44,7 +44,7 @@ export default class TruckItem extends React.Component {
         var address = " " + this.props.schedule.address.substring(0, this.props.schedule.address.indexOf(","));
         var href = "/truck/" + this.props.truck.id.toString();
         var fav = unfavorite;
-        if(this.state.isFav) {
+        if (this.state.isFav) {
             fav = favorite;
         }
         return (
@@ -56,7 +56,8 @@ export default class TruckItem extends React.Component {
                     <div className="truck-item-category">
                         {this.props.truck.category1.charAt(0) + this.props.truck.category1.substring(1).toLowerCase()},
                         {this.props.truck.category2.charAt(0) + this.props.truck.category2.substring(1).toLowerCase()},
-                        {this.props.truck.category3.charAt(0) + this.props.truck.category3.substring(1).toLowerCase()}</div>
+                        {this.props.truck.category3.charAt(0) + this.props.truck.category3.substring(1).toLowerCase()}
+                    </div>
                     <div className="truck-item-open"><i className="fa fa-clock-o"></i>
                         {this.props.schedule.open && <a className="truck-item-content open">Open</a>}
                         {!this.props.schedule.open && <a className="truck-item-content">Closed</a>}

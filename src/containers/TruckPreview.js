@@ -175,7 +175,10 @@ export default class TruckPreview
                                 <img className="truck-rating" src={rating} alt=""/>
                                 <a className="onYelp">(On Yelp)</a>
                                 <div className="truck-page-category">
-                                    {this.state.truck.category1}, {this.state.truck.category2}, {this.state.truck.category3}</div>
+                                    {this.state.truck.category1.charAt(0) + this.state.truck.category1.substring(1).toLowerCase()},
+                                    {this.state.truck.category2.charAt(0) + this.state.truck.category2.substring(1).toLowerCase()},
+                                    {this.state.truck.category3.charAt(0) + this.state.truck.category3.substring(1).toLowerCase()}
+                                </div>
                                 <div className="truck-page-open">Open Now At</div>
                                 <div className="truck-open-container">
                                     {this.state.truck.schedules.map((schedule) => {
@@ -197,7 +200,8 @@ export default class TruckPreview
                                         return (schedule.open &&
                                             <div className="truck-open-address">
                                                 <i className="fa fa-map-marker"></i>
-                                                <a className="truck-open-content ml-3" target="_blank" href={href}>{address}</a>
+                                                <a className="truck-open-content ml-3" target="_blank"
+                                                   href={href}>{address}</a>
                                                 <i className="fa fa-clock-o mt-1"></i>
                                                 <a className="until">until {until}</a>
                                             </div>);

@@ -5,8 +5,9 @@ import Favicon from 'react-favicon';
 
 
 ReactDOM.render(
-    <Favicon url="https://raw.githubusercontent.com/peiranqiu/CS5610-summer-2018-project-client-peiranqiu/master/src/resources/background/ico.ico"/>,
-    <App/>,
+    <div>
+        <Favicon
+            url="https://raw.githubusercontent.com/peiranqiu/CS5610-summer-2018-project-client-peiranqiu/master/src/resources/background/ico.ico"/>
+        <App/></div>,
     document.getElementById('root')
-
 );

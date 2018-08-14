@@ -221,7 +221,7 @@ export default class MapContainer
                             <div className="list-header">Find Trucks</div>
                             <div className="list-group p-0">
                                 <div id="background-test">Whoops! No trucks found.</div>
-                                {this.renderListOfTrucks()}
+                                {this.state.trucks !== undefined && this.renderListOfTrucks()}
                             </div>
                         </div>
                     </div>

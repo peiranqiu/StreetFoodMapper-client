@@ -210,10 +210,6 @@ export default class MapContainer
                                     $('#btn-open').removeClass('active');
                                     $('#btn-later').removeClass('active');
                                 }
-                                this.favoriteService.findFavoritesForUser(this.state.user.id)
-                                    .then((favorites) => {
-                                        this.setState({favorites: favorites})
-                                    });
                             }}>Favorites
                     </button>
                     <div className="table-cell m-0 p-0 col-left">

@@ -29,12 +29,6 @@ export default class MapView
         this.initMap = this.initMap.bind(this);
     }
 
-    selectingTruck = (schedule, truck) => {
-        this.props.scheduleCallbackFromParent(schedule);
-        this.props.truckCallbackFromParent(truck);
-    }
-
-
     setUser(user) {
         this.setState({user: user});
     }
@@ -46,7 +40,6 @@ export default class MapView
     componentWillReceiveProps(newProps) {
         this.setUser(newProps.user);
         this.setTrucks(newProps.trucks);
-
     }
 
     componentDidMount() {
@@ -105,11 +98,7 @@ export default class MapView
                     '</div>'
                 });
 
-                infoWindow.addListener('click', () => {
-                    this.openWindow(truck.id);
-                });
                 var href = "/truck/" + truck.id;
-
                 google.maps.event.addListener(infoWindow, 'domready', function () {
                     $('img[src="replace"]').attr('src', photo);
                     //$('img[src="replace-fav"]').attr('src', fav);
@@ -139,10 +128,14 @@ export default class MapView
                     $("div:eq(0)", iwBackground).hide();
                 });
 
+                infoWindow.addListener('click', () => {
+                    this.openWindow(truck.id);
+                });
+
                 var isFav = false;
                 var icon = mapIcon;
                 this.props.favorites.map((favorite) => {
-                    if(favorite.id === schedule.id) {
+                    if (favorite.id === schedule.id) {
                         isFav = true;
                         icon = mapRed;
                     }
@@ -166,16 +159,10 @@ export default class MapView
                         marker.setIcon(mapWhite);
                         prevInfoWindow = infoWindow;
                         infoWindow.open(map, marker);
-                        //this.selectingTruck(schedule, truck);
                     }
                 });
                 map.addListener('click', function () {
-                    if (marker.isFav) {
-                        marker.setIcon(mapRed);
-                    }
-                    else {
-                        marker.setIcon(mapIcon);
-                    }
+                    marker.setIcon(icon);
                     infoWindow.close();
                 });
                 allMarkers.push(marker);
@@ -203,11 +190,20 @@ export default class MapView
                 if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined &&
                     allMarkers[i].id === this.props.selectedSchedule.id) {
                     if (prevInfoWindow) {
-                        prevInfoWindow.close();
+                        if (prevInfoWindow !== allWindows[i]) {
+                            console.log(4);
+                            prevInfoWindow.close();
+                            allWindows[i].open(map, allMarkers[i]);
+                            allMarkers[i].setIcon(mapWhite);
+                            prevInfoWindow = allWindows[i];
+                        }
                     }
-                    allWindows[i].open(map, allMarkers[i]);
-                    allMarkers[i].setIcon(mapWhite);
-                    prevInfoWindow = allWindows[i];
+                    else {
+                        console.log(5);
+                        allWindows[i].open(map, allMarkers[i]);
+                        allMarkers[i].setIcon(mapWhite);
+                        prevInfoWindow = allWindows[i];
+                    }
                 }
                 else if (allMarkers[i].isFav) {
                     allMarkers[i].setIcon(mapRed);

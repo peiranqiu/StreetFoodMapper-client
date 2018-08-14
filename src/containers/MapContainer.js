@@ -23,29 +23,19 @@ export default class MapContainer
             refresh: false,
             search: "",
             selectedSchedule: null,
-            selectedTruck: null
+            //selectedTruck: null
         };
         this.truckService = TruckServiceClient.instance();
         this.userService = UserServiceClient.instance();
         this.scheduleService = ScheduleServiceClient.instance();
         this.favoriteService = FavoriteServiceClient.instance();
         this.scheduleCallback = this.scheduleCallback.bind(this);
-        this.truckCallback = this.truckCallback.bind(this);
         this.refreshTrucks = this.refreshTrucks.bind(this);
     }
 
     scheduleCallback = (selectedSchedule) => {
         this.setState({selectedSchedule: selectedSchedule});
-        if(this.state.user !== undefined) {
-            this.favoriteService.findFavoritesForUser(this.state.user.id)
-                .then((favorites) => {
-                    this.setState({favorites: favorites})
-                });
-        }
-    }
-    truckCallback = (selectedTruck) => {
-        this.setState({selectedTruck: selectedTruck});
-        if(this.state.user !== undefined) {
+        if (this.state.user !== undefined) {
             this.favoriteService.findFavoritesForUser(this.state.user.id)
                 .then((favorites) => {
                     this.setState({favorites: favorites})
@@ -57,7 +47,7 @@ export default class MapContainer
         this.userService.findCurrentUser()
             .then(user => {
                 this.setState({user: user});
-                if(user !== undefined) {
+                if (user !== undefined) {
                     this.favoriteService.findFavoritesForUser(user.id)
                         .then((favorites) => {
                             this.setState({favorites: favorites})
@@ -131,8 +121,6 @@ export default class MapContainer
                     }
                     return (<TruckItem key={schedule.id}
                                        scheduleCallbackFromParent={this.scheduleCallback}
-                                       truckCallbackFromParent={this.truckCallback}
-                                       selectedTruck={this.state.selectedTruck}
                                        selectedSchedule={this.state.selectedSchedule}
                                        user={this.state.user}
                                        schedule={schedule}
@@ -226,13 +214,10 @@ export default class MapContainer
                         </div>
                     </div>
                     <div className="table-cell m-0 p-0 col-right">
-                        <MapView scheduleCallbackFromParent={this.scheduleCallback}
-                                 truckCallbackFromParent={this.truckCallback}
-                                 selectedTruck={this.state.selectedTruck}
-                                 selectedSchedule={this.state.selectedSchedule}
-                                 search={this.state.search}
-                                 favorites = {this.state.favorites}
-                                 trucks={this.state.trucks} user={this.state.user}/>
+                        <MapView selectedSchedule={this.state.selectedSchedule}
+                            search={this.state.search}
+                            favorites={this.state.favorites}
+                            trucks={this.state.trucks} user={this.state.user}/>
                     </div>
                 </div>
             </div>

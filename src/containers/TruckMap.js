@@ -118,12 +118,7 @@ export default class TruckMap
                         }
                     });
                     map.addListener('click', function () {
-                        if (marker.isFav) {
-                            marker.setIcon(mapRed);
-                        }
-                        else {
-                            marker.setIcon(mapIcon);
-                        }
+                        marker.setIcon(icon);
                         infoWindow.close();
                     });
                     allMarkers.push(marker);

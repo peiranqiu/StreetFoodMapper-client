@@ -176,7 +176,7 @@ export default class TruckPage
                     rating = rating1;
             }
         }
-        
+
         return (
             <div id="truck-page">
                 <nav className="navbar navbar-light sticky-top">

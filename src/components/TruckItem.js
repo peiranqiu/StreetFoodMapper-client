@@ -20,7 +20,6 @@ export default class TruckItem extends React.Component {
 
     selectingTruck = () => {
         this.props.scheduleCallbackFromParent(this.props.schedule);
-        this.props.truckCallbackFromParent(this.props.truck);
     }
 
     handleFavorite() {
@@ -72,7 +71,6 @@ export default class TruckItem extends React.Component {
                                  return;
                              }
                              this.handleFavorite();
-                             this.selectingTruck();
                              this.setState({refresh: true});
                          }}/>
                 </div>

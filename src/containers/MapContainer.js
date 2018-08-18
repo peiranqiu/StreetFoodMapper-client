@@ -59,6 +59,7 @@ export default class MapContainer
                 this.setState({trucks: trucks});
                 this.refreshTrucks(trucks);
             });
+
     }
 
     refreshTrucks(trucks) {
@@ -147,7 +148,7 @@ export default class MapContainer
         return (
             <div className="table m-0 p-0" id="map-container">
                 <div className="row m-0 p-0">
-                    <form className="form-inline active-purple-4" id="home-search">
+                    <form className="form-inline active-purple-4" id="home-search" onSubmit="return false">
                         <input className="form-control form-control-sm mr-3 w-100 shadow" type="text"
                                placeholder="  Search for trucks & categories"
                                aria-label="Search" id="search-input" autoComplete="off" size="14"

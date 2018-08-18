@@ -152,7 +152,7 @@ export default class MapView
                 marker.addListener('click', () => {
                     if (prevInfoWindow) {
                         prevInfoWindow.close();
-                        this.setState({refresh:true});
+                        this.setState({refresh: true});
                     }
                     if (infoWindow.getMap() !== null && typeof infoWindow.getMap() !== "undefined") {
                         infoWindow.close();
@@ -192,20 +192,11 @@ export default class MapView
                 if (this.props.selectedSchedule !== null && this.props.selectedSchedule !== undefined &&
                     allMarkers[i].id === this.props.selectedSchedule.id) {
                     if (prevInfoWindow) {
-                        if (prevInfoWindow !== allWindows[i]) {
-                            console.log(4);
-                            prevInfoWindow.close();
-                            allWindows[i].open(map, allMarkers[i]);
-                            allMarkers[i].setIcon(mapWhite);
-                            prevInfoWindow = allWindows[i];
-                        }
+                        prevInfoWindow.close();
                     }
-                    else {
-                        console.log(5);
-                        allWindows[i].open(map, allMarkers[i]);
-                        allMarkers[i].setIcon(mapWhite);
-                        prevInfoWindow = allWindows[i];
-                    }
+                    allWindows[i].open(map, allMarkers[i]);
+                    allMarkers[i].setIcon(mapWhite);
+                    prevInfoWindow = allWindows[i];
                 }
                 else if (allMarkers[i].isFav) {
                     allMarkers[i].setIcon(mapRed);
@@ -217,8 +208,7 @@ export default class MapView
             }
             this.state.trucks.map((truck) => {
                 if (searching
-                    && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
-                            .includes(this.props.search.toLowerCase())
+                    && !(truck.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(this.props.search.toLowerCase())
                         || truck.category1.toString().toLowerCase() === (this.props.search.toLowerCase())
                         || truck.category2.toString().toLowerCase() === (this.props.search.toLowerCase())
                         || truck.category3.toString().toLowerCase() === (this.props.search.toLowerCase()))) {

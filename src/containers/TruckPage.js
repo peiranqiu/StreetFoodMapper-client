@@ -84,6 +84,7 @@ export default class TruckPage
     logout = (e) => {
         if (window.confirm('Are you sure you want to log out?')) {
             this.userService.logout();
+            window.location.href = "/home";
         }
     }
 
@@ -204,7 +205,7 @@ export default class TruckPage
                             {this.state.user !== undefined && this.state.user.email === "admin"
                             && <a className="dropdown-item" href="/admin">Dashboard</a>}
                             {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                            && <a className="dropdown-item" onClick={this.logout}>Log Out</a>}
                         </div>
                     </span>
                 </nav>
@@ -305,27 +306,29 @@ export default class TruckPage
                             </div>
                             <div className="col col-4 right-info">
                                 <div className="truck-website mb-1">
-                                    <img className="truck-website-icon mr-1" width='16px' src={website} alt=""/>
-                                    <a href={this.state.truck.website}>Website</a>
+                                    <img className="truck-website-icon" width='16px' src={website} alt=""/>
+                                    <a href={this.state.truck.website}>{this.state.truck.website.split('//').pop()}</a>
                                 </div>
-                                <div className="truck-menu mb-1 ml-5">
-                                    <img className="truck-menu-icon mr-1" width='16px' src={menu} alt=""/>
-                                    <a href={this.state.truck.menu}>Menu</a>
+                                <div className="truck-menu mb-1">
+                                    <img className="truck-menu-icon" width='16px' src={menu} alt=""/>
+                                    <a href={this.state.truck.menu}>{this.state.truck.menu.split('//').pop()}</a>
                                 </div>
-                                <div className="truck-yelp mb-1 ml-5">
-                                    <i className="fa fa-yelp mr-1"></i>
-                                    <a href={this.state.truck.url}>Yelp</a>
+                                <div className="truck-yelp mb-1">
+                                    <i className="fa fa-yelp"></i>
+                                    <a href={this.state.truck.url.length>13 && this.state.truck.url}>
+                                        {this.state.truck.url.length === 0 && "not provided"}
+                                        {this.state.truck.url.length>0 && this.state.truck.url.split('biz/').pop().split('?', 1)}</a>
                                 </div>
-                                <div className="truck-phone mb-3">
-                                    <img className="truck-phone-icon mr-1" width='16px' src={phone} alt=""/>
+                                <div className="truck-phone mb-1">
+                                    <img className="truck-phone-icon" width='16px' src={phone} alt=""/>
                                     <a>{this.state.truck.phone}</a>
                                 </div>
 
                                 {this.state.truck.twitter !== undefined && this.state.truck.twitter.length > 0 &&
                                 <TwitterTimelineEmbed
                                     sourceType="profile"
-                                    screenName={this.state.truck.twitter.split('com/').pop().split('/')[0].split('?')[0]}
-                                    options={{height: 300}}
+                                    screenName={this.state.truck.twitter.split('com/').pop()}
+                                    options={{height: 260}}
                                 />}
                                 {(this.state.truck.twitter === undefined || this.state.truck.twitter.length < 20) &&
                                 <img className="emptyTwitter" src={emptyTwitter} height='240px' alt=''/>

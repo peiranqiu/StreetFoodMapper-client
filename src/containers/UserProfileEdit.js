@@ -95,6 +95,7 @@ export default class UserProfileEdit
     logout = (e) => {
         if (window.confirm('Are you sure you want to log out?')) {
             this.userService.logout();
+            window.location.href = "/home";
         }
     }
 
@@ -118,7 +119,7 @@ export default class UserProfileEdit
                         && <a className="nav-item current-user">{this.state.user.email}</a>}
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {this.state.user !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                            && <a className="dropdown-item" onClick={this.logout}>Log Out</a>}
                         </div>
                     </span>
                 </nav>

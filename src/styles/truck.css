@@ -1,5 +1,5 @@
 #dashboard-container {
-    height: calc(100vh - 48px);
+    min-height: calc(100vh - 48px);
 }
 #dashboard-container .user-page-card{
     max-width: 500px;
@@ -163,12 +163,7 @@
     padding-left:5px;
     padding-right:5px;
 }
-.right-info a {
-    color:#B91400;
-}
-.truck-website, .truck-menu, .truck-yelp {
-    display: inline-block;
-}
+
 #truckmap {
     height: 370px;
     width: 100%;
@@ -211,6 +206,7 @@
 .right-info a {
     margin-left:4px;
     font-size: 14px;
+    color:#B91400;
 }
 .right-info div {
     overflow: hidden;

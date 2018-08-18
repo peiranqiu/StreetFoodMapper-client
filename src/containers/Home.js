@@ -120,7 +120,7 @@ export default class Home
                                 {this.state.user !== undefined && this.state.user.email === "admin"
                                 && <a className="dropdown-item" href="/admin">Dashboard</a>}
                                 {this.state.user !== undefined
-                                && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                                && <a className="dropdown-item" onClick={this.logout}>Log Out</a>}
 
 
                         </div>

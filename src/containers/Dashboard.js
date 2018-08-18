@@ -37,6 +37,7 @@ export default class Dashboard
     logout = (e) => {
         if (window.confirm('Are you sure you want to log out?')) {
             this.ownerService.logout();
+            window.location.href = "/home";
         }
     }
     delete(id) {
@@ -47,7 +48,6 @@ export default class Dashboard
     }
 
     render() {
-
         if (this.state.owner === undefined || this.state.owner === {}) {
             alert("Plase Log In");
             window.location.href = "/login/owner";
@@ -116,7 +116,7 @@ export default class Dashboard
                             {this.state.owner !== undefined
                             && <a className="dropdown-item" href="/profile/owner">Profile</a>}
                             {this.state.owner !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                            && <a className="dropdown-item" onClick={this.logout}>Log Out</a>}
                         </div>
                     </span>
                 </nav>

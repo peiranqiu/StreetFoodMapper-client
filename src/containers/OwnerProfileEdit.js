@@ -94,6 +94,7 @@ export default class OwnerProfileEdit
     logout = (e) => {
         if (window.confirm('Are you sure you want to log out?')) {
             this.ownerService.logout();
+            window.location.href = "/home";
         }
     }
 
@@ -117,7 +118,7 @@ export default class OwnerProfileEdit
                         && <a className="nav-item current-user">{this.state.owner.email}</a>}
                         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {this.state.owner !== undefined
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                            && <a className="dropdown-item" onClick={this.logout}>Log Out</a>}
 
 
                         </div>

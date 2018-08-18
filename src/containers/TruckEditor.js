@@ -273,6 +273,7 @@ export default class TruckEditor
     logout = (e) => {
         if (window.confirm('Are you sure you want to log out?')) {
             this.ownerService.logout();
+            window.location.href = "/home";
         }
     }
 
@@ -456,7 +457,7 @@ export default class TruckEditor
                             {this.state.owner !== undefined && !this.state.admin
                             && <a className="dropdown-item" href="/profile/owner">Profile</a>}
                             {this.state.owner !== undefined && !this.state.admin
-                            && <a className="dropdown-item" href="/home" onClick={this.logout}>Log Out</a>}
+                            && <a className="dropdown-item" onClick={this.logout}>Log Out</a>}
                         </div>
                     </span>
                 </nav>

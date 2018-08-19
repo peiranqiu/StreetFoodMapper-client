@@ -147,24 +147,12 @@ export default class MapContainer
         return (
             <div className="table m-0 p-0" id="map-container">
                 <div className="row m-0 p-0">
-                    <form className="form-inline active-purple-4" id="home-search"
-                          onSubmit={(e) => {
-                              e.preventDefault();
-                              return false;
-                          }}>
+                    <form className="form-inline active-purple-4" id="home-search">
                         <input className="form-control form-control-sm mr-3 w-100 shadow" type="text"
                                placeholder="  Search for trucks & categories"
                                aria-label="Search" id="search-input" autoComplete="off" size="14"
                                onChange={(e) => {
                                    this.setState({search: e.target.value});
-                               }}
-                               onKeyDown={(e) => {
-                                   e.preventDefault();
-                                   console.log(2);
-                                   if (e.keyCode === 13) {
-                                       console.log(1);
-                                       document.getElementById("search-icon").click();
-                                   }
                                }}
                         />
                         <i className="fa fa-search" id="search-icon" aria-hidden="true" onClick={() => {
@@ -183,6 +171,7 @@ export default class MapContainer
                     </form>
                     <button type="button" data-toggle="button" className="btn shadow" id="btn-open"
                             onClick={() => {
+                                console.log(2);
                                 if ($('#btn-open').hasClass('active')) {
                                     $('#btn-later').removeClass('active');
                                     $('#btn-favorite').removeClass('active');
